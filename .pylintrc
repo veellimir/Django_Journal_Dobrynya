@@ -1,0 +1,9 @@
+[MASTER]
+ignore = CVS
+load-plugins = pylint.extensions.check_docs
+
+[MESSAGES CONTROL]
+disable = C0330, C0321
+
+[BASIC]
+indent-string=4
