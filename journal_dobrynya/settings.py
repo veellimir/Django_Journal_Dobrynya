@@ -1,11 +1,11 @@
 from pathlib import Path
 
-from config import PROJECT_SECRET_KEY
+from config import PROJECT_SECRET_KEY, PROJECT_DEBUG
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = PROJECT_SECRET_KEY
-DEBUG = True
+DEBUG = PROJECT_DEBUG
 
 ALLOWED_HOSTS = []
 
@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'mainapp.apps.MainappConfig',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -82,6 +83,10 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static'
+
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
