@@ -5,3 +5,5 @@
 .logo-images {width: 30%;}
 
 .custom_btn_auth {width: 100%;}
+
+.toast:not(.show) {display: block !important;}

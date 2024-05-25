@@ -20,47 +20,32 @@
         <!-- FORM LOGIN -->
         {% if page == 'login' %}
 
-            <form class="wrapper--form-auth" method="post">
+            <form action="{% url 'login' %}" class="wrapper--form-auth" method="post">
                 {% csrf_token %}
+
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Введите email">
+                    <label class="form-label">Адрес электронной почты</label>
+                    <input type="text" class="form-control" aria-describedby="emailHelp" name="username">
                 </div>
                 <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Пароль</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Введите пароль">
+                    <label class="form-label">Пароль</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" name="password">
                 </div>
-                    <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Войти">
+                <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Войти">
+
             </form>
         
         <!-- FORM REGISTER  -->
         {% else %}
-
             <form class="wrapper--form-auth" method="post">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <label for="exampleInputLogin" class="form-label">Имя</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Введите имя">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputLogin" class="form-label">Фамилия</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" placeholder="Введите фамилию">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Введите email">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Пароль</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Введите пароль">
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Пароль</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Подтвердите пароль">
-                </div>
-                <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Зарегистрировать">
-            </form>
+                {% for field in form %}
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                {% endfor %}
 
+                <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Продолжить">
+            </form>
 
         {% endif %}
         <div class="mt-3">
