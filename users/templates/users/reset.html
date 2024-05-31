@@ -1,0 +1,27 @@
+{% extends 'mainapp/base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+    <div class="card shadow-lg border-0 rounded-lg mt-5">
+        <div class="card-header">
+            <h3 class="text-center font-weight-light my-4">Введите новый пароль</h3>
+        </div>
+        <div class="card-body text-center">
+            <p>Пожалуйста, введите новый пароль дважды, чтобы мы могли убедиться в правильности написания.</p>
+        </div>
+        <div class="card-footer text-center">
+             <form method="post" class="form">
+                <div class="form__field">
+                    {% csrf_token %}
+                    <p>{{ form.new_password1.label }}</p>
+                    <p>{{ form.new_password1 }}</p>
+                    
+                    <p>{{ form.new_password2.label }}</p>
+                    <p>{{ form.new_password2 }}</p>
+                </div>
+                <input type="submit" value="Изменить пароль">
+            </form>
+        </div>
+    </div>
+{% endblock %}
