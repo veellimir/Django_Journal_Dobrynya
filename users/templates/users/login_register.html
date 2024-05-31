@@ -24,7 +24,7 @@
                 {% csrf_token %}
 
                 <div class="mb-3">
-                    <label class="form-label">Адрес электронной почты</label>
+                    <label class="form-label">Логин</label>
                     <input type="text" class="form-control" aria-describedby="emailHelp" name="username">
                 </div>
                 <div class="mb-3">
@@ -32,6 +32,7 @@
                     <input type="password" class="form-control" id="exampleInputPassword1" name="password">
                 </div>
                 <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Войти">
+                <p class="text-center mt-3"><a href="{% url 'reset_password' %}">Забыли пароль ?</a></p>
 
             </form>
         
@@ -48,7 +49,7 @@
             </form>
 
         {% endif %}
-        <div class="mt-3">
+        <div class="mt-3 text-center">
             <p> {% if page == 'login' %} Нет аккаунта ? {% else %} Уже есть аккаунт ? {% endif %}
                 <a href="
                 {% if page == 'login' %}

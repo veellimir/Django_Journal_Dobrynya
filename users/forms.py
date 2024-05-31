@@ -1,9 +1,12 @@
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 
+from .models import Profile
+from .base_forms import BaseFormUsers
 
-class CustomUserRegisterForm(UserCreationForm):
+
+class CustomUserRegisterForm(UserCreationForm, BaseFormUsers):
     class Meta:
         model = User
         fields = [
@@ -15,12 +18,24 @@ class CustomUserRegisterForm(UserCreationForm):
             "password2",
         ]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
 
-        for field_name in self.fields:
-            self.fields[field_name].required = True
-
-        for field in self.fields.values():
-            field.widget.attrs.update({"class": "form-control"})
-
+class UserProfileForm(BaseFormUsers):
+    class Meta:
+        model = Profile
+        fields = [
+            "profile_image",
+            "date_of_birth",
+            "phone",
+            "address",
+            "fio_parents",
+            "parents_place_work",
+            "educational_institution",
+            "time_school",
+            "outside_club",
+            "hobby",
+            "sports",
+            "about_club",
+            "goals_season",
+            "participation_competition",
+            "wishes"
+        ]

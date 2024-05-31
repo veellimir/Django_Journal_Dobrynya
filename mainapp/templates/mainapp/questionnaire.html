@@ -1,0 +1,25 @@
+{% extends 'mainapp/base.html' %}
+
+{% load static %}
+
+{% block extracss %}<link rel="stylesheet" href="{% static 'mainapp/css/auth.css' %}">{% endblock %}
+
+
+{% block content %}
+<div class="text-center mt-5">
+    <h1>Анкета спортсмена</h1>
+    <p>Пожалуйста, заполните анкету. Это буквально 2-3 минуты &#128526;</p>
+</div>
+<div class="d-flex  justify-content-center p-3">
+    <form class="wrapper--form-auth" method="post" style="width: 700px;">
+        {% csrf_token %}
+        {% for field in form %}
+            <label class="form-label">{{ field.label }}</label>
+            {{ field }}
+        {% endfor %}
+    
+        <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Сохранить">
+    </form>
+</div>
+
+{% endblock %}
