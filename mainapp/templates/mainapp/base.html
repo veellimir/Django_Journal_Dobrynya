@@ -15,6 +15,7 @@
     <title>{{ title }}</title>
 </head>
 <body>
+    <!-- Block messages -->
     <div class="wrapper--alert-alert">
         <div class="alert-content">
        {% if messages %}
@@ -28,6 +29,49 @@
         {% endif %}
         </div>
     </div>
+    <!-- End messages -->
+
+    <header class="">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'mainapp/images/logo.png' %}" alt="Логотип" class="logo_main"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="#">Главная</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">Посещаемость</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Направления
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#">Универсальный бой</a></li>
+                    <li><a class="dropdown-item" href="#">Воздушная гимнастика</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Пользователи</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Новости</a>
+                </li>
+              </ul>
+              </form>
+              <form class="d-flex p-2">
+                  <button class="btn btn-outline btn-danger" type="submit">Выход</button>
+                </form>
+            </div>
+          </div>
+        </nav>
+    </header>
 
     {% block content %}{% endblock %}
 
