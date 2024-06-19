@@ -2,8 +2,15 @@
 
 .custom_size_section {height: 100vh;}
 
-.logo-images {width: 30%;}
+.logo-images {max-width: 30%; min-width: 185px;}
 
 .custom_btn_auth {width: 100%;}
 
 .toast:not(.show) {display: block !important;}
+
+#id_email {
+    width: 100%;
+    height: 38px;
+    border-radius: 6px;
+}
+

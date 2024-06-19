@@ -1,5 +1,6 @@
-from django.contrib.auth.forms import UserCreationForm, PasswordResetForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
+from django import forms
 
 from .models import Profile
 from .base_forms import BaseFormUsers
@@ -38,3 +39,14 @@ class UserProfileForm(BaseFormUsers):
             "participation_competition",
             "wishes"
         ]
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        label="Новый пароль",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+    )
+    new_password2 = forms.CharField(
+        label="Подтвердите пароль",
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+    )

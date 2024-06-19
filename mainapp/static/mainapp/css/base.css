@@ -9,3 +9,7 @@
     --bs-alert-border-color: var(--bs-danger-border-subtle);
     --bs-alert-link-color: var(--bs-danger-text-emphasis);
 }
+.logo_main {
+  width: 150px;
+  height: 60px;
+}

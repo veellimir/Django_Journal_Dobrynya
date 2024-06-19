@@ -4,11 +4,12 @@ from django.contrib.auth.models import User
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=False, null=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     profile_image = models.ImageField(
-        upload_to="profile_images",
+        upload_to="profile_images/",
         blank=True, null=True,
-        verbose_name="Изображения профиля"
+        verbose_name="Изображения профиля",
+        default="profile_images/base_user.png"
     )
     date_of_birth = models.DateField(blank=False, null=False, verbose_name="Дата рождения")
     phone = models.CharField(max_length=10, blank=True, null=True, verbose_name="Номер телефона")

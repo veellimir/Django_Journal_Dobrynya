@@ -3,5 +3,27 @@
 {% load static %}
 
 {% block content %}
+<main>
+    <h1 class="text-center mt-5">Новостная лента клуба</h1>
 
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+
+            {% for new in news %}
+            <div class="news-feed mb-5">
+                <div class="card">
+                    <div class="card-body">
+                        <img src="{{ new.image_news.url }}" class="card-img-top mt-3" alt="Placeholder Image">
+                        <h5 class="card-title pt-2">{{ new.title }}</h5>
+                        <p class="card-text">{{ new.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+    </div>
+</div>
+</main>
 {% endblock %}
