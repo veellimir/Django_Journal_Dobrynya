@@ -28,11 +28,14 @@ def user_login(request):
             login(request, user)
             messages.success(request, f"Здравствуйте, {user.username}")
 
-            try:
-                profile = Profile.objects.get(user=user)
+            if not user.is_superuser:
+                try:
+                    profile = Profile.objects.get(user=user)
+                    return redirect("home")
+                except Profile.DoesNotExist:
+                    return redirect("questionnaire")
+            else:
                 return redirect("home")
-            except Profile.DoesNotExist:
-                return redirect("questionnaire")
 
         messages.error(request, "Нет доступа, или данные введены некорректно")
 
