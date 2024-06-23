@@ -1,5 +1,5 @@
 const msgShow = document.querySelector('.wrapper--alert-alert'),
-      msgPositive = document.querySelector('.alert-success');
+      msgPositive = document.querySelector('.wrapper--alert-alert');
 
   if (msgShow) {
     // msgShow.style.position = 'fixed'
@@ -9,6 +9,6 @@ const msgShow = document.querySelector('.wrapper--alert-alert'),
     if (msgPositive || msgPositive) {
       setTimeout(() => {
         msgPositive.style.display = 'none';
-      }, 4000);
+      }, 6000);
     }
   }

@@ -11,6 +11,7 @@ from .models import Profile
 
 def user_logout(request):
     logout(request)
+    messages.success(request, "Вы вышли.")
     return redirect("login")
 
 
@@ -57,8 +58,8 @@ def user_register(request):
             messages.success(request, f"Аккаунт зарегистрирован, ожидаете решение администратора")
             return redirect("login")
         else:
-            messages.error(request, "ошибка")
-
+            for error in form.errors.values():
+                messages.error(request, error)
     context = {
         "title": "Регистрация",
         "page": page,

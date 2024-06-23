@@ -5,6 +5,8 @@ from django import forms
 from .models import Profile
 from .base_forms import BaseFormUsers
 
+from users.validators import *
+
 
 class CustomUserRegisterForm(UserCreationForm, BaseFormUsers):
     class Meta:
@@ -17,6 +19,28 @@ class CustomUserRegisterForm(UserCreationForm, BaseFormUsers):
             "password1",
             "password2",
         ]
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        return validate_username(username)
+
+    def clean_first_name(self):
+        first_name = self.cleaned_data.get('first_name')
+        return validate_first_name(first_name)
+
+    def clean_last_name(self):
+        last_name = self.cleaned_data.get('last_name')
+        return validate_last_name(last_name)
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        return validate_email(email)
+
+    def clean_password1(self):
+        password1 = self.cleaned_data.get('password1')
+        return validate_password(password1)
+
+
 
 
 class UserProfileForm(BaseFormUsers):

@@ -3,28 +3,28 @@
     top: 0 !important;
     min-width: 300px;
 }
+
 .alert-error {
     --bs-alert-color: var(--bs-danger-text-emphasis);
     --bs-alert-bg: var(--bs-danger-bg-subtle);
     --bs-alert-border-color: var(--bs-danger-border-subtle);
     --bs-alert-link-color: var(--bs-danger-text-emphasis);
 }
-.logo_main {
-  width: 150px;
-  height: 60px;
-}
+.logo_main {width: 150px; height: 60px;}
+
 .custom_image_user {
   width: 100px;
   height: 100px;
   object-fit: cover;
   border-radius: 10em;
 }
+
 .cursor-pointer {cursor: pointer;}
+
 a {
   text-decoration: none;
   list-style: none;
   color: black;
 }
-.icon_social {
-  width: 2rem;
-}
+
+.icon_social {width: 2rem;}
