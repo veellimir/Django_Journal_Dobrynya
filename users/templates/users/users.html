@@ -12,17 +12,20 @@
                     <div class="card h-100">
                         <div class="card-body d-flex align-items-center justify-content-around ">
                             <div class="flex-shrink-0">
+                                
                                 {% if user.profile.profile_image %}
                                     <img src="{{ user.profile.profile_image.url }}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user">
                                 {% else %}
                                     <img src="{% static 'mainapp/images/base_user.png' %}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user">
                                 {% endif %}
+
                             </div>
                             <div class="flex-grow-0">
                                 <h5 class="card-title">{{ user.username }}</h5>
                                 <p class="card-text"><strong>Имя:</strong> {{ user.first_name }}</p>
                                 <p class="card-text"><strong>Фамилия:</strong> {{ user.last_name }}</p>
-                                <p class="card-text"><strong>Связаться: </strong> 
+                                <p class="card-text"><strong>Связаться: </strong>
+                                
                                     {% if user.profile.telegram %}
                                     <a href="{{ user.profile.telegram }}" target="_blank">
                                         <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
