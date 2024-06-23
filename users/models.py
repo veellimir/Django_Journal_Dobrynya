@@ -91,6 +91,3 @@ class Profile(models.Model):
         null=True,
         verbose_name="Пожелания"
     )
-
-
-
