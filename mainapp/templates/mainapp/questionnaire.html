@@ -11,10 +11,13 @@
     <p>Пожалуйста, заполните анкету. Это буквально 2-3 минуты &#128526;</p>
 </div>
 <div class="d-flex  justify-content-center p-3">
-    <form class="wrapper--form-auth" method="post" style="width: 700px;">
+    <form class="wrapper--form-auth" method="post" style="width: 700px;" enctype="multipart/form-data">
         {% csrf_token %}
         {% for field in form %}
             <label class="form-label">{{ field.label }}</label>
+                {% if field.help_text %}
+                    <small class="form-text  text-danger">{{ field.help_text }}</small>
+                {% endif %}
             {{ field }}
         {% endfor %}
     

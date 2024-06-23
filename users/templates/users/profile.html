@@ -1,0 +1,64 @@
+{% extends 'mainapp/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ prof.profile.profile_image.url }}" class="card-img-top" alt="Изображение пользователя">
+                <div class="card-body text-center">
+                    <h4 class="card-title">{{ prof.username }}</h4>
+                    <h5 class="card-title">{{ prof.first_name }} {{ prof.last_name }}</h5>
+                    <p class="card-text">Дата рождения: {{ prof.profile.date_of_birth }}</p>
+                    <p class="card-text">Адрес: {{ prof.profile.address }}</p>
+                    <p class="card-text">Тел: {{ prof.profile.phone }}</p>
+                    
+                    {% if prof.profile.telegram %}
+                    <a href="{{ prof.profile.telegram }}" target="_blank">
+                        <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
+                    </a>
+                    {% endif %}
+                    {% if prof.profile.whatsapp %}
+                    <a href="{{ prof.profile.whatsapp }}" target="_blank">
+                        <img src="{% static 'mainapp/images/whatsapp.png' %}" alt="WhatsApp" class="img-fluid icon_social">
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Информация о пользователе</h3>
+                </div>
+                <div class="card-body">
+                    <h4>ФИО родителей</h4>
+                    <p>{{ prof.profile.fio_parents }}</p>
+                    <h4>Место работы родителей</h4>
+                    <p>{{ prof.profile.parents_place_work }}</p>
+                    <h4>Образовательное учреждение</h4>
+                    <p>{{ prof.profile.educational_institution }}</p>
+                    <h4>Время школьных занятий</h4>
+                    <p>{{ prof.profile.time_school }}</p>
+                    <h4>Дополнительные занятия вне клуба</h4>
+                    <p>{{ prof.profile.outside_club }}</p>
+                    <h4>Хобби и увлечения</h4>
+                    <p>{{ prof.profile.hobby }}</p>
+                    <h4>Любимые виды спорта</h4>
+                    <p>{{ prof.profile.sports }}</p>
+                    <h4>Откуда узнали про клуб</h4>
+                    <p>{{ prof.profile.about_club }}</p>
+                    <h4>Цели на сезон</h4>
+                    <p>{{ prof.profile.goals_season }}</p>
+                    <h4>Участие в соревнованиях</h4>
+                    <p>{{ prof.profile.participation_competition }}</p>
+                    <h4>Пожелания</h4>
+                    <p>{{ prof.profile.wishes }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

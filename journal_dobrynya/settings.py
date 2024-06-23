@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'mainapp.apps.MainappConfig',
     'users.apps.UsersConfig',
     'news.apps.NewsConfig',
+    'tasks.apps.TasksConfig',
 ]
 
 MIDDLEWARE = [

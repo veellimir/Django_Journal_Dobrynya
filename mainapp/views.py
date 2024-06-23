@@ -13,3 +13,4 @@ def home(request):
         "news": news
     }
     return render(request, "mainapp/index.html", context)
+
