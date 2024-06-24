@@ -15,6 +15,7 @@ def home(request):
     }
     return render(request, "mainapp/index.html", context)
 
+
 @login_required
 def all_coach(request):
     coaches = Coach.objects.all()
@@ -24,3 +25,5 @@ def all_coach(request):
         "coaches": coaches,
     }
     return render(request, "mainapp/all_coach.html", context)
+
+

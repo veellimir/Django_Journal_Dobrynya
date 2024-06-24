@@ -2,3 +2,4 @@ django
 pylint
 python-dotenv
 pillow
+django django-scheduler

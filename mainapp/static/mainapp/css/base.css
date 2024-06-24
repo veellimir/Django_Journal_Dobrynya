@@ -28,3 +28,42 @@ a {
 }
 
 .icon_social {width: 2rem;}
+
+
+
+/* calendar */
+.calendar {
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.calendar-header h2 {margin: 0;}
+
+.calendar-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.calendar-table th, .calendar-table td {
+  border: 1px solid #ccc;
+  padding: 15px;
+  text-align: center;
+  font-size: 18px;
+}
+.calendar-table th {background-color: #f0f0f0;}
+
+.today {background-color: #ffffcc;}
+
+.event-list {margin-top: 20px;}
+
+.event-list li {
+  margin-bottom: 10px;
+  font-size: 16px;
+}

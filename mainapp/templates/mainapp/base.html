@@ -47,7 +47,7 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown0" role="button" data-bs-toggle="dropdown" aria-expanded="false">Клуб</a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown0">
-                    <li><a class="dropdown-item" href="#">Расписания занятий</a></li>
+                    <li><a class="dropdown-item" href="{% url 'schedules' %}">Расписания занятий</a></li>
                     {% if user.is_superuser %}
                       <li><a class="dropdown-item" href="#">Доска заданий</a></li>
                     {% else %}
