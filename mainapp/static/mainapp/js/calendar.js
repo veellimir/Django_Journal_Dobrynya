@@ -1,4 +1,4 @@
-import { fetchEvents } from './api_get.js'
+import { fetchEvents } from './api_get.js';
 
 let today = new Date(),
     currentMonth = today.getMonth(),
@@ -32,7 +32,6 @@ function displayEvents(date) {
       generateCalendar(currentMonth, currentYear, []);
   });
 }
-
 
 function generateCalendar(month, year, events) {
   let firstDay = new Date(year, month, 1),
@@ -86,6 +85,10 @@ function generateCalendar(month, year, events) {
               eventNameDiv.textContent = event.name;
               eventNameDiv.classList.add("event-name");
               cell.appendChild(eventNameDiv);
+
+              eventNameDiv.addEventListener('click', () => {
+                openModal(event);
+              });
             }
           });
         }
@@ -98,6 +101,35 @@ function generateCalendar(month, year, events) {
   }
 }
 
+function openModal(event) {
+  const modal = document.getElementById("modal"),
+        modalTitle = document.getElementById("modal-title"),
+        modalName = document.getElementById("modal-name"),
+        modalStartTime = document.getElementById("modal-start_time"),
+        modalEndTime = document.getElementById("modal-end_time");
+
+  modalName.textContent = event.name;
+  modalTitle.textContent = `Описания: ${event.title}`;
+  modalStartTime.textContent = `Время начало : ${event.start_time}`;
+  modalEndTime.textContent = `Конец в : ${event.end_time}`;
+
+  modal.style.display = "block";
+}
+
+function closeModal() {
+  const modal = document.getElementById("modal");
+  modal.style.display = "none";
+}
+
+const span = document.getElementsByClassName("close")[0];
+span.addEventListener('click', closeModal);
+
+window.addEventListener('click', (event) => {
+  const modal = document.getElementById("modal");
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+});
 
 const previousMonth = document.querySelector('.previousMonth'),
       nextMonth = document.querySelector('.nextMonth');
@@ -122,8 +154,12 @@ nextMonth.addEventListener('click', () => {
   displayEvents(new Date(currentYear, currentMonth));
 })
 
-
 displayEvents(new Date(currentYear, currentMonth));
+
+
+
+
+
 
 
 
