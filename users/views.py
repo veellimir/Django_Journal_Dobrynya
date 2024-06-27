@@ -26,7 +26,6 @@ def user_login(request):
 
         if user is not None and user.is_active:
             login(request, user)
-            messages.success(request, f"Здравствуйте, {user.username}")
 
             if not user.is_superuser:
                 try:
