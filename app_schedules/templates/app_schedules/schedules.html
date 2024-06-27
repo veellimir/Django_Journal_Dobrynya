@@ -4,31 +4,33 @@
 
 
 {% block content %}
-  <div class="container-fluid">
-    <div class="row justify-content-center">
-      <div class="col-lg-8">
-        <div class="calendar">
-          <div class="calendar-header">
-            <button class="btn btn-outline-secondary" onclick="previousMonth()">&lt;</button>
-            <h2 id="month-year"></h2>
-            <button class="btn btn-outline-secondary" onclick="nextMonth()">&gt;</button>
-          </div>
-
-          <table class="table table-bordered calendar-table" id="calendar-body">
-            <thead class="thead-light">
-              <tr id="weekdays"></tr>
-            </thead>
-            <tbody id="calendar-dates"></tbody>
-          </table>
-
-          <div id="events-container" class="event-list">
-            <h3>Events for <span id="event-date"></span>:</h3>
-            <ul id="events-list" class="list-group"></ul>
+<main>
+  <div>
+    <div class="container-fluid mt-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="calendar">
+            <div class="calendar-header bg-danger">
+              <button class="btn btn-outline-secondary bg-dark previousMonth" >&lt;</button>
+              <h2 id="month-year"></h2>
+              <button class="btn btn-outline-secondary bg-dark nextMonth">&gt;</button>
+            </div>
+            <table class="table table-bordered calendar-table" id="calendar-body">
+              <thead class="thead-light">
+                <tr id="weekdays" class="weekdays_element"></tr>
+              </thead>
+              <tbody id="calendar-dates" class="number_day"></tbody>
+            </table>
+            <div id="events-container" class="event-list">
+              <h3>Занятия на<span id="event-date"></span>:</h3>
+              <ul id="events-list" class="list-group"></ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+</main>
 
-  <script src="{% static 'mainapp/js/calendar.js' %}"></script>
+  <script type="module" src="{% static 'mainapp/js/calendar.js' %}"></script>
 {% endblock %}

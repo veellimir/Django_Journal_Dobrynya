@@ -1,106 +1,133 @@
+import { fetchEvents } from './api_get.js'
+
 let today = new Date(),
     currentMonth = today.getMonth(),
-    currentYear = today.getFullYear(),
-    selectedDate = new Date(today);
+    currentYear = today.getFullYear();
 
-const months = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
-      weekdays = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+const months = [
+    "Январь",
+    "Февраль",
+    "Март",
+    "Апрель",
+    "Май",
+    "Июнь",
+    "Июль",
+    "Август",
+    "Сентябрь",
+    "Октябрь",
+    "Ноябрь",
+    "Декабрь",
+  ],
+  weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
 
-function generateCalendar(month, year) {
+function displayEvents(date) {
+    let eventDate = date.toDateString();
+    document.getElementById("event-date").textContent = eventDate;
+
+  fetchEvents()
+    .then((events) => {
+      generateCalendar(currentMonth, currentYear, events);
+    })
+    .catch((error) => {
+      generateCalendar(currentMonth, currentYear, []);
+  });
+}
+
+
+function generateCalendar(month, year, events) {
   let firstDay = new Date(year, month, 1),
       lastDay = new Date(year, month + 1, 0),
       numDays = lastDay.getDate(),
-      startingDay = firstDay.getDay();
+      startingDay = (firstDay.getDay() + 6) % 7;
 
-  document.getElementById('month-year').textContent = months[month] + ' ' + year;
+  document.getElementById("month-year").textContent =
+    months[month] + " " + year;
 
-  let calendarDates = document.getElementById('calendar-dates');
-  calendarDates.innerHTML = '';
+  let calendarDates = document.getElementById("calendar-dates");
+  calendarDates.innerHTML = "";
 
-  let weekdaysRow = document.getElementById('weekdays');
-  weekdaysRow.innerHTML = '';
+  let weekdaysRow = document.getElementById("weekdays");
+  weekdaysRow.innerHTML = "";
 
   for (let weekday of weekdays) {
-    let th = document.createElement('th');
+    let th = document.createElement("th");
     th.textContent = weekday;
     weekdaysRow.appendChild(th);
   }
 
-  let date = 2;
+  let date = 1,
+      currentWeekday = startingDay;
+
   for (let i = 0; i < 6; i++) {
-    let row = document.createElement('tr');
+    let row = document.createElement("tr");
 
     for (let j = 0; j < 7; j++) {
+      let cell = document.createElement("td");
+
       if (i === 0 && j < startingDay) {
-        let cell = document.createElement('td');
-        row.appendChild(cell);
+        cell.textContent = "";
 
       } else if (date > numDays) {
-        break;
+        cell.textContent = "";
 
       } else {
-        let cell = document.createElement('td');
-        cell.textContent = date;
+        let eventDiv = document.createElement("div");
+        eventDiv.textContent = date;
+        cell.appendChild(eventDiv);
 
-        if (date === today.getDate() && year === today.getFullYear() && month === today.getMonth()) {
-          cell.classList.add('today');
+        let currentDayOfWeek = weekdays[currentWeekday];
+        cell.setAttribute("data-weekday", currentDayOfWeek);
+
+        if (events && events.length > 0) {
+          events.forEach((event) => {
+            if (event.days_of_week.includes(currentDayOfWeek.toLowerCase())) {
+              let eventNameDiv = document.createElement("div");
+
+              eventNameDiv.textContent = event.name;
+              eventNameDiv.classList.add("event-name");
+              cell.appendChild(eventNameDiv);
+            }
+          });
         }
-
-        cell.addEventListener('click', function() {
-          selectDate(new Date(year, month, date));
-        });
-        row.appendChild(cell);
         date++;
+        currentWeekday = (currentWeekday + 1) % 7;
       }
+      row.appendChild(cell);
     }
     calendarDates.appendChild(row);
   }
-
-  displayEvents(selectedDate);
 }
 
-function displayEvents(date) {
-  let eventDate = date.toDateString();
-  document.getElementById('event-date').textContent = eventDate;
 
-  let eventsList = document.getElementById('events-list');
-  eventsList.innerHTML = '';
-  let events = [
-    { time: '10:00 AM', title: 'Meeting' },
-    { time: '2:00 PM', title: 'Lunch with friends' },
-    { time: '6:00 PM', title: 'Birthday party' }
-  ];
+const previousMonth = document.querySelector('.previousMonth'),
+      nextMonth = document.querySelector('.nextMonth');
 
-  events.forEach(event => {
-    let li = document.createElement('li');
-    li.textContent = `${event.time} - ${event.title}`;
-    eventsList.appendChild(li);
-  });
-}
-
-function selectDate(date) {
-  selectedDate = date;
-  generateCalendar(selectedDate.getMonth(), selectedDate.getFullYear());
-}
-
-function previousMonth() {
+previousMonth.addEventListener('click', () => {
   currentMonth--;
 
   if (currentMonth < 0) {
-        currentMonth = 11;
-        currentYear--;
+    currentMonth = 11;
+    currentYear--;
   }
-  generateCalendar(currentMonth, currentYear);
-}
+  displayEvents(new Date(currentYear, currentMonth));
+})
 
-function nextMonth() {
+nextMonth.addEventListener('click', () => {
   currentMonth++;
 
   if (currentMonth > 11) {
-        currentMonth = 0;
-        currentYear++;
+    currentMonth = 0;
+    currentYear++;
   }
-  generateCalendar(currentMonth, currentYear);
-}
+  displayEvents(new Date(currentYear, currentMonth));
+})
 
-generateCalendar(currentMonth, currentYear);
+
+displayEvents(new Date(currentYear, currentMonth));
+
+
+
+
+
+
+
