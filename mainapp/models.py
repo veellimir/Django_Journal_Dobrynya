@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Coach(models.Model):
     img_coach = models.ImageField(
         upload_to="coach_images/",
