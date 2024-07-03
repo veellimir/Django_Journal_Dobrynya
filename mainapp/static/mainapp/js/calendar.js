@@ -103,10 +103,26 @@ function generateCalendar(month, year, events) {
 
 function openModal(event) {
   const modal = document.getElementById("modal"),
+        modalTeacher = document.getElementById("modal-teacher"),
         modalTitle = document.getElementById("modal-title"),
         modalName = document.getElementById("modal-name"),
         modalStartTime = document.getElementById("modal-start_time"),
         modalEndTime = document.getElementById("modal-end_time");
+
+  const coachDetails = event.teacher.map(coach => `${coach.surname} ${coach.name} ${coach.patronymic}`).join(", ");
+
+  if (event.teacher.length === 0) {
+    modalTeacher.textContent = 'Преподаватель: преподаватель ещё не назначен';
+
+} else if (event.teacher.length === 1) {
+    modalTeacher.textContent = `Преподаватель: ${coachDetails}`;
+
+} else {
+    const lastIndex = coachDetails.lastIndexOf(", "),
+          coaches = coachDetails.substring(0, lastIndex),
+          lastCoach = coachDetails.substring(lastIndex + 2);
+    modalTeacher.textContent = `Преподаватели: ${coaches}, ${lastCoach}`;
+}
 
   modalName.textContent = event.name;
   modalTitle.textContent = `Описания: ${event.title}`;
