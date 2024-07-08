@@ -20,7 +20,6 @@ class Profile(models.Model):
 
     phone = models.CharField(max_length=10, blank=True, null=True, verbose_name="Номер телефона")
     telegram = models.CharField(max_length=100, blank=True, null=True, verbose_name="Телеграм")
-    whatsapp = models.CharField(max_length=100, blank=True, null=True, verbose_name="WhatsApp")
     vk = models.CharField(max_length=100, blank=True, null=True, verbose_name="Вконтакте")
     address = models.TextField(
         blank=False,

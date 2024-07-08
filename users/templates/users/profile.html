@@ -16,13 +16,8 @@
                     <p class="card-text">Тел: {{ prof.profile.phone }}</p>
                     
                     {% if prof.profile.telegram %}
-                    <a href="{{ prof.profile.telegram }}" target="_blank">
+                    <a href="https://t.me/{{ prof.profile.telegram }}" target="_blank">
                         <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
-                    </a>
-                    {% endif %}
-                    {% if prof.profile.whatsapp %}
-                    <a href="{{ prof.profile.whatsapp }}" target="_blank">
-                        <img src="{% static 'mainapp/images/whatsapp.png' %}" alt="WhatsApp" class="img-fluid icon_social">
                     </a>
                     {% endif %}
                 </div>

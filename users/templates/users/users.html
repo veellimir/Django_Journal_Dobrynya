@@ -10,7 +10,7 @@
             <a href="{% url 'profile' pk=user.pk %}">
                 <div class="col-md-4 mb-4 cursor-pointer">
                     <div class="card h-100">
-                        <div class="card-body d-flex align-items-center justify-content-around ">
+                        <div class="card-body d-flex align-items-center justify-content-around">
                             <div class="flex-shrink-0">
                                 
                                 {% if user.profile.profile_image %}
@@ -20,23 +20,17 @@
                                 {% endif %}
 
                             </div>
-                            <div class="flex-grow-0">
+                            <div class="flex-grow-2">
                                 <h5 class="card-title">{{ user.username }}</h5>
                                 <p class="card-text"><strong>Имя:</strong> {{ user.first_name }}</p>
                                 <p class="card-text"><strong>Фамилия:</strong> {{ user.last_name }}</p>
                                 <p class="card-text"><strong>Связаться: </strong>
                                 
-                                    {% if user.profile.telegram %}
-                                    <a href="{{ user.profile.telegram }}" target="_blank">
+                                {% if user.profile.telegram %}
+                                    <a href="https://t.me/{{ user.profile.telegram }}" target="_blank">
                                         <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
                                     </a>
-                                    {% endif %}
-                                
-                                    {% if user.profile.whatsapp %}
-                                    <a href="{{ user.profile.whatsapp }}" target="_blank">
-                                        <img src="{% static 'mainapp/images/whatsapp.png' %}" alt="WhatsApp" class="img-fluid icon_social">
-                                    </a>
-                                    {% endif %}
+                                {% endif %}
                                 </p>
                             </div>
                         </div>

@@ -69,11 +69,9 @@
                     <li><a class="dropdown-item " href="#">Something else here</a></li>
                   </ul>
                 </li>
-                {% if user.is_superuser %}
                 <li class="nav-item">
                   <a class="nav-link" href="{% url 'all_users' %}" tabindex="-1" aria-disabled="true">Дружина</a>
                 </li>
-                {% endif %}
                 <li class="nav-item">
                   <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Статистика</a>
                 </li>
