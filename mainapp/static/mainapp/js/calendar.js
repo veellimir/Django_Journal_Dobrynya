@@ -102,14 +102,14 @@ function generateCalendar(month, year, events) {
 }
 
 function openModal(event) {
-  const modal = document.getElementById("modal"),
+  const coachDetails = event.teacher.map(coach => `${coach.surname} ${coach.name} ${coach.patronymic}`).join(", "),
+
+        modal = document.getElementById("modal"),
         modalTeacher = document.getElementById("modal-teacher"),
         modalTitle = document.getElementById("modal-title"),
         modalName = document.getElementById("modal-name"),
         modalStartTime = document.getElementById("modal-start_time"),
         modalEndTime = document.getElementById("modal-end_time");
-
-  const coachDetails = event.teacher.map(coach => `${coach.surname} ${coach.name} ${coach.patronymic}`).join(", ");
 
   if (event.teacher.length === 0) {
     modalTeacher.textContent = 'Преподаватель: преподаватель ещё не назначен';
@@ -121,6 +121,7 @@ function openModal(event) {
     const lastIndex = coachDetails.lastIndexOf(", "),
           coaches = coachDetails.substring(0, lastIndex),
           lastCoach = coachDetails.substring(lastIndex + 2);
+    
     modalTeacher.textContent = `Преподаватели: ${coaches}, ${lastCoach}`;
 }
 
@@ -133,8 +134,15 @@ function openModal(event) {
 }
 
 function closeModal() {
-  const modal = document.getElementById("modal");
-  modal.style.display = "none";
+  const modal = document.getElementById("modal"),
+        btnCancelWorkout = document.getElementById("cancelWorkout"),
+        containerCancelWorkout = document.getElementById("containerCancelWorkout");
+
+  if (containerCancelWorkout) {
+    containerCancelWorkout.classList.remove('show');
+    btnCancelWorkout.style.display = '';
+  }
+  modal.style.display = 'none';
 }
 
 const span = document.getElementsByClassName("close")[0];
@@ -143,12 +151,12 @@ span.addEventListener('click', closeModal);
 window.addEventListener('click', (event) => {
   const modal = document.getElementById("modal");
   if (event.target == modal) {
-    modal.style.display = "none";
+    modal.style.display = 'none';
   }
 });
 
-const previousMonth = document.querySelector('.previousMonth'),
-      nextMonth = document.querySelector('.nextMonth');
+const previousMonth = document.querySelector(".previousMonth"),
+      nextMonth = document.querySelector(".nextMonth");
 
 previousMonth.addEventListener('click', () => {
   currentMonth--;
@@ -173,13 +181,13 @@ nextMonth.addEventListener('click', () => {
 displayEvents(new Date(currentYear, currentMonth));
 
 
+// cancel workout
+const btnCancelWorkout = document.getElementById('cancelWorkout'),
+      containerCancelWorkout = document.getElementById('containerCancelWorkout');
 
-
-
-
-
-
-
-
+btnCancelWorkout.addEventListener('click', () => {
+  containerCancelWorkout.classList.add('show');
+  btnCancelWorkout.style.display = 'none';
+});
 
 

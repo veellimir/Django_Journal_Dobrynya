@@ -41,8 +41,6 @@ class CustomUserRegisterForm(UserCreationForm, BaseFormUsers):
         return validate_password(password1)
 
 
-
-
 class UserProfileForm(BaseFormUsers):
     class Meta:
         model = Profile
@@ -51,7 +49,6 @@ class UserProfileForm(BaseFormUsers):
             "date_of_birth",
             "phone",
             "telegram",
-            "whatsapp",
             "vk",
             "address",
             "fio_parents",

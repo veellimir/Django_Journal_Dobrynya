@@ -21,6 +21,13 @@
               </thead>
               <tbody id="calendar-dates" class="number_day"></tbody>
             </table>
+            {% if user.is_superuser %}
+            <div class="container-fluid text-right mb-3">
+              <a href="{% url 'admin:app_schedules_event_changelist' %}" target="_blank">
+                <button class="btn btn-secondary">Добавить занятия в календарь</button>
+              </a>
+            </div>
+            {% endif %}
             <div id="events-container" class="event-list">
               <h3>Занятия на<span id="event-date"></span>:</h3>
               <ul id="events-list" class="list-group"></ul>
@@ -33,13 +40,27 @@
   <div id="modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
-      <div class="">
-        <h2 id="modal-name" class="text-center"></h2>
+      <div>
+        <h2 id="modal-name" class="text-center mb-5"></h2>
         <p><b id="modal-teacher"></b></p>
         <p><b id="modal-title"></b></p>
         <p><b id="modal-start_time"></b></p>
         <p><b id="modal-end_time"></b></p>
       </div>
+      {% if user.is_superuser %}
+      <div class="container-fluid text-center mb-3" style="display: none;">
+        <button class="btn btn-outline btn-danger" id="cancelWorkout">Отменить тренировку</button>
+      </div>
+      <div id="containerCancelWorkout">
+        <div class="modal-body">
+          Здесь ваше описание или контент модального окна
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Сохранить</button>
+          <!-- Дополнительные кнопки или действия -->
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
 </main>
