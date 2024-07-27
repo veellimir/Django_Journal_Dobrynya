@@ -29,7 +29,7 @@ def user_login(request):
 
             if not user.is_superuser:
                 try:
-                    profile = Profile.objects.get(user=user)
+                    prof = Profile.objects.get(user=user)
                     return redirect("home")
                 except Profile.DoesNotExist:
                     return redirect("questionnaire")
@@ -75,24 +75,24 @@ def user_questionnaire(request):
     page = "questionnaire"
 
     try:
-        profile = Profile.objects.get(user=request.user)
+        prof = Profile.objects.get(user=request.user)
     except Profile.DoesNotExist:
-        profile = Profile(user=request.user)
+        prof = Profile(user=request.user)
 
     if request.method == "POST":
-        form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        form = UserProfileForm(request.POST, request.FILES, instance=prof)
 
         if form.is_valid():
-            profile = form.save(commit=False)
-            profile.user = request.user
-            profile.save()
+            prof = form.save(commit=False)
+            prof.user = request.user
+            prof.save()
 
             messages.success(request, "Анкета успешно заполнена")
             return redirect("home")
         else:
             messages.error(request, "Анкета заполнена некорректно, проверьте правильность заполнение полей")
     else:
-        form = UserProfileForm(instance=profile)
+        form = UserProfileForm(instance=prof)
 
     context = {
         "title": "Заполни анкету",
