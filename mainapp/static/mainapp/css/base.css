@@ -10,7 +10,16 @@
     --bs-alert-border-color: var(--bs-danger-border-subtle);
     --bs-alert-link-color: var(--bs-danger-text-emphasis);
 }
+
+.wrapper--form-auth {position: relative;}
+
 .logo_main {width: 150px; height: 60px;}
+
+.customVisiblePassLogin {top: 51px !important;}
+
+.customVisiblePassReg1 {top: 331px;}
+
+.customVisiblePassReg2 {top: 401px;}
 
 .custom_image_user {
   width: 100px;
@@ -173,5 +182,3 @@ a {
 }
 /* ================== END MODAL SCHEDULES =======================
 =================================================================*/
-
-
