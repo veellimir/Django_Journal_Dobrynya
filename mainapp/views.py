@@ -25,5 +25,3 @@ def all_coach(request):
         "coaches": coaches,
     }
     return render(request, "mainapp/all_coach.html", context)
-
-
