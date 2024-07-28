@@ -18,7 +18,7 @@ class Profile(models.Model):
         verbose_name="Дата рождения"
     )
 
-    phone = models.CharField(max_length=10, blank=True, null=True, verbose_name="Номер телефона")
+    phone = models.CharField(max_length=110, blank=True, null=True, verbose_name="Номер телефона")
     telegram = models.CharField(max_length=100, blank=True, null=True, verbose_name="Телеграм")
     vk = models.CharField(max_length=100, blank=True, null=True, verbose_name="Вконтакте")
     address = models.TextField(

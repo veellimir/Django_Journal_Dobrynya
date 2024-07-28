@@ -1,6 +1,7 @@
 from django import forms
 from .models import Event
 
+
 class EventForm(forms.ModelForm):
     days_of_week = forms.MultipleChoiceField(
         choices=Event.DAYS_OF_WEEK_CHOICES,

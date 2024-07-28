@@ -2,7 +2,12 @@
 
 {% load static %}
 
-{% block extracss %}<link rel="stylesheet" href="{% static 'mainapp/css/auth.css' %}">{% endblock %}
+{% block extracss %}
+<link rel="stylesheet" href="{% static 'mainapp/css/auth.css' %}">
+
+<script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/cleave.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cleave.js@1.6.0/dist/addons/cleave-phone.ru.js"></script>
+{% endblock %}
 
 
 {% block content %}
@@ -24,5 +29,5 @@
         <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Сохранить">
     </form>
 </div>
-
+<script src="{% static 'mainapp/js/phone_mask.js' %}"></script>
 {% endblock %}

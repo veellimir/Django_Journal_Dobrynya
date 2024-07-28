@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 
 import re
 
+
 def validate_username(username):
     if not re.match(r"^[a-z]{3,15}$", username):
         raise ValidationError(
@@ -10,6 +11,7 @@ def validate_username(username):
             " Латинские буквы."
         )
     return username
+
 
 def validate_first_name(first_name):
     first_name = first_name.lower()
@@ -21,6 +23,7 @@ def validate_first_name(first_name):
         )
     return first_name
 
+
 def validate_last_name(last_name):
     last_name = last_name.lower()
 
@@ -31,10 +34,12 @@ def validate_last_name(last_name):
         )
     return last_name
 
+
 def validate_email(email):
     if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
         raise ValidationError("Введите действительный адрес электронной почты.")
     return email
+
 
 def validate_password(password):
     if not re.match(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&_]{8,}$", password):
