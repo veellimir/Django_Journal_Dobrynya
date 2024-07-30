@@ -78,8 +78,13 @@ class Profile(models.Model):
         help_text="*",
         verbose_name="Цели на сезон"
     )
+    PARTICIPATION_CHOICES = [
+        ("yes", "Да"),
+        ("no", "Нет")
+    ]
     participation_competition = models.CharField(
-        max_length=50,
+        max_length=3,
+        choices=PARTICIPATION_CHOICES,
         blank=False,
         null=False,
         help_text="*",
