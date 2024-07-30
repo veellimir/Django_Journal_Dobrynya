@@ -15,19 +15,32 @@
     <h1>Анкета спортсмена</h1>
     <p>Пожалуйста, заполните анкету. Это буквально 2-3 минуты &#128526;</p>
 </div>
-<div class="d-flex  justify-content-center p-3">
+<div class="d-flex justify-content-center p-3">
     <form class="wrapper--form-auth" method="post" style="width: 700px;" enctype="multipart/form-data">
         {% csrf_token %}
         {% for field in form %}
-            <label class="form-label">{{ field.label }}</label>
+            <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
                 {% if field.help_text %}
-                    <small class="form-text  text-danger">{{ field.help_text }}</small>
+                    <small class="form-text text-danger">{{ field.help_text }}</small>
                 {% endif %}
-            {{ field }}
+                {% if field.name == "participation_competition" %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="{{ field.id_for_label }}_yes" name="{{ field.name }}" value="yes" {% if field.value == "yes" %}checked{% endif %}>
+                        <label class="form-check-label" for="{{ field.id_for_label }}_yes">Да</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" id="{{ field.id_for_label }}_no" name="{{ field.name }}" value="no" {% if field.value == "no" %}checked{% endif %}>
+                        <label class="form-check-label" for="{{ field.id_for_label }}_no">Нет</label>
+                    </div>
+                {% else %}
+                    {{ field }}
+                {% endif %}
+            </div>
         {% endfor %}
-    
         <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Сохранить">
     </form>
 </div>
+
 <script src="{% static 'mainapp/js/phone_mask.js' %}"></script>
 {% endblock %}
