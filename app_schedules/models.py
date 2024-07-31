@@ -1,4 +1,5 @@
 from django.db import models
+from colorfield.fields import ColorField
 
 from mainapp.models import Coach
 
@@ -22,6 +23,7 @@ class Event(models.Model):
     end_time = models.TimeField(verbose_name="Конец в")
 
     days_of_week = models.CharField(max_length=50, blank=True, verbose_name="Дни недели на весь год")
+    elem_color = ColorField(max_length=50, default="#0d6dfd7f", verbose_name="Цвет в расписании")
 
     def __str__(self):
         return self.name

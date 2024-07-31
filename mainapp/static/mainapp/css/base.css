@@ -110,7 +110,10 @@ a {
   border-radius: 10px;
 }
 
-.event-name:hover {background: #0d6dfdbb;}
+.event-name:hover {
+  background: #0d6dfdbb;
+  width: 100%;
+}
 /* ================== END SCHEDULES =======================
 ===========================================================*/
 
