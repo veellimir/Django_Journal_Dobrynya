@@ -22,7 +22,8 @@ def get_events(request):
             ],
             "start_time": event.start_time.strftime("%H:%M"),
             "end_time": event.end_time.strftime("%H:%M"),
-            "days_of_week": event.days_of_week.split(",")
+            "days_of_week": event.days_of_week.split(","),
+            "color_div": event.elem_color
         }
         for event in events
     ]

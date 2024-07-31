@@ -24,6 +24,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'colorfield',
+
     'mainapp.apps.MainappConfig',
     'users.apps.UsersConfig',
     'news.apps.NewsConfig',

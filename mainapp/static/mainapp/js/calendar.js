@@ -49,55 +49,89 @@ function generateCalendar(month, year, events) {
   weekdaysRow.innerHTML = "";
 
   for (let weekday of weekdays) {
-    let th = document.createElement("th");
-    th.textContent = weekday;
-    weekdaysRow.appendChild(th);
+      let th = document.createElement("th");
+      th.textContent = weekday;
+      weekdaysRow.appendChild(th);
   }
 
   let date = 1,
       currentWeekday = startingDay;
 
   for (let i = 0; i < 6; i++) {
-    let row = document.createElement("tr");
+      let row = document.createElement("tr");
 
-    for (let j = 0; j < 7; j++) {
-      let cell = document.createElement("td");
+      for (let j = 0; j < 7; j++) {
+          let cell = document.createElement("td");
 
-      if (i === 0 && j < startingDay) {
-        cell.textContent = "";
+          if (i === 0 && j < startingDay) {
+              cell.textContent = "";
 
-      } else if (date > numDays) {
-        cell.textContent = "";
+          } else if (date > numDays) {
+              cell.textContent = "";
 
-      } else {
-        let eventDiv = document.createElement("div");
-        eventDiv.textContent = date;
-        cell.appendChild(eventDiv);
+          } else {
+              let eventDiv = document.createElement("div");
+              eventDiv.textContent = date;
+              cell.appendChild(eventDiv);
 
-        let currentDayOfWeek = weekdays[currentWeekday];
-        cell.setAttribute("data-weekday", currentDayOfWeek);
+              let currentDayOfWeek = weekdays[currentWeekday];
+              cell.setAttribute("data-weekday", currentDayOfWeek);
 
-        if (events && events.length > 0) {
-          events.forEach((event) => {
-            if (event.days_of_week.includes(currentDayOfWeek.toLowerCase())) {
-              let eventNameDiv = document.createElement("div");
+              // if (events && events.length > 0) {
+              //     events.forEach((event) => {
+              //         if (event.days_of_week.includes(currentDayOfWeek.toLowerCase())) {
+              //             let eventNameDiv = document.createElement("div");
 
-              eventNameDiv.textContent = event.name;
-              eventNameDiv.classList.add("event-name");
-              cell.appendChild(eventNameDiv);
+              //             eventNameDiv.textContent = event.name;
+              //             eventNameDiv.classList.add("event-name");
+              //             eventNameDiv.style.backgroundColor = event.color_div;
+              //             eventNameDiv.style.fontSize = "calc(15px + 0.5vw)%"
+              //             cell.appendChild(eventNameDiv);
 
-              eventNameDiv.addEventListener('click', () => {
-                openModal(event);
-              });
+              //             eventNameDiv.addEventListener('click', () => {
+              //                 openModal(event);
+              //             });
+              //         }
+              //     });
+              // }
+              // date++;
+              // currentWeekday = (currentWeekday + 1) % 7;
+              function updateEvents() {
+                if (events && events.length > 0) {
+                    events.forEach((event) => {
+                        if (event.days_of_week.includes(currentDayOfWeek.toLowerCase())) {
+                            let eventNameDiv = document.createElement("div");
+                            let displayText = event.name;
+            
+                            if (window.innerWidth < 1024) {
+                                if (displayText.length > 7) {
+                                    displayText = displayText.substring(0, 7) + '...';
+                                }
+                            }
+            
+                            eventNameDiv.textContent = displayText;
+                            eventNameDiv.classList.add("event-name");
+                            eventNameDiv.style.backgroundColor = event.color_div;
+
+
+                            cell.appendChild(eventNameDiv);
+
+                            eventNameDiv.addEventListener('click', () => {
+                                openModal(event);
+                            });
+                        }
+                    });
+                }
+                date++;
+                currentWeekday = (currentWeekday + 1) % 7;
             }
-          });
-        }
-        date++;
-        currentWeekday = (currentWeekday + 1) % 7;
+      
+            updateEvents();
+            window.addEventListener('resize', updateEvents);
+          }
+          row.appendChild(cell);
       }
-      row.appendChild(cell);
-    }
-    calendarDates.appendChild(row);
+      calendarDates.appendChild(row);
   }
 }
 
