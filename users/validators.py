@@ -42,10 +42,12 @@ def validate_email(email):
 
 
 def validate_password(password):
-    if not re.match(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&_]{8,}$", password):
-        raise ValidationError(
-            "Пароль должен состоять только из латинских "
-            "букв, цифр и знаков подчеркивания и "
-            "минимум один специальный символ. "
-        )
+    if len(password) < 8:
+        raise ValidationError("Пароль должен быть не менее 8 символов.")
+    if not re.search(r"[A-Za-z]", password):
+        raise ValidationError("Пароль должен содержать буквы (Английского алфавита).")
+    if not re.search(r"\d", password):
+        raise ValidationError("Пароль должен содержать хотя бы одну цифру.")
+    if not re.search(r"[@$!%*#?&]", password):
+        raise ValidationError("Пароль должен содержать хотя бы один специальный символ.")
     return password
