@@ -7,9 +7,11 @@
     <h1 class="text-center mt-5">Новостная лента клуба</h1>
 
     <div class="container mt-5">
+        {% if user.is_superuser %}
         <a href="{% url 'admin:news_news_changelist' %}" title="Добавить новость" target="_blank">
             <button class="btn btn-danger mb-2"><i class="bi bi-plus-circle"></i></button>
         </a>
+        {% endif %}
         <div class="row">
             <div class="col-md-8 offset-md-2">
             {% for new in news %}
