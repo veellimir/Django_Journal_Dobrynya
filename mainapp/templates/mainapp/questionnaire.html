@@ -12,32 +12,46 @@
 
 {% block content %}
 <div class="text-center mt-5">
-    <h1>Анкета спортсмена</h1>
-    <p>Пожалуйста, заполните анкету. Это буквально 2-3 минуты &#128526;</p>
+    {% if not request.user.profile.date_of_birth and not user.is_superuser  %}
+        <h1>Анкета спортсмена</h1>
+        <p>Пожалуйста, заполните анкету. Это буквально 2-3 минуты &#128526;</p>
+    {% else %}
+        <h1>Редактирование профиля</h1>
+    {% endif %}
 </div>
+
+
 <div class="d-flex justify-content-center p-3">
     <form class="wrapper--form-auth" method="post" style="width: 700px;" enctype="multipart/form-data">
         {% csrf_token %}
-        {% for field in form %}
-            <div class="mb-3">
-                <label class="form-label">{{ field.label }}</label>
-                {% if field.help_text %}
-                    <small class="form-text text-danger">{{ field.help_text }}</small>
-                {% endif %}
-                {% if field.name == "participation_competition" %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="{{ field.id_for_label }}_yes" name="{{ field.name }}" value="yes" {% if field.value == "yes" %}checked{% endif %}>
-                        <label class="form-check-label" for="{{ field.id_for_label }}_yes">Да</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" id="{{ field.id_for_label }}_no" name="{{ field.name }}" value="no" {% if field.value == "no" %}checked{% endif %}>
-                        <label class="form-check-label" for="{{ field.id_for_label }}_no">Нет</label>
-                    </div>
-                {% else %}
-                    {{ field }}
-                {% endif %}
-            </div>
-        {% endfor %}
+            {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label">{{ field.label }}</label>
+
+                    {% if page == "edit_admin_profile" and user.is_superuser and field.name == "profile_image" and profile.profile_image.url %}
+                        <div class="form-group mb-3 ">
+                            <img src="{{ profile.profile_image.url }}" class="card-img-top customSizeProfile" alt="Изображение профиля">
+                            <input type="file" class="form-control mt-2" name="profile_image">
+                        </div>
+                    {% elif page == "user_questionnaire" and field.name == "profile_image" and profile.profile_image.url %}
+                        <div class="form-group mb-3 ">
+                            <img src="{{ profile.profile_image.url }}" class="card-img-top customSizeProfile" alt="Изображение профиля">
+                            <input type="file" class="form-control mt-2" name="profile_image">
+                        </div>
+                    {% elif field.name == "participation_competition" %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="{{ field.id_for_label }}_yes" name="{{ field.name }}" value="yes" {% if field.value == "yes" %}checked{% endif %}>
+                            <label class="form-check-label" for="{{ field.id_for_label }}_yes">Да</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="{{ field.id_for_label }}_no" name="{{ field.name }}" value="no" {% if field.value == "no" %}checked{% endif %}>
+                            <label class="form-check-label" for="{{ field.id_for_label }}_no">Нет</label>
+                        </div>
+                    {% else %}
+                        {{ field }}
+                    {% endif %}
+                </div>
+            {% endfor %}
         <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Сохранить">
     </form>
 </div>

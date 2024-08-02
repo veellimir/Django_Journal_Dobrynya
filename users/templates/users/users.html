@@ -7,6 +7,7 @@
     <h2 class="my-4">Список участников клуба</h2>
     <div class="row">
         {% for user in users %}
+            {% if not user.is_superuser %}
             <a href="{% url 'profile' pk=user.pk %}">
                 <div class="col-md-4 mb-4 cursor-pointer">
                     <div class="card h-100">
@@ -36,6 +37,7 @@
                         </div>
                     </div>
                 </a>
+            {% endif %}    
             </div>
         {% endfor %}
     </div>

@@ -8,7 +8,7 @@ def validate_username(username):
         raise ValidationError(
             "Имя пользователя должно быть в нижнем регистре, "
             "длиной от 3 до 15 символов и может содержать только"
-            " Латинские буквы."
+            "буквы (Английского алфавита)."
         )
     return username
 
@@ -49,5 +49,5 @@ def validate_password(password):
     if not re.search(r"\d", password):
         raise ValidationError("Пароль должен содержать хотя бы одну цифру.")
     if not re.search(r"[@$!%*#?&]", password):
-        raise ValidationError("Пароль должен содержать хотя бы один специальный символ.")
+        raise ValidationError("Пароль должен содержать хотя бы один из @$!%*#?& специальных символов.")
     return password

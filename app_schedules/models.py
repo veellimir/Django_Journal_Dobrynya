@@ -1,7 +1,7 @@
 from django.db import models
 from colorfield.fields import ColorField
 
-from mainapp.models import Coach
+from users.models import ProfileAdmin
 
 
 class Event(models.Model):
@@ -16,7 +16,7 @@ class Event(models.Model):
     )
 
     name = models.CharField(max_length=100, verbose_name="Направления тренировки")
-    coaches = models.ManyToManyField(Coach, blank=True, related_name="events", verbose_name="Тренер (ы)")
+    coaches = models.ManyToManyField(ProfileAdmin, blank=True, related_name="events", verbose_name="Тренер (ы)")
     title = models.CharField(max_length=200, verbose_name="Описания тренировки")
 
     start_time = models.TimeField(verbose_name="Начло в")

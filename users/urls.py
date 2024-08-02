@@ -29,7 +29,7 @@ urlpatterns = [
 
     path("questionnaire/", views.user_questionnaire, name="questionnaire"),
     path("all-users/", views.all_users, name="all_users"),
+    path("all-coach/", views.all_coach, name="all_coach"),
     path("user/<int:pk>/", views.profile, name="profile"),
-
-
+    path("edit-admin-profile/", views.edit_admin_profile, name="edit_admin_profile"),
 ]
