@@ -2,13 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
-from django.views.generic import TemplateView
-from django.utils.translation import gettext_lazy
 
 from django.contrib.auth.models import User
 
-from .forms import CustomUserRegisterForm, UserProfileForm
-from .models import Profile
+from .forms import CustomUserRegisterForm, UserProfileForm, AdminProfileForm
+from .models import Profile, ProfileAdmin
 
 
 def user_logout(request):
@@ -73,38 +71,6 @@ def user_register(request):
 
 
 @login_required
-def user_questionnaire(request):
-    page = "questionnaire"
-
-    try:
-        prof = Profile.objects.get(user=request.user)
-    except Profile.DoesNotExist:
-        prof = Profile(user=request.user)
-
-    if request.method == "POST":
-        form = UserProfileForm(request.POST, request.FILES, instance=prof)
-
-        if form.is_valid():
-            prof = form.save(commit=False)
-            prof.user = request.user
-            prof.save()
-
-            messages.success(request, "Анкета успешно заполнена")
-            return redirect("home")
-        else:
-            messages.error(request, "Анкета заполнена некорректно, проверьте правильность заполнение полей")
-    else:
-        form = UserProfileForm(instance=prof)
-
-    context = {
-        "title": "Заполни анкету",
-        "form": form,
-        "page": page
-    }
-    return render(request, "mainapp/questionnaire.html", context)
-
-
-@login_required
 def all_users(request):
     users = User.objects.all()
 
@@ -116,6 +82,17 @@ def all_users(request):
 
 
 @login_required
+def all_coach(request):
+    coaches = ProfileAdmin.objects.all()
+
+    context = {
+        "title": "Тренерский состав",
+        "coaches": coaches,
+    }
+    return render(request, "mainapp/all_coach.html", context)
+
+
+@login_required
 def profile(request, pk):
     prof = get_object_or_404(User, pk=pk)
 
@@ -124,3 +101,65 @@ def profile(request, pk):
         "prof": prof
     }
     return render(request, "users/profile.html", context)
+
+
+@login_required
+def handle_profile(request, profile_models, form_users, page):
+    """
+    Function profile data
+    :param request:
+    :param profile_models:
+    :param form_users:
+    :param page:
+    :return:
+    """
+    try:
+        prof = profile_models.objects.get(user=request.user)
+    except profile_models.DoesNotExist:
+        prof = profile_models(user=request.user)
+
+    if request.method == "POST":
+        form = form_users(request.POST, request.FILES, instance=prof)
+        if form.is_valid():
+            prof = form.save(commit=False)
+            prof.user = request.user
+            prof.save()
+
+            messages.success(request, "Анкета успешно сохранена !")
+            return redirect("home")
+        else:
+            messages.error(request, "Анкета заполнена некорректно, проверьте правильность заполнение полей")
+    else:
+        form = form_users(instance=prof)
+
+    context = {
+        "title": "Профиль",
+        "form": form,
+        "profile": prof,
+        "page": page,
+    }
+    return render(request, "mainapp/questionnaire.html", context)
+
+
+@login_required
+def user_questionnaire(request) -> dict:
+    # TODO: questionnaire users
+
+    return handle_profile(
+        request,
+        profile_models=Profile,
+        form_users=UserProfileForm,
+        page="user_questionnaire"
+    )
+
+
+@login_required
+def edit_admin_profile(request) -> dict:
+    # TODO: questionnaire admin
+
+    return handle_profile(
+        request,
+        profile_models=ProfileAdmin,
+        form_users=AdminProfileForm,
+        page="edit_admin_profile"
+    )

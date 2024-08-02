@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django import forms
 
-from .models import Profile
+from .models import Profile, ProfileAdmin
 from .base_forms import BaseFormUsers
 
 from users.validators import *
@@ -62,6 +62,21 @@ class UserProfileForm(BaseFormUsers):
             "goals_season",
             "participation_competition",
             "wishes"
+        ]
+
+
+class AdminProfileForm(BaseFormUsers):
+    class Meta:
+        model = ProfileAdmin
+        fields = [
+            "profile_image",
+            "name",
+            "surname",
+            "patronymic",
+            "directions",
+            "phone",
+            "telegram",
+            "vk",
         ]
 
 

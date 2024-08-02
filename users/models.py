@@ -1,16 +1,9 @@
 from django.db import models
 
-from django.contrib.auth.models import User
+from .mixins import SocialMixin
 
 
-class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
-    profile_image = models.ImageField(
-        upload_to="profile_images/",
-        blank=True, null=True,
-        verbose_name="Изображения профиля"
-    )
-
+class Profile(SocialMixin, models.Model):
     date_of_birth = models.DateField(
         blank=False,
         null=False,
@@ -18,9 +11,6 @@ class Profile(models.Model):
         verbose_name="Дата рождения"
     )
 
-    phone = models.CharField(max_length=110, blank=True, null=True, verbose_name="Номер телефона")
-    telegram = models.CharField(max_length=100, blank=True, null=True, verbose_name="Телеграм")
-    vk = models.CharField(max_length=100, blank=True, null=True, verbose_name="Вконтакте")
     address = models.TextField(
         blank=False,
         null=False,
@@ -95,3 +85,29 @@ class Profile(models.Model):
         null=True,
         verbose_name="Пожелания"
     )
+
+
+class ProfileAdmin(SocialMixin, models.Model):
+    name = models.CharField(
+        max_length=20, blank=False, null=False,
+        verbose_name="Имя тренера"
+    )
+    surname = models.CharField(
+        max_length=20, blank=False, null=False,
+        verbose_name="Фамилия тренера"
+    )
+    patronymic = models.CharField(
+        max_length=20, blank=False, null=False,
+        verbose_name="Отчество тренера"
+    )
+    directions = models.CharField(
+        max_length=50, blank=False, null=False,
+        verbose_name="Направления"
+    )
+
+    def __str__(self):
+        return f"{self.surname} {self.name} {self.patronymic}"
+
+    class Meta:
+        verbose_name = "тренера"
+        verbose_name_plural = "Тренерский состав"
