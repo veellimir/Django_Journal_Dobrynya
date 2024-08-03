@@ -1,12 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.contrib.auth.models import User
 
 from .forms import CustomUserRegisterForm, UserProfileForm, AdminProfileForm
 from .models import Profile, ProfileAdmin
+
+
+def superuser_required(view_func):
+    # TODO: banning ordinary users
+    def _wrapped_view_func(request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return redirect('home')
+        return view_func(request, *args, **kwargs)
+    return user_passes_test(lambda u: u.is_authenticated)(_wrapped_view_func)
 
 
 def user_logout(request):
@@ -142,7 +151,7 @@ def handle_profile(request, profile_models, form_users, page):
 
 
 @login_required
-def user_questionnaire(request) -> dict:
+def user_questionnaire(request):
     # TODO: questionnaire users
 
     return handle_profile(
@@ -154,7 +163,8 @@ def user_questionnaire(request) -> dict:
 
 
 @login_required
-def edit_admin_profile(request) -> dict:
+@superuser_required
+def edit_admin_profile(request):
     # TODO: questionnaire admin
 
     return handle_profile(
@@ -163,3 +173,5 @@ def edit_admin_profile(request) -> dict:
         form_users=AdminProfileForm,
         page="edit_admin_profile"
     )
+
+

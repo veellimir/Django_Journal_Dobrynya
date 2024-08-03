@@ -89,12 +89,28 @@
               </form>
 
               <!-- Element Profile -->
-              <div>
+              <!-- <div>
                 <a href="{% if user.is_superuser %} {% url 'edit_admin_profile' %} {% else %} {% url 'questionnaire' %} {% endif %}">
                   <img src="{% if user.profile.profile_image %} {{ user.profile.profile_image.url }} {% else %} {% static 'mainapp/images/base_user.png' %} {% endif %}"
                     alt="Изображение профиля"
                     class="rounded-circle profile-image cursor-pointer">
                   </a>
+              </div> -->
+              <div>
+                {% if request.user.is_superuser %}
+  <a href="{% url 'edit_admin_profile' %}">
+    <img src="{% if request.user.profileadmin.profile_image %} {{ request.user.profileadmin.profile_image.url }} {% else %} {% static 'mainapp/images/base_user.png' %} {% endif %}"
+         alt="Изображение профиля"
+         class="rounded-circle profile-image cursor-pointer">
+  </a>
+{% else %}
+  <a href="{% url 'questionnaire' %}">
+    <img src="{% if request.user.profile.profile_image %} {{ request.user.profile.profile_image.url }} {% else %} {% static 'mainapp/images/base_user.png' %} {% endif %}"
+         alt="Изображение профиля"
+         class="rounded-circle profile-image cursor-pointer">
+  </a>
+{% endif %}
+
               </div>
             </div>
           </div>
