@@ -8,16 +8,23 @@
         <div class="col-md-4">
             <div class="card">
                 <img src="{{ prof.profile.profile_image.url }}" class="card-img-top" alt="Изображение пользователя">
-                <div class="card-body text-center">
+                <div class="card-body text-align-left">
                     <h4 class="card-title">{{ prof.username }}</h4>
                     <h5 class="card-title">{{ prof.first_name }} {{ prof.last_name }}</h5>
                     <p class="card-text">Дата рождения: {{ prof.profile.date_of_birth }}</p>
                     <p class="card-text">Адрес: {{ prof.profile.address }}</p>
-                    <p class="card-text">Тел: {{ prof.profile.phone }}</p>
-                    
+                    <p class="card-text">Тел: <a href="tel:{{ prof.profile.phone }}" class="customPhoneLink text-secondary">{{ prof.profile.phone }}</a></p>
+
+
                     {% if prof.profile.telegram %}
-                    <a href="https://t.me/{{ prof.profile.telegram }}" target="_blank">
+                    <a href="{{ prof.profile.telegram }}" target="_blank">
                         <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
+                    </a>
+                    {% endif %}
+
+                    {% if prof.profile.vk %}
+                    <a href="{{ user.profile.vk }}" target="_blank">
+                        <img src="{% static 'mainapp/images/vk.png' %}" alt="ВКонтакте" class="img-fluid icon_social">
                     </a>
                     {% endif %}
                 </div>

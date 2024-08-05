@@ -175,3 +175,5 @@ def edit_admin_profile(request):
     )
 
 
+def personal_data(request):
+    return render(request, "users/personal_data.html")

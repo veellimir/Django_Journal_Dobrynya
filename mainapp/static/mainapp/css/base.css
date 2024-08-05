@@ -40,6 +40,11 @@
   object-fit: contain;
 }
 
+.customPhoneLink:hover {
+  text-decoration: underline;
+  transition: all 0.9s ease;
+}
+
 .cursor-pointer {cursor: pointer;}
 
 a {
@@ -48,8 +53,11 @@ a {
   color: black;
 }
 
-.icon_social {width: 2rem;}
-
+.icon_social {
+  width: 2rem; 
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.icon_social:hover {transform: scale(1.2);}
 
 
 /* ================== SCHEDULES =======================

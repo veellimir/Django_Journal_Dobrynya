@@ -5,7 +5,7 @@ from .models import ProfileAdmin
 
 
 class UsersAdmin(admin.ModelAdmin):
-    list_display =  (
+    list_display = (
         "username",
         "first_name",
         "last_name",

@@ -1,5 +1,7 @@
 {% extends 'mainapp/base.html' %}
 
+{% load static %}
+
 {% block content %}
 <div class="container">
     <h2 class="my-4">Тренеры нашего клуба</h2>
@@ -11,7 +13,19 @@
             <div class="card-body">
               <h5 class="card-title">{{ coach.surname }} {{ coach.name }} {{ coach.patronymic }}</h5>
               <p class="card-text">Квалификация: {{ coach.directions }}</p>
-              <p class="card-text">Телефон для связи: {{ coach.phone }}</p>
+              <p class="card-text">Телефон для связи: <a href="tel:{{ coach.phone }}" class="customPhoneLink text-secondary">{{ coach.phone }}</a></p>
+              
+              {% if coach.telegram %}
+              <a href="{{ coach.telegram }}" target="_blank">
+                  <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
+              </a>
+              {% endif %}
+
+              {% if coach.vk %}
+              <a href="{{ coach.vk }}" target="_blank">
+                  <img src="{% static 'mainapp/images/vk.png' %}" alt="ВКонтакте" class="img-fluid icon_social">
+              </a>
+              {% endif %}
             </div>
           </div>
         </div>
