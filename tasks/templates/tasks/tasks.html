@@ -1,0 +1,64 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <h2 class="my-4 text-center">Мои задания</h2>
+    <hr class="my-4">
+    <div class="row mt-5">
+        <!-- Column for New Tasks -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h3 class="text-center">Новые задачи</h3>
+            <div class="task-list cursor-pointer">
+                {% for task in user_tasks %}
+                    {% if task.status_task == task.NEW_TASK %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ task.title }}</h5>
+                                <p class="card-text">{{ task.description }}</p>
+                                <p class="badge card-text bg-info p-2">{{ task.get_status_task_display }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Column for Tasks in Work -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <h3 class="text-center">В работе</h3>
+            <div class="task-list cursor-pointer">
+                {% for task in user_tasks %}
+                    {% if task.status_task == task.WORK_TASK %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ task.title }}</h5>
+                                <p class="card-text">{{ task.description }}</p>
+                                <p class="badge card-text bg-warning p-2">{{ task.get_status_task_display }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Column for Completed Tasks -->
+        <div class="col-lg-4 col-md-12 mb-4">
+            <h3 class="text-center">Выполненные задачи</h3>
+            <div class="task-list cursor-pointer">
+                {% for task in user_tasks %}
+                    {% if task.status_task == task.END_TASK %}
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ task.title }}</h5>
+                                <p class="card-text">{{ task.description }}</p>
+                                <p class="badge card-text bg-success p-2">{{ task.get_status_task_display }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

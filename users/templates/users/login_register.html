@@ -54,6 +54,13 @@
                         <i class="bi bi-eye"></i>
                     </button>
 
+                    <div class="form-check mt-2">
+                        <input type="checkbox" class="form-check-input" id="agreeTerms" required style="border-radius: 4px black;">
+                        <label class="form-check-label" for="agreeTerms">
+                            Я согласен с <a href="{% url 'personal' %}" target="_blank" class="text-success customPhoneLink">условиями обработки персональных данных <span class="text-danger">*</span></a>
+                        </label>
+                    </div>
+
                 <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Продолжить">
             </form>
 

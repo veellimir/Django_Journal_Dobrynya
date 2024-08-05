@@ -18,21 +18,32 @@
                                     <img src="{{ user.profile.profile_image.url }}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user">
                                 {% else %}
                                     <img src="{% static 'mainapp/images/base_user.png' %}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user">
-                                {% endif %}
+                                {% endif %}<br>
+                                <p class="mt-5">Подробнее...</p>
 
                             </div>
-                            <div class="flex-grow-2">
+                            <div class="flex-grow-4">
                                 <h5 class="card-title">{{ user.username }}</h5>
-                                <p class="card-text"><strong>Имя:</strong> {{ user.first_name }}</p>
-                                <p class="card-text"><strong>Фамилия:</strong> {{ user.last_name }}</p>
-                                <p class="card-text"><strong>Связаться: </strong>
+                                <p class="mb-1"><strong>Имя:</strong> {{ user.first_name }}</p>
+                                <p class="mb-1"><strong>Фамилия:</strong> {{ user.last_name }}</p>
+                                <p class="mb-1"><strong>Позвонить: </strong></p>
+                                {% if user.profile.phone %}
+                                    <p class="mb-1"><a href="tel:{{ user.profile.phone }}" class="customPhoneLink text-secondary">{{ user.profile.phone }}</a></p>
+                                {% endif %}
+                                <p class="mb-1"><strong>Написать: </strong></p>
                                 
                                 {% if user.profile.telegram %}
-                                    <a href="https://t.me/{{ user.profile.telegram }}" target="_blank">
-                                        <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
+                                    <a href="{{ user.profile.telegram }}" target="_blank">
+                                        <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social ">
                                     </a>
                                 {% endif %}
-                                </p>
+                                {% if user.profile.vk %}
+                                <a href="{{ user.profile.vk }}" target="_blank">
+                                    <img src="{% static 'mainapp/images/vk.png' %}" alt="ВКонтакте" class="img-fluid icon_social">
+                                </a>
+                                {% endif %}
+
+                              
                             </div>
                         </div>
                     </div>
