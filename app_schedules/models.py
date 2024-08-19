@@ -2,9 +2,10 @@ from django.db import models
 from colorfield.fields import ColorField
 
 from users.models import ProfileAdmin
+from mainapp.mixins import StrMixin
 
 
-class Event(models.Model):
+class Event(StrMixin, models.Model):
     DAYS_OF_WEEK_CHOICES = (
         ("пн", 'Понедельник'),
         ("вт", 'Вторник'),
@@ -24,9 +25,6 @@ class Event(models.Model):
 
     days_of_week = models.CharField(max_length=50, blank=True, verbose_name="Дни недели на весь год")
     elem_color = ColorField(max_length=50, default="#0d6dfd7f", verbose_name="Цвет в расписании")
-
-    def __str__(self):
-        return self.name
 
     class Meta:
         verbose_name = "тренировки"

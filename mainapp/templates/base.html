@@ -51,15 +51,25 @@
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown0" role="button" data-bs-toggle="dropdown" aria-expanded="false">Клуб</a>
                   <ul class="dropdown-menu" aria-labelledby="navbarDropdown0">
                     <li><a class="dropdown-item" href="{% url 'schedules' %}">Расписания занятий</a></li>
-
+                    
                     {% if user.is_superuser %}
-                        <li><a class="dropdown-item" href="#">Доска заданий</a></li>
+                        <li><a class="dropdown-item" href="{% url 'tasks' %}">Доска заданий
+                          {% if check_tasks_count > 0 %}
+                              <b class="text-danger">{{ check_tasks_count }}</b></a>
+                          {% endif %}
+                        </li>
+                        <li><a class="dropdown-item " href="#">Журнал посещаемости</a></li>
                     {% else %}
-                        <li><a class="dropdown-item" href="{% url 'tasks' %}">Мои задачи</a></li>
+                        <li><a class="dropdown-item" href="{% url 'tasks' %}">Мои задачи
+                          {% if new_tasks_count > 0 %}
+                              <b class="text-danger">{{ new_tasks_count }}</b></a>
+                          {% endif %}
+                        </li>
+                        <li><a class="dropdown-item " href="#">Моя посещаемость</a></li>
                     {% endif %}
 
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item " href="#">Мероприятия</a></li>
+                   
                     <li><a class="dropdown-item " href="{% url 'all_coach' %}">Тренерский состав</a></li>
                   </ul>
                 </li>
@@ -88,7 +98,6 @@
                   <button class="btn btn-outline btn-danger" type="submit">Выход</button>
               </form>
 
-              <!-- Element Profile -->
               <div>
                 {% if request.user.is_superuser %}
                 <a href="{% url 'edit_admin_profile' %}">
@@ -104,6 +113,7 @@
                 </a>
               {% endif %}
               </div>
+              <h3 class="p-2">{{ request.user.profile.points }}</h3>
             </div>
           </div>
         </nav>

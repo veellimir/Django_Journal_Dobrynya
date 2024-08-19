@@ -1,4 +1,4 @@
-{% extends 'mainapp/base.html' %}
+{% extends 'base.html' %}
 
 {% load static %}
 
@@ -24,6 +24,7 @@
                             </div>
                             <div class="flex-grow-4">
                                 <h5 class="card-title">{{ user.username }}</h5>
+                                <p class="mb-1"><strong>Баллы:</strong> {{ user.profile.points }}</p>
                                 <p class="mb-1"><strong>Имя:</strong> {{ user.first_name }}</p>
                                 <p class="mb-1"><strong>Фамилия:</strong> {{ user.last_name }}</p>
                                 <p class="mb-1"><strong>Позвонить: </strong></p>

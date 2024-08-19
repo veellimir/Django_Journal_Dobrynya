@@ -1,6 +1,6 @@
 from django.db import models
 
-from .mixins import SocialMixin
+from mainapp.mixins import SocialMixin
 
 
 class Profile(SocialMixin, models.Model):
@@ -84,6 +84,10 @@ class Profile(SocialMixin, models.Model):
         blank=True,
         null=True,
         verbose_name="Пожелания"
+    )
+    points = models.PositiveIntegerField(
+        default=3,
+        verbose_name="Кол-во баллов профиля"
     )
 
 

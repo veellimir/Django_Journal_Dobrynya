@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from config import (
+from journal_dobrynya.env_config import (
     PROJECT_SECRET_KEY,
     PROJECT_DEBUG,
     PROJECT_EMAIL_HOST_PASSWORD,
@@ -56,6 +56,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'tasks.context_processors.quantity_new_task_user',
+                'tasks.context_processors.quantity_check_task_user',
             ],
         },
     },

@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mt-5">
+        <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 mb-4">
+            <div class="card task-detail-card">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="card-title mb-0">{{ title }}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h5 class="card-subtitle mb-2">Описание задачи</h5>
+                        <p class="card-text">{{ my_task.description }}</p>
+                    </div>
+                    <hr>
+                    <div class="mb-3">
+                        {% if not user.is_superuser %}
+                            <h5 class="card-subtitle mb-2">Инициатор задачи</h5>
+                            <p class="card-text">{{ my_task.initiator.surname }} {{ my_task.initiator.name }} {{ my_task.initiator.patronymic }}</p>
+                        {% else %}
+                            <h5 class="card-subtitle mb-2">Исполнитель задачи</h5>
+                            <p class="card-text">{{ my_task.user.first_name }} {{ my_task.user.last_name }}</p>
+                        {% endif %}
+                    </div>
+                    <p class="card-title">Оценка:
+                        {% if my_task.estimation_task %}
+                            {{ my_task.estimation_task }}
+                        {% elif not my_task.estimation_task and my_task.status_task == 0 %}
+                            по завершению
+                        {% else %}
+                            Тренер не оставил оценку
+                        {% endif %}
+                    </p>
+                    <hr>
+                    <div class="mb-3">
+                        <h5 class="card-subtitle mb-2">Статус задачи</h5>
+                        <span class="badge p-2
+                            {% if my_task.status_task == 0 %} bg-primary
+                            {% elif my_task.status_task == 1 %} bg-warning
+                            {% elif my_task.status_task == 2 %} bg-info
+                            {% elif my_task.status_task == 3 %} bg-success
+                            {% endif %}">
+                            {{ my_task.get_status_task_display }}
+                        </span>
+                    </div>
+                    <div class="mb-3">
+                        <!-- <h5 class="card-subtitle mb-2 text-muted">Дополнительные сведения</h5> -->
+                        <!-- <p class="card-text"><strong>Дата создания:</strong> {{ my_task.created_at|date:"d M Y" }}</p> -->
+                        <!-- <p class="card-text"><strong>Срок выполнения:</strong> {{ my_task.due_date|date:"d M Y" }}</p> -->
+                    </div>
+
+                    <div class="d-flex flex-wrap justify-content-end">
+                        {% if user.is_superuser %}
+
+                            {% if my_task.status_task == 0 or my_task.status_task == 1 %}
+                                <!-- <a href="" class="btn btn-warning btn-sm mr-2">Редактировать</a> -->
+                                <a href="" class="btn btn-danger btn-sm">Удалить</a>
+                            {% elif my_task.status_task == 2 %}
+                                <form method="post" action="{% url 'task_confirm' my_task.id %}">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="estimation_task" class="form-label">Оценка задачи:</label>
+                                        <input type="number" class="form-control" id="estimation_task" name="estimation_task" min="1" max="5" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Подтвердить выполнение</button>
+                                </form>
+                            {% endif %}
+
+                        {% else %}
+                            {% if my_task.status_task == 0 %}
+                                <a href="{% url 'change_task_status' my_task.id 1 %}" class="btn btn-warning btn-sm">Взять задания</a>
+                            {% elif my_task.status_task == 1 %}
+                                <a href="{% url 'change_task_status' my_task.id 2 %}" class="btn btn-info btn-sm mr-2">Отправить на проверку</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

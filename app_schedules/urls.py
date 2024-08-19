@@ -1,9 +1,10 @@
 from django.urls import path
+
+from api import get
 from . import views
-from . import api
 
 urlpatterns = [
     path("schedules/", views.schedules, name="schedules"),
 
-    path('api/events/', api.get_events, name='get_events'),
+    path('api/events/', get.get_events, name='get_events'),
 ]
