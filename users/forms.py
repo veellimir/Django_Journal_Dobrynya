@@ -3,9 +3,9 @@ from django.contrib.auth.models import User
 from django import forms
 
 from .models import Profile, ProfileAdmin
-from .base_forms import BaseFormUsers
+from mainapp.base_forms import BaseFormUsers
 
-from users.validators import *
+from users.validators_auth import *
 
 
 class CustomUserRegisterForm(UserCreationForm, BaseFormUsers):

@@ -1,4 +1,4 @@
-{% extends 'mainapp/base.html' %}
+{% extends 'base.html' %}
 
 {% load static %}
 
@@ -12,6 +12,7 @@
                     <h4 class="card-title">{{ prof.username }}</h4>
                     <h5 class="card-title">{{ prof.first_name }} {{ prof.last_name }}</h5>
                     <p class="card-text">Дата рождения: {{ prof.profile.date_of_birth }}</p>
+                    <p class="card-text">Баллы: {{ prof.profile.points }}</p>
                     <p class="card-text">Адрес: {{ prof.profile.address }}</p>
                     <p class="card-text">Тел: <a href="tel:{{ prof.profile.phone }}" class="customPhoneLink text-secondary">{{ prof.profile.phone }}</a></p>
 
@@ -55,7 +56,7 @@
                     <h4>Цели на сезон</h4>
                     <p>{{ prof.profile.goals_season }}</p>
                     <h4>Участие в соревнованиях</h4>
-                    <p>{{ prof.profile.participation_competition }}</p>
+                    <p>{{ prof.profile.get_participation_competition_display }}</p>
                     <h4>Пожелания</h4>
                     <p>{{ prof.profile.wishes }}</p>
                 </div>

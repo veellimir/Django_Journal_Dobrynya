@@ -98,7 +98,7 @@ def all_coach(request):
         "title": "Тренерский состав",
         "coaches": coaches,
     }
-    return render(request, "mainapp/all_coach.html", context)
+    return render(request, "users/all_coach.html", context)
 
 
 @login_required
@@ -147,7 +147,7 @@ def handle_profile(request, profile_models, form_users, page):
         "profile": prof,
         "page": page,
     }
-    return render(request, "mainapp/questionnaire.html", context)
+    return render(request, "users/questionnaire.html", context)
 
 
 @login_required

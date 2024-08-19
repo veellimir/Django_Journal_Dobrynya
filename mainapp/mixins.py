@@ -16,3 +16,12 @@ class SocialMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class StrMixin:
+    def __str__(self):
+        if hasattr(self, "name"):
+            return self.name
+        elif hasattr(self, "title"):
+            return self.title
+        return super().__str__()

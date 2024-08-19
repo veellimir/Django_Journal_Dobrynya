@@ -1,59 +1,146 @@
-{% extends 'mainapp/base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
-
 <div class="container-fluid">
-    <h2 class="my-4 text-center">Мои задания</h2>
-    <hr class="my-4">
+    <h2 class="my-4 text-center">
+        {% if page == 'user_tasks' %} Мои задания {% else %} Задачи пользователей {% endif %}
+    </h2>
+    {% if user.is_superuser %}
+    <button type="button" class="btn btn-danger mb-2" data-bs-toggle="modal" data-bs-target="#addTaskModal">
+        <i class="bi bi-plus-circle"></i>
+    </button>
+    <div class="modal fade" id="addTaskModal" tabindex="-1" aria-labelledby="addTaskModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTaskModalLabel">Добавить задачу</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addTaskForm" method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            {% for field in form %}
+                                <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                                {{ field }}
+                            {% endfor %}
+                        </div>
+                        
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                        <input type="submit" class="btn btn-primary" form="addTaskForm" value="Сохранить">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    
     <div class="row mt-5">
-        <!-- Column for New Tasks -->
-        <div class="col-lg-4 col-md-6 mb-4">
+        <div class="col-lg-3 col-md-6 mb-4">
             <h3 class="text-center">Новые задачи</h3>
-            <div class="task-list cursor-pointer">
+            <div class="task-list">
                 {% for task in user_tasks %}
                     {% if task.status_task == task.NEW_TASK %}
-                        <div class="card mb-3">
+                        <div class="card mb-3 task-card" data-task-id="{{ task.id }}">
+                           <a href="{% url 'task_details' task.id %}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ task.title }}</h5>
                                 <p class="card-text">{{ task.description }}</p>
-                                <p class="badge card-text bg-info p-2">{{ task.get_status_task_display }}</p>
+                                <p class="card-text">
+                                    {% if not user.is_superuser %}
+                                        Инициатор: {{ task.initiator.surname }} {{ task.initiator.name }} {{ task.initiator.patronymic }}
+                                    {% else %}
+                                        Исполнитель: {{ task.user.first_name }} {{ task.user.last_name }}
+                                    {% endif %}
+                                </p>
+                                <p class="badge card-text bg-primary p-2">{{ task.get_status_task_display }}</p>
                             </div>
+                           </a>
                         </div>
                     {% endif %}
                 {% endfor %}
             </div>
         </div>
 
-        <!-- Column for Tasks in Work -->
-        <div class="col-lg-4 col-md-6 mb-4">
+        <div class="col-lg-3 col-md-6 mb-4">
             <h3 class="text-center">В работе</h3>
-            <div class="task-list cursor-pointer">
+            <div class="task-list">
                 {% for task in user_tasks %}
                     {% if task.status_task == task.WORK_TASK %}
-                        <div class="card mb-3">
+                        <div class="card mb-3 task-card" data-task-id="{{ task.id }}">
+                           <a href="{% url 'task_details' task.id %}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ task.title }}</h5>
                                 <p class="card-text">{{ task.description }}</p>
+                                <p class="card-text">
+                                    {% if not user.is_superuser %}
+                                        Инициатор: {{ task.initiator.surname }} {{ task.initiator.name }} {{ task.initiator.patronymic }}
+                                    {% else %}
+                                        Исполнитель: {{ task.user.first_name }} {{ task.user.last_name }}
+                                    {% endif %}
+                                </p>
                                 <p class="badge card-text bg-warning p-2">{{ task.get_status_task_display }}</p>
                             </div>
+                           </a>
                         </div>
                     {% endif %}
                 {% endfor %}
             </div>
         </div>
 
-        <!-- Column for Completed Tasks -->
-        <div class="col-lg-4 col-md-12 mb-4">
-            <h3 class="text-center">Выполненные задачи</h3>
-            <div class="task-list cursor-pointer">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <h3 class="text-center">На проверке</h3>
+            <div class="task-list">
                 {% for task in user_tasks %}
-                    {% if task.status_task == task.END_TASK %}
-                        <div class="card mb-3">
+                    {% if task.status_task == task.CHECK_TASK %}
+                        <div class="card mb-3 task-card" data-task-id="{{ task.id }}">
+                           <a href="{% url 'task_details' task.id %}">
                             <div class="card-body">
                                 <h5 class="card-title">{{ task.title }}</h5>
                                 <p class="card-text">{{ task.description }}</p>
+                                <p class="card-text">
+                                    {% if not user.is_superuser %}
+                                        Инициатор: {{ task.initiator.surname }} {{ task.initiator.name }} {{ task.initiator.patronymic }}
+                                    {% else %}
+                                        Исполнитель: {{ task.user.first_name }} {{ task.user.last_name }}
+                                    {% endif %}
+                                </p>
+                                <p class="badge card-text bg-info p-2">{{ task.get_status_task_display }}</p>
+                            </div>
+                           </a>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-12 mb-4">
+            <h3 class="text-center">Выполненные задачи</h3>
+            <div class="task-list">
+                {% for task in user_tasks %}
+                    {% if task.status_task == task.END_TASK %}
+                        <div class="card mb-3 task-card" data-task-id="{{ task.id }}">
+                           <a href="{% url 'task_details' task.id %}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ task.title }}</h5>
+                                <p class="card-text">{{ task.description }}</p>
+                                    <p class="card-title">Оценка:
+                                        {% if task.estimation_task %}
+                                            {{ task.estimation_task }}
+                                        {% else %}
+                                            Тренер не оставил оценку
+                                        {% endif %}
+                                    </p>
+                                <p class="card-text">
+                                    {% if not user.is_superuser %}
+                                        Инициатор: {{ task.initiator.surname }} {{ task.initiator.name }} {{ task.initiator.patronymic }}
+                                    {% else %}
+                                        Исполнитель: {{ task.user.first_name }} {{ task.user.last_name }}
+                                    {% endif %}
+                                </p>
                                 <p class="badge card-text bg-success p-2">{{ task.get_status_task_display }}</p>
                             </div>
+                           </a>
                         </div>
                     {% endif %}
                 {% endfor %}
