@@ -1,6 +1,6 @@
 from django.db import models
 
-from mainapp.mixins import StrMixin
+from mainapp.base_mixins import StrMixin
 
 
 class News(StrMixin, models.Model):

@@ -73,7 +73,7 @@ class AdminProfileForm(BaseFormUsers):
             "name",
             "surname",
             "patronymic",
-            "directions",
+            # "directions",
             "phone",
             "telegram",
             "vk",

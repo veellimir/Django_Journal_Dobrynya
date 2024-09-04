@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'news.apps.NewsConfig',
     'tasks.apps.TasksConfig',
     'app_schedules.apps.AppSchedulesConfig',
+    'attendance.apps.AttendanceConfig',
 ]
 
 MIDDLEWARE = [

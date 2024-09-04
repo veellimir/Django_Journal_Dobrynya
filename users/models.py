@@ -1,6 +1,16 @@
 from django.db import models
 
-from mainapp.mixins import SocialMixin
+from mainapp.base_mixins import StrMixin
+from .mixins import SocialMixin
+
+
+
+class TrainingDirections(StrMixin, models.Model):
+    name = models.CharField(max_length=100, verbose_name="Направление тренировки")
+
+    class Meta:
+        verbose_name = "направление тренировки"
+        verbose_name_plural = "Направления тренировок"
 
 
 class Profile(SocialMixin, models.Model):
@@ -104,8 +114,9 @@ class ProfileAdmin(SocialMixin, models.Model):
         max_length=20, blank=False, null=False,
         verbose_name="Отчество тренера"
     )
-    directions = models.CharField(
-        max_length=50, blank=False, null=False,
+    directions = models.ManyToManyField(
+        TrainingDirections,
+        blank=False,
         verbose_name="Направления"
     )
 

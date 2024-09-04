@@ -1,8 +1,8 @@
 from django.db import models
 from colorfield.fields import ColorField
 
-from users.models import ProfileAdmin
-from mainapp.mixins import StrMixin
+from mainapp.base_mixins import StrMixin
+from users.models import ProfileAdmin, TrainingDirections
 
 
 class Event(StrMixin, models.Model):
@@ -16,9 +16,15 @@ class Event(StrMixin, models.Model):
         ("вс", 'Воскресенье'),
     )
 
-    name = models.CharField(max_length=100, verbose_name="Направления тренировки")
+    name = models.OneToOneField(
+        TrainingDirections,
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+        verbose_name="Направление"
+    )
     coaches = models.ManyToManyField(ProfileAdmin, blank=True, related_name="events", verbose_name="Тренер (ы)")
-    title = models.CharField(max_length=200, verbose_name="Описания тренировки")
+    title = models.CharField(max_length=200, verbose_name="Описание тренировки")
 
     start_time = models.TimeField(verbose_name="Начло в")
     end_time = models.TimeField(verbose_name="Конец в")

@@ -12,7 +12,15 @@
             <img src="{{ coach.profile_image.url }}" class="card-img-top" alt="Trainer 1">
             <div class="card-body">
               <h5 class="card-title">{{ coach.surname }} {{ coach.name }} {{ coach.patronymic }}</h5>
-              <p class="card-text">Квалификация: {{ coach.directions }}</p>
+              <p class="card-text">
+                <ul>
+                    {% for direction in coach.directions.all %}
+                        <li>{{ direction.name }}</li>
+                    {% empty %}
+                        Нет направлений
+                    {% endfor %}
+                </ul>
+            </p>
               <p class="card-text">Телефон для связи: <a href="tel:{{ coach.phone }}" class="customPhoneLink text-secondary">{{ coach.phone }}</a></p>
               
               {% if coach.telegram %}
