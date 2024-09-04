@@ -4,54 +4,59 @@
 
 {% block content %}
 <div class="container">
-    <h2 class="my-4">Список участников клуба</h2>
+    <h2 class="my-4 text-center">Список участников клуба</h2>
     <div class="row">
         {% for user in users %}
             {% if not user.is_superuser %}
-            <a href="{% url 'profile' pk=user.pk %}">
-                <div class="col-md-4 mb-4 cursor-pointer">
-                    <div class="card h-100">
-                        <div class="card-body d-flex align-items-center justify-content-around">
-                            <div class="flex-shrink-0">
-                                
+            <div class="col-lg-4 col-md-6 mb-4">
+                <a href="{% url 'profile' pk=user.pk %}" class="text-decoration-none text-dark">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body d-flex">
+                            <div class="flex-shrink-0 text-center">
                                 {% if user.profile.profile_image %}
-                                    <img src="{{ user.profile.profile_image.url }}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user">
+                                    <img src="{{ user.profile.profile_image.url }}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user mb-3">
                                 {% else %}
-                                    <img src="{% static 'mainapp/images/base_user.png' %}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user">
-                                {% endif %}<br>
-                                <p class="mt-5">Подробнее...</p>
-
+                                    <img src="{% static 'mainapp/images/base_user.png' %}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user mb-3">
+                                {% endif %}
+                                <p class="mt-3">Подробнее...</p>
                             </div>
-                            <div class="flex-grow-4">
+                            <div class="flex-grow-1 ms-3">
                                 <h5 class="card-title">{{ user.username }}</h5>
                                 <p class="mb-1"><strong>Баллы:</strong> {{ user.profile.points }}</p>
                                 <p class="mb-1"><strong>Имя:</strong> {{ user.first_name }}</p>
                                 <p class="mb-1"><strong>Фамилия:</strong> {{ user.last_name }}</p>
-                                <p class="mb-1"><strong>Позвонить: </strong></p>
+                                <hr class="my-3">
+                                <p class="mb-1"><strong>Виды направлений:</strong></p>
+                                <p class="mb-3">
+                                    {% for direction in user.profile.directions.all %}
+                                        <span class="badge bg-primary">{{ direction.name }}</span>
+                                    {% empty %}
+                                        Нет направлений
+                                    {% endfor %}
+                                </p>
+                                <hr class="my-3">
+                                <p class="mb-1"><strong>Контакты:</strong></p>
                                 {% if user.profile.phone %}
-                                    <p class="mb-1"><a href="tel:{{ user.profile.phone }}" class="customPhoneLink text-secondary">{{ user.profile.phone }}</a></p>
+                                    <p class="mb-1"><a href="tel:{{ user.profile.phone }}" class="text-secondary">{{ user.profile.phone }}</a></p>
                                 {% endif %}
-                                <p class="mb-1"><strong>Написать: </strong></p>
-                                
-                                {% if user.profile.telegram %}
-                                    <a href="{{ user.profile.telegram }}" target="_blank">
-                                        <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social ">
-                                    </a>
-                                {% endif %}
-                                {% if user.profile.vk %}
-                                <a href="{{ user.profile.vk }}" target="_blank">
-                                    <img src="{% static 'mainapp/images/vk.png' %}" alt="ВКонтакте" class="img-fluid icon_social">
-                                </a>
-                                {% endif %}
-
-                              
+                                <div class="d-flex">
+                                    {% if user.profile.telegram %}
+                                        <a href="{{ user.profile.telegram }}" target="_blank" class="me-2">
+                                            <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
+                                        </a>
+                                    {% endif %}
+                                    {% if user.profile.vk %}
+                                        <a href="{{ user.profile.vk }}" target="_blank">
+                                            <img src="{% static 'mainapp/images/vk.png' %}" alt="ВКонтакте" class="img-fluid icon_social">
+                                        </a>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </a>
-            {% endif %}    
             </div>
+            {% endif %}
         {% endfor %}
     </div>
-</div>
 {% endblock %}

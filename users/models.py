@@ -14,6 +14,11 @@ class TrainingDirections(StrMixin, models.Model):
 
 
 class Profile(SocialMixin, models.Model):
+    directions = models.ManyToManyField(
+        TrainingDirections,
+        blank=False,
+        verbose_name="Направления"
+    )
     date_of_birth = models.DateField(
         blank=False,
         null=False,
@@ -99,6 +104,13 @@ class Profile(SocialMixin, models.Model):
         default=3,
         verbose_name="Кол-во баллов профиля"
     )
+
+    def __str__(self):
+        return f"{self.user.get_full_name()} "
+
+    class Meta:
+        verbose_name = "дружинника"
+        verbose_name_plural = "Вся дружина"
 
 
 class ProfileAdmin(SocialMixin, models.Model):

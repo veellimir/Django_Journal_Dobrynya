@@ -4,41 +4,46 @@
 
 {% block content %}
 <div class="container">
-    <h2 class="my-4">Тренеры нашего клуба</h2>
+    <h2 class="my-4 text-center">Тренеры нашего клуба</h2>
     <div class="row">
-      {% for coach in coaches %}  
-        <div class="col-md-4">
-          <div class="card">
-            <img src="{{ coach.profile_image.url }}" class="card-img-top" alt="Trainer 1">
-            <div class="card-body">
-              <h5 class="card-title">{{ coach.surname }} {{ coach.name }} {{ coach.patronymic }}</h5>
-              <p class="card-text">
-                <ul>
-                    {% for direction in coach.directions.all %}
-                        <li>{{ direction.name }}</li>
-                    {% empty %}
-                        Нет направлений
-                    {% endfor %}
-                </ul>
-            </p>
-              <p class="card-text">Телефон для связи: <a href="tel:{{ coach.phone }}" class="customPhoneLink text-secondary">{{ coach.phone }}</a></p>
-              
-              {% if coach.telegram %}
-              <a href="{{ coach.telegram }}" target="_blank">
-                  <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
-              </a>
-              {% endif %}
-
-              {% if coach.vk %}
-              <a href="{{ coach.vk }}" target="_blank">
-                  <img src="{% static 'mainapp/images/vk.png' %}" alt="ВКонтакте" class="img-fluid icon_social">
-              </a>
-              {% endif %}
+        {% for coach in coaches %}  
+        <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ coach.profile_image.url }}" class="card-img-top rounded-top" alt="Тренер {{ coach.name }}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-center">{{ coach.surname }} {{ coach.name }} {{ coach.patronymic }}</h5>
+                    <p class="card-text flex-grow-1">
+                        <strong>Направления:</strong>
+                          {% for direction in coach.directions.all %}
+                              <span class="badge bg-primary">{{ direction.name }}</span>
+                          {% empty %}
+                              Нет направлений
+                          {% endfor %}
+                    </p>
+                    <hr class="my-3">
+                    <p class="card-text mb-4">
+                        <strong>Телефон для связи:</strong> 
+                        <a href="tel:{{ coach.phone }}" class="text-primary">{{ coach.phone }}</a>
+                    </p>
+                    <div class="d-flex mb-3">
+                        {% if coach.telegram %}
+                          <a href="{{ coach.telegram }}" target="_blank" class="me-2">
+                              <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
+                          </a>
+                        {% endif %}
+                        {% if coach.vk %}
+                          <a href="{{ coach.vk }}" target="_blank">
+                              <img src="{% static 'mainapp/images/vk.png' %}" alt="ВКонтакте" class="img-fluid icon_social">
+                          </a>
+                        {% endif %}
+                    </div>
+                    <!-- <a href="#" class="btn btn-primary btn-block mt-auto">
+                        <i class="fas fa-info-circle me-2"></i> Подробнее
+                    </a> -->
+                </div>
             </div>
-          </div>
         </div>
-    {% endfor %}
+        {% endfor %}
     </div>
 </div>
-  
 {% endblock %}
