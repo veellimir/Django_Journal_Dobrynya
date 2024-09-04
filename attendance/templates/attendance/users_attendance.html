@@ -1,1 +1,44 @@
 {% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4 text-center">{{ title }}</h2>
+        {% if selected_direction %}
+            <h3 class="my-4 mt-5 text-center">Профили направления: {{ selected_direction.name }}</h3>
+        {% endif %}
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <h3>Выберите направление:</h3>
+            <div class="list-group">
+                {% for direction in directions %}
+                    <a href="?direction={{ direction.pk }}" class="list-group-item list-group-item-action{% if selected_direction and selected_direction.pk == direction.pk %} bg-danger text-white {% endif %}">
+                        {{ direction.name }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            {% if selected_direction %}
+                <div class="row">
+                    {% for profile in profiles %}
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <img src="{{ profile.profile_image.url }}" class="card-img-top" alt="Профиль {{ profile.name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ profile.name }}</h5>
+                                    <p class="card-text">
+                                        <strong>Дата рождения:</strong> {{ profile.date_of_birth }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-center">Нет профилей для данного направления.</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

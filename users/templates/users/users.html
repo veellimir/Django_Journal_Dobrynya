@@ -29,7 +29,7 @@
                                 <p class="mb-1"><strong>Виды направлений:</strong></p>
                                 <p class="mb-3">
                                     {% for direction in user.profile.directions.all %}
-                                        <span class="badge bg-primary">{{ direction.name }}</span>
+                                        <span class="badge bg-danger">{{ direction.name }}</span>
                                     {% empty %}
                                         Нет направлений
                                     {% endfor %}

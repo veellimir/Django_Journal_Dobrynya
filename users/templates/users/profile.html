@@ -16,7 +16,7 @@
                     <hr class="my-4">
                     <p class="mb-1"><strong>Виды направлений:</strong> <br> 
                         {% for direction in prof.profile.directions.all %}
-                        - {{ direction.name }} <br>
+                        - <span class="badge bg-danger">{{ direction.name }}</span>
                     {% empty %}
                         Нет направлений
                     {% endfor %}</p>

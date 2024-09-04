@@ -15,7 +15,7 @@
                     <p class="card-text flex-grow-1">
                         <strong>Направления:</strong>
                           {% for direction in coach.directions.all %}
-                              <span class="badge bg-primary">{{ direction.name }}</span>
+                              <span class="badge bg-danger">{{ direction.name }}</span>
                           {% empty %}
                               Нет направлений
                           {% endfor %}
