@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from mainapp.mixins import StrMixin
+from mainapp.base_mixins import StrMixin
 from users.models import ProfileAdmin
 
 

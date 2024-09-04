@@ -11,6 +11,7 @@ from .models import Profile, ProfileAdmin
 
 def superuser_required(view_func):
     # TODO: banning ordinary users
+
     def _wrapped_view_func(request, *args, **kwargs):
         if not request.user.is_superuser:
             return redirect('home')

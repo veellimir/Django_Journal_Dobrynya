@@ -11,6 +11,7 @@ urlpatterns = [
     path("", include("app_schedules.urls")),
     path("", include("tasks.urls")),
     path("", include("news.urls")),
+    path("", include("attendance.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

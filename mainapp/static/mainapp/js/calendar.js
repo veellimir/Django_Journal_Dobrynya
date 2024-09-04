@@ -71,31 +71,14 @@ function generateCalendar(month, year, events) {
 
           } else {
               let eventDiv = document.createElement("div");
+              
               eventDiv.textContent = date;
               cell.appendChild(eventDiv);
 
               let currentDayOfWeek = weekdays[currentWeekday];
               cell.setAttribute("data-weekday", currentDayOfWeek);
 
-              // if (events && events.length > 0) {
-              //     events.forEach((event) => {
-              //         if (event.days_of_week.includes(currentDayOfWeek.toLowerCase())) {
-              //             let eventNameDiv = document.createElement("div");
 
-              //             eventNameDiv.textContent = event.name;
-              //             eventNameDiv.classList.add("event-name");
-              //             eventNameDiv.style.backgroundColor = event.color_div;
-              //             eventNameDiv.style.fontSize = "calc(15px + 0.5vw)%"
-              //             cell.appendChild(eventNameDiv);
-
-              //             eventNameDiv.addEventListener('click', () => {
-              //                 openModal(event);
-              //             });
-              //         }
-              //     });
-              // }
-              // date++;
-              // currentWeekday = (currentWeekday + 1) % 7;
               function updateEvents() {
                 if (events && events.length > 0) {
                     events.forEach((event) => {

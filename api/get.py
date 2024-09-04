@@ -9,7 +9,7 @@ def get_events(request):
     events = Event.objects.all()
     events_list = [
         {
-            "name": event.name,
+            "name": event.name.name if event.name else None,
             "title": event.title,
             "teacher": [
                 {

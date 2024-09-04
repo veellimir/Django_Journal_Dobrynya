@@ -58,7 +58,7 @@
                               <b class="text-danger">{{ check_tasks_count }}</b></a>
                           {% endif %}
                         </li>
-                        <li><a class="dropdown-item " href="#">Журнал посещаемости</a></li>
+                        <li><a class="dropdown-item " href="{% url 'users_attendance' %}">Журнал посещаемости</a></li>
                     {% else %}
                         <li><a class="dropdown-item" href="{% url 'tasks' %}">Мои задачи
                           {% if new_tasks_count > 0 %}
