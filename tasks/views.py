@@ -93,3 +93,12 @@ def confirm_execution_task(request, task_id):
                 messages.warning(request, "Задача подтверждена, но оценка задачи не установлена")
 
         return redirect("tasks")
+
+
+@login_required
+def delete_task(request, task_id):
+    task = get_object_or_404(TaskUser, id=task_id)
+
+    task.delete()
+    messages.success(request, f"Задача {task.title} удалена" )
+    return redirect("tasks")

@@ -55,7 +55,7 @@
 
                             {% if my_task.status_task == 0 or my_task.status_task == 1 %}
                                 <!-- <a href="" class="btn btn-warning btn-sm mr-2">Редактировать</a> -->
-                                <a href="" class="btn btn-danger btn-sm">Удалить</a>
+                                <a href="{% url 'delete_task' my_task.id %}" class="btn btn-danger btn-sm">Удалить</a>
                             {% elif my_task.status_task == 2 %}
                                 <form method="post" action="{% url 'task_confirm' my_task.id %}">
                                     {% csrf_token %}

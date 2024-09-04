@@ -7,9 +7,9 @@
 <main>
   <div>
     <div class="container-fluid mt-5">
-      <div class="row justify-content-center">
+      <div class="row justify-content-center customRowMedia">
         <div class="col-lg-8">
-          <div class="calendar">
+          <div class="calendar customCalendarMedia">
             <div class="calendar-header bg-danger">
               <button class="btn btn-outline-secondary bg-dark previousMonth" >&lt;</button>
               <h2 id="month-year"></h2>
@@ -63,6 +63,10 @@
     </div>
   </div>
 </main>
+
+<style>
+ 
+</style>
 
   <script type="module" src="{% static 'mainapp/js/calendar.js' %}"></script>
 {% endblock %}

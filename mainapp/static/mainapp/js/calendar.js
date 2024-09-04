@@ -83,14 +83,8 @@ function generateCalendar(month, year, events) {
                 if (events && events.length > 0) {
                     events.forEach((event) => {
                         if (event.days_of_week.includes(currentDayOfWeek.toLowerCase())) {
-                            let eventNameDiv = document.createElement("div");
-                            let displayText = event.name;
-            
-                            if (window.innerWidth < 1024) {
-                                if (displayText.length > 7) {
-                                    displayText = displayText.substring(0, 7) + '...';
-                                }
-                            }
+                            let eventNameDiv = document.createElement("div"),
+                                displayText = event.name;
             
                             eventNameDiv.textContent = displayText;
                             eventNameDiv.classList.add("event-name");
@@ -110,7 +104,6 @@ function generateCalendar(month, year, events) {
             }
       
             updateEvents();
-            window.addEventListener('resize', updateEvents);
           }
           row.appendChild(cell);
       }

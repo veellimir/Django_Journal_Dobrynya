@@ -204,3 +204,15 @@ a {
 }
 /* ================== END MODAL SCHEDULES =======================
 =================================================================*/
+
+
+
+
+
+/* ================== BLOCK MEDIA CALENDAR =======================
+=================================================================*/
+@media (max-width: 810px) {
+  .customCalendarMedia {min-width: 810px !important;}
+  .customRowMedia {overflow-x: scroll !important;}
+
+}
