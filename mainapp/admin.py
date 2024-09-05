@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from app_schedules.models import Event
 from app_schedules.forms import EventForm
 from tasks.models import TaskUser
-from users.models import ProfileAdmin, TrainingDirections
+from users.models import ProfileAdmin, Profile, TrainingDirections
 from news.models import News
 
 
@@ -28,6 +28,7 @@ class EventAdmin(admin.ModelAdmin):
 admin.site.unregister(User)
 
 admin.site.register(User, UsersAdmin)
+admin.site.register(Profile)
 admin.site.register(ProfileAdmin)
 admin.site.register(TrainingDirections)
 

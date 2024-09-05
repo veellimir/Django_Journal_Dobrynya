@@ -13,10 +13,18 @@
                     <h5 class="card-title">{{ prof.first_name }} {{ prof.last_name }}</h5>
                     <p class="card-text">Дата рождения: {{ prof.profile.date_of_birth }}</p>
                     <p class="card-text">Баллы: {{ prof.profile.points }}</p>
+                    <hr class="my-4">
+                    <p class="mb-1"><strong>Виды направлений:</strong> <br> 
+                        {% for direction in prof.profile.directions.all %}
+                        - <span class="badge bg-danger">{{ direction.name }}</span>
+                    {% empty %}
+                        Нет направлений
+                    {% endfor %}</p>
+                    <hr class="my-4">
                     <p class="card-text">Адрес: {{ prof.profile.address }}</p>
                     <p class="card-text">Тел: <a href="tel:{{ prof.profile.phone }}" class="customPhoneLink text-secondary">{{ prof.profile.phone }}</a></p>
-
-
+                   
+                    <hr class="my-4">
                     {% if prof.profile.telegram %}
                     <a href="{{ prof.profile.telegram }}" target="_blank">
                         <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">

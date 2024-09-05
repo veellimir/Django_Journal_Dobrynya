@@ -1,9 +1,6 @@
 from django.urls import path
-
-from .views import *
+from .views import TrainingDirectionsListView
 
 urlpatterns = [
-    path("attendance/", InfoAttendance.as_view(), name="users_attendance"),
-
-
+    path('training-directions/', TrainingDirectionsListView.as_view(), name='training_directions_list'),
 ]

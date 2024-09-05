@@ -1,7 +1,14 @@
 __pycache__/
 .idea
 venv
+
 .env
+.env_test
+.env_test_server
 .env_prod
+
 /media
+
+fake_users.txt
+data_db.txt
 db.sqlite3

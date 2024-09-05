@@ -53,12 +53,12 @@
                     <li><a class="dropdown-item" href="{% url 'schedules' %}">Расписания занятий</a></li>
                     
                     {% if user.is_superuser %}
-                        <li><a class="dropdown-item" href="{% url 'tasks' %}">Доска заданий
+                        <li><a class="dropdown-item" href="{% url 'tasks' %}">Доска домашних заданий
                           {% if check_tasks_count > 0 %}
                               <b class="text-danger">{{ check_tasks_count }}</b></a>
                           {% endif %}
                         </li>
-                        <li><a class="dropdown-item " href="{% url 'users_attendance' %}">Журнал посещаемости</a></li>
+                        <li><a class="dropdown-item " href="{% url 'training_directions_list' %}">Журнал посещаемости</a></li>
                     {% else %}
                         <li><a class="dropdown-item" href="{% url 'tasks' %}">Мои задачи
                           {% if new_tasks_count > 0 %}
@@ -71,6 +71,9 @@
                     <li><hr class="dropdown-divider"></li>
                    
                     <li><a class="dropdown-item " href="{% url 'all_coach' %}">Тренерский состав</a></li>
+                    <li class="dropdown-item">
+                      <a href="{% url 'all_users' %}" tabindex="-1" aria-disabled="true">Дружина</a>
+                    </li>
                   </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -83,9 +86,6 @@
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item " href="#">Something else here</a></li>
                   </ul>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="{% url 'all_users' %}" tabindex="-1" aria-disabled="true">Дружина</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Статистика</a>

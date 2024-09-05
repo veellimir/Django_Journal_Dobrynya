@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+   
+    <h2 class="my-4 text-center">{{ title }}</h2>
+    <div class="row">
+       
+        {% for profile in profiles %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ profile.user.first_name }} {{ profile.user.last_name }}</h5>
+                    <p class="card-text">Дата рождения: {{ profile.date_of_birth }}</p>
+                    <!-- Добавьте дополнительные поля профиля, если нужно -->
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
