@@ -59,6 +59,12 @@ a {
 }
 .icon_social:hover {transform: scale(1.2);}
 
+.customAttendanceCheckbox {
+  height: 50px;
+  width: 50px;
+  vertical-align: middle;
+}
+
 
 /* ================== SCHEDULES =======================
 =======================================================*/

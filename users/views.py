@@ -4,10 +4,9 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 from django.contrib.auth.models import User
-from setuptools.extern import names
 
 from .forms import CustomUserRegisterForm, UserProfileForm, AdminProfileForm
-from .models import Profile, ProfileAdmin, TrainingDirections
+from .models import Profile, ProfileAdmin
 
 
 def superuser_required(view_func):
