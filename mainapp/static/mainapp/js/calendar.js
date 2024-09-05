@@ -84,11 +84,11 @@ function generateCalendar(month, year, events) {
                     events.forEach((event) => {
                         if (event.days_of_week.includes(currentDayOfWeek.toLowerCase())) {
                             let eventNameDiv = document.createElement("div"),
-                                displayText = event.name;
+                                displayText = event.training_direction_name;
             
                             eventNameDiv.textContent = displayText;
                             eventNameDiv.classList.add("event-name");
-                            eventNameDiv.style.backgroundColor = event.color_div;
+                            eventNameDiv.style.backgroundColor = event.elem_color;
 
 
                             cell.appendChild(eventNameDiv);
@@ -135,7 +135,7 @@ function openModal(event) {
     modalTeacher.textContent = `Преподаватели: ${coaches}, ${lastCoach}`;
 }
 
-  modalName.textContent = event.name;
+  modalName.textContent = event.training_direction_name;
   modalTitle.textContent = `Описания: ${event.title}`;
   modalStartTime.textContent = `Время начало : ${event.start_time}`;
   modalEndTime.textContent = `Конец в : ${event.end_time}`;

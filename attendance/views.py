@@ -44,12 +44,11 @@ class TrainingDirectionsListView(ListView):
             return redirect('training_directions_list')
 
         direction = get_object_or_404(TrainingDirections, pk=selected_direction_id)
-        today = timezone.now().date()  # Текущая дата
+        today = timezone.now().date()
 
         profiles = Profile.objects.filter(directions=direction)
 
         for profile in profiles:
-            # Проверка, если отметка за сегодня уже существует
             attendance_today = UsersAttendance.objects.filter(
                 profile=profile, direction=direction, date=today
             ).exists()
@@ -57,10 +56,8 @@ class TrainingDirectionsListView(ListView):
             if attendance_today:
                 continue
 
-            # Получаем значение из чекбокса
-            is_present = bool(request.POST.get(f'attendance_{profile.id}'))
+            is_present = bool(request.POST.get(f"attendance_{profile.id}"))
 
-            # Создаем новую запись о присутствии
             UsersAttendance.objects.create(
                 profile=profile,
                 direction=direction,
@@ -69,4 +66,4 @@ class TrainingDirectionsListView(ListView):
             )
 
         messages.success(request, "Отметки успешно сохранены")
-        return redirect('training_directions_list')
+        return redirect("training_directions_list")

@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'colorfield',
+    'rest_framework',
 
     'mainapp.apps.MainappConfig',
     'users.apps.UsersConfig',
@@ -33,6 +34,12 @@ INSTALLED_APPS = [
     'app_schedules.apps.AppSchedulesConfig',
     'attendance.apps.AttendanceConfig',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
