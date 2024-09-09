@@ -2,6 +2,8 @@ __pycache__/
 .idea
 venv
 
+/management
+
 .env
 .env_test
 .env_test_server

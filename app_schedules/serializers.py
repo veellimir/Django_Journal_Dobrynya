@@ -1,12 +1,7 @@
 from rest_framework import serializers
+
 from app_schedules.models import Event
-from users.models import ProfileAdmin
-
-
-class ProfileAdminSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ProfileAdmin
-        fields = ["id", 'name', "surname", "patronymic"]
+from users.serializers import ProfileAdminSerializer
 
 
 class EventSerializer(serializers.ModelSerializer):
