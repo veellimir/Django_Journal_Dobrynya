@@ -25,6 +25,7 @@ def tasks(request):
 
             task.save()
             messages.success(request, f"Задача успешно создана")
+            return redirect("tasks")
         else:
             messages.error(request, "Что-то пошло не так ")
     else:

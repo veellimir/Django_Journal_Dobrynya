@@ -20,9 +20,6 @@
             {% if selected_direction %}
                 <h3 class="my-4 mt-5 text-center">Профили направления: {{ selected_direction.name }}</h3>
                 
-                {% if attendance_locked %}
-                    <p class="alert alert-info text-center">Отметка для этого направления уже была сделана сегодня и будет доступна на следующем занятии.</p>
-                {% elif not attendance_locked %}
                 <form method="post">
                     {% csrf_token %}
                     
@@ -40,14 +37,14 @@
                                 <td>
                                     <div class="d-flex align-items-center">
                                         <img src="{{ profile.profile_image.url }}" alt="Профиль {{ profile.name }}" class="rounded-circle me-3" style="width: 40px; height: 40px;">
-                                       
                                     </div>
                                 </td>
                                 <td>
                                     <span>{{ profile.user.get_full_name }}</span>
                                 </td>
                                 <td>
-                                    <input type="checkbox" name="attendance_{{ profile.id }}" class="form-check-input customAttendanceCheckbox" {% if profile.id in present_profiles %} checked {% endif %}>
+                                    <input type="checkbox" name="attendance_{{ profile.id }}" class="form-check-input customAttendanceCheckbox"
+                                        {% if profile.id in present_profiles %} checked {% endif %}>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -58,10 +55,10 @@
                         <input type="submit" class="btn btn-danger" value="Сохранить">
                     </div>
                 </form>
+
+            {% else %}
+                <h3 class="my-4 mt-5 text-center">Пожалуйста, выберите направление.</h3>
             {% endif %}
-        {% else %}
-        <h3 class="my-4 mt-5 text-center">Пожалуйста, выберите направление.</h3>
-        {% endif %}
         </div>
     </div>
 </div>

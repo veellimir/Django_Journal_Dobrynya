@@ -7,7 +7,8 @@ from django.contrib import messages
 
 from .models import TrainingDirections, UsersAttendance, Profile
 
-@method_decorator(login_required, name='dispatch')
+
+@method_decorator(login_required, name="dispatch")
 class TrainingDirectionsListView(ListView):
     model = TrainingDirections
     template_name = "attendance/users_attendance.html"
@@ -17,12 +18,12 @@ class TrainingDirectionsListView(ListView):
         context = super().get_context_data(**kwargs)
         context["title"] = "Журнал Посещаемости"
 
-        selected_direction_id = self.request.GET.get('direction')
+        selected_direction_id = self.request.GET.get("direction")
         if selected_direction_id:
             direction = get_object_or_404(TrainingDirections, pk=selected_direction_id)
 
-            context['selected_direction'] = direction
-            context['profiles'] = Profile.objects.filter(directions=direction)
+            context["selected_direction"] = direction
+            context["profiles"] = Profile.objects.filter(directions=direction)
 
             today = timezone.now().date()
 
@@ -31,42 +32,41 @@ class TrainingDirectionsListView(ListView):
                 date=today
             ).exists()
 
-            context['attendance_locked'] = attendance_today
+            context["attendance_locked"] = attendance_today
+
+            present_profiles = UsersAttendance.objects.filter(
+                direction=direction,
+                date=today,
+                is_present=True
+            ).values_list("profile__id", flat=True)
+            context["present_profiles"] = present_profiles
         else:
-            context['profiles'] = Profile.objects.none()
+            context["profiles"] = Profile.objects.none()
+            context["present_profiles"] = []
 
         return context
 
     def post(self, request, *args, **kwargs):
-        selected_direction_id = request.GET.get('direction')
+        selected_direction_id = request.GET.get("direction")
 
         if not selected_direction_id:
-            return redirect('training_directions_list')
+            return redirect("training_directions_list")
 
         direction = get_object_or_404(TrainingDirections, pk=selected_direction_id)
-        today = timezone.now().date()  # Текущая дата
+        today = timezone.now().date()
 
         profiles = Profile.objects.filter(directions=direction)
 
         for profile in profiles:
-            # Проверка, если отметка за сегодня уже существует
-            attendance_today = UsersAttendance.objects.filter(
-                profile=profile, direction=direction, date=today
-            ).exists()
+            is_present = bool(request.POST.get(f"attendance_{profile.id}"))
 
-            if attendance_today:
-                continue
-
-            # Получаем значение из чекбокса
-            is_present = bool(request.POST.get(f'attendance_{profile.id}'))
-
-            # Создаем новую запись о присутствии
-            UsersAttendance.objects.create(
+            attendance, created = UsersAttendance.objects.get_or_create(
                 profile=profile,
                 direction=direction,
-                date=today,
-                is_present=is_present
+                date=today
             )
+            attendance.is_present = is_present
+            attendance.save()
 
-        messages.success(request, "Отметки успешно сохранены")
-        return redirect('training_directions_list')
+        messages.success(request, "Отметки успешно обновлены")
+        return redirect("training_directions_list")
