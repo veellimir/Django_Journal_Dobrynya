@@ -15,8 +15,10 @@ class AttendanceSerializer(serializers.ModelSerializer):
             "is_present",
         ]
 
+
     def get_training_direction_name(self, obj):
         return obj.direction.name if obj.direction else None
+
 
     def get_profile_surname(self, obj):
         user = obj.profile.user if obj.profile else None

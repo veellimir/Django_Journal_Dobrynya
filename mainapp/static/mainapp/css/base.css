@@ -213,6 +213,29 @@ a {
 
 
 
+/* ================== ICON LIKE NEWS =======================
+=================================================================*/
+.icon-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px; 
+  transition: color 1.3s, transform 0.3s;
+  padding: 0;
+}
+
+.liked {color: #1E90FF;}
+
+.icon-button i {color: #dc3545;}
+
+.icon-button:hover i {
+  color: #007BFF;
+  transform: scale(1.2);
+}
+/* ================== END ICON LIKE NEWS =======================
+=================================================================*/
+
+
 
 
 /* ================== BLOCK MEDIA CALENDAR =======================

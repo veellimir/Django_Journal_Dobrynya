@@ -153,19 +153,14 @@ function openModal(event, date) {
               formattedDate = String(date).padStart(2, '0'),
               selectCurrentDate = `${currentYear}-${formattedMonth}-${formattedDate}`;
 
-        console.log("Attendance date:", attendanceDateString);
-        console.log('Formatted current date:', selectCurrentDate);
-
         return attendanceDateString === selectCurrentDate && att.training_direction_name === event.training_direction_name;
     });
 
-    console.log("Matching attendees:", matchingAttendees);
+    const participantInfo = matchingAttendees.length > 0
+    ? matchingAttendees.map(att => `${att.profile_surname} ${att.is_present ? '✅' : '❌'}`).join("<br> ")
+    : "Нет данных о посещении";
 
-    const participantNames = matchingAttendees.length > 0
-        ? matchingAttendees.map(att => att.profile_surname).join(", ")
-        : "Нет данных о посещении";
-
-    modalProfileUser.textContent = `Участники: ${participantNames}`;
+    modalProfileUser.innerHTML = `Посещаемость участников: <hr> ${participantInfo}`;
     modal.style.display = "block";
 }
 

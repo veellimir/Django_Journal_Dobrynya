@@ -3,6 +3,9 @@
 {% load static %}
 
 {% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+
 <main>
     <h1 class="text-center mt-5">Новостная лента клуба</h1>
 
@@ -14,20 +17,60 @@
         {% endif %}
         <div class="row">
             <div class="col-md-8 offset-md-2">
-            {% for new in news %}
-                <div class="news-feed mb-5">
-                    <div class="card">
-                        <p class="m-3">{{ new.created }}</p>
-                        <div class="card-body">
-                            <img src="{{ new.image_news.url }}" class="card-img-top" alt="Placeholder Image">
-                            <h5 class="card-title pt-2">{{ new.title }}</h5>
-                            <p class="card-text">{{ new.description }}</p>
+                {% for new in news %}
+                    <div class="news-feed mb-5">
+                        <div class="card">
+                            <p class="m-3">{{ new.created }}</p>
+                            <div class="card-body">
+                                <img src="{{ new.image_news.url }}" class="card-img-top" alt="Image" style="max-height: 500px; object-fit: cover;">
+                                <h5 class="card-title pt-2">{{ new.title }}</h5>
+                                <p class="card-text">{{ new.description }}</p>
+                            </div>
+                            <form action="{% url 'like_news' new.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="icon-button m-2">
+                                    {% if new.id in user_likes %}
+                                        <i class="fa-solid fa-thumbs-up liked"></i>
+                                    {% else %}
+                                        <i class="fa-regular fa-thumbs-up"></i>
+                                    {% endif %}
+                                </button>
+                                <span class="text-danger font-weight-bold cursor-pointer" data-bs-toggle="modal" data-bs-target="#likesModal-{{ new.id }}">
+                                    {{ new.total_like }} Любо
+                                </span>
+                            </form>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
+
+                    <div class="modal fade" id="likesModal-{{ new.id }}" tabindex="-1" aria-labelledby="likesModalLabel-{{ new.id }}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="likesModalLabel-{{ new.id }}">Понравилось пользователям</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        {% for like in new.user_likes %}
+                                        <div class="col-12 col-md-5">
+                                            <div class="card text-center">
+                                                <div class="card-body">
+                                                    <p class="card-text  fs-6">{{ like.user.get_full_name }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
-</div>
 </main>
 {% endblock %}

@@ -17,7 +17,6 @@
     <title>{{ title }}</title>
 </head>
 <body>
-    <!-- Block messages -->
     <div class="wrapper--alert-alert">
         <div class="alert-content">
        {% if messages %}
@@ -31,7 +30,6 @@
         {% endif %}
         </div>
     </div>
-    <!-- End messages -->
 
     {% if user.is_authenticated %}
     <header>
@@ -76,7 +74,7 @@
                     </li>
                   </ul>
                 </li>
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Направления
                   </a>
@@ -86,10 +84,10 @@
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item " href="#">Something else here</a></li>
                   </ul>
-                </li>
-                <li class="nav-item">
+                </li> -->
+                <!-- <li class="nav-item">
                   <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Статистика</a>
-                </li>
+                </li> -->
               </ul>
               </form>
               {% endif %}
