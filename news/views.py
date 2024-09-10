@@ -11,7 +11,7 @@ def home(request):
     user_likes = LikeNews.objects.filter(user=request.user).values_list("news_id", flat=True)
 
     for news_item in news:
-        news_item.user_likes = LikeNews.objects.filter(news=news_item).select_related('user')
+        news_item.user_likes = LikeNews.objects.filter(news=news_item).select_related("user")
 
     context = {
         "title": "Главная",

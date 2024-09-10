@@ -22,7 +22,7 @@
                         <div class="card">
                             <p class="m-3">{{ new.created }}</p>
                             <div class="card-body">
-                                <img src="{{ new.image_news.url }}" class="card-img-top" alt="Image">
+                                <img src="{{ new.image_news.url }}" class="card-img-top" alt="Image" style="max-height: 500px; object-fit: cover;">
                                 <h5 class="card-title pt-2">{{ new.title }}</h5>
                                 <p class="card-text">{{ new.description }}</p>
                             </div>
@@ -73,5 +73,4 @@
         </div>
     </div>
 </main>
-<script src="{% static 'mainapp/js/users_like_modal.js' %}"></script>
 {% endblock %}
