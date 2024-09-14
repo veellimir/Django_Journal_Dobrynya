@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.views.generic import ListView
 from django.contrib import messages
+from django.http import HttpRequest, HttpResponse
+
+from typing import Dict, List, Optional
 
 from .models import TrainingDirections, UsersAttendance, Profile
 
@@ -14,7 +17,13 @@ class TrainingDirectionsListView(ListView):
     template_name = "attendance/users_attendance.html"
     context_object_name = "directions"
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(
+            self,
+            *,
+            object_list: Optional[List[TrainingDirections]] = None,
+            **kwargs: Dict[str, any]
+    ) -> Dict[str, any]:
+
         context = super().get_context_data(**kwargs)
         context["title"] = "Журнал Посещаемости"
 
@@ -46,7 +55,7 @@ class TrainingDirectionsListView(ListView):
 
         return context
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: HttpRequest, *args: any, **kwargs: any) -> HttpResponse:
         selected_direction_id = request.GET.get("direction")
 
         if not selected_direction_id:

@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 from app_schedules.serializers import EventSerializer
 from attendance.serializers import AttendanceSerializer
 
+from typing import Optional
+
 from app_schedules.models import Event
 from attendance.models import UsersAttendance
 
@@ -24,8 +26,8 @@ class AttendanceListView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        year = self.request.query_params.get("year")
-        month = self.request.query_params.get("month")
+        year: Optional[str] = self.request.query_params.get("year")
+        month: Optional[str] = self.request.query_params.get("month")
 
         if not year or not month:
             return UsersAttendance.objects.none()

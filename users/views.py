@@ -1,7 +1,10 @@
+from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
+
+from typing import Callable, Dict, List
 
 from django.contrib.auth.models import User
 
@@ -9,28 +12,28 @@ from .forms import CustomUserRegisterForm, UserProfileForm, AdminProfileForm
 from .models import Profile, ProfileAdmin
 
 
-def superuser_required(view_func):
+def superuser_required(view_func: Callable) -> Callable:
     # TODO: banning ordinary users
 
-    def _wrapped_view_func(request, *args, **kwargs):
+    def _wrapped_view_func(request, *args: tuple, **kwargs: dict) -> HttpResponse:
         if not request.user.is_superuser:
             return redirect('home')
         return view_func(request, *args, **kwargs)
     return user_passes_test(lambda u: u.is_authenticated)(_wrapped_view_func)
 
 
-def user_logout(request):
+def user_logout(request: HttpRequest) -> HttpResponse:
     logout(request)
     messages.success(request, "Вы вышли.")
     return redirect("login")
 
 
-def user_login(request):
-    page = "login"
+def user_login(request: HttpRequest) -> HttpResponse:
+    page: str = "login"
 
     if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
+        username: str = request.POST["username"]
+        password: str = request.POST["password"]
 
         user = authenticate(request, username=username, password=password)
 
@@ -48,16 +51,16 @@ def user_login(request):
 
         messages.error(request, "Нет доступа, или данные введены некорректно")
 
-    context = {
+    context: Dict[str, str] = {
         "title": "Войти",
         "page": page,
     }
     return render(request, "users/login_register.html", context)
 
 
-def user_register(request):
-    page = "register"
-    form = CustomUserRegisterForm()
+def user_register(request: HttpRequest) -> HttpResponse:
+    page: str = "register"
+    form: CustomUserRegisterForm = CustomUserRegisterForm()
 
     if request.method == "POST":
         form = CustomUserRegisterForm(request.POST)
@@ -72,7 +75,8 @@ def user_register(request):
         else:
             for error in form.errors.values():
                 messages.error(request, error)
-    context = {
+
+    context: Dict[str, CustomUserRegisterForm] = {
         "title": "Регистрация",
         "page": page,
         "form": form,
@@ -81,10 +85,10 @@ def user_register(request):
 
 
 @login_required
-def all_users(request):
-    users = User.objects.all()
+def all_users(request: HttpRequest) -> HttpResponse:
+    users: List[User] = User.objects.all()
 
-    context = {
+    context: Dict[str, list[User]] = {
         "title": "Дружина",
         "users": users
     }
@@ -92,10 +96,10 @@ def all_users(request):
 
 
 @login_required
-def all_coach(request):
-    coaches = ProfileAdmin.objects.all()
+def all_coach(request: HttpRequest) -> HttpResponse:
+    coaches: List[ProfileAdmin] = ProfileAdmin.objects.all()
 
-    context = {
+    context: Dict[str, List[ProfileAdmin]] = {
         "title": "Тренерский состав",
         "coaches": coaches,
     }
@@ -103,10 +107,10 @@ def all_coach(request):
 
 
 @login_required
-def profile(request, pk):
-    prof = get_object_or_404(User, pk=pk)
+def profile(request: HttpRequest, pk: int) -> HttpResponse:
+    prof: User = get_object_or_404(User, pk=pk)
 
-    context = {
+    context: Dict[str, User] = {
         "title": "Информация о пользователе",
         "prof": prof
     }
@@ -114,7 +118,12 @@ def profile(request, pk):
 
 
 @login_required
-def handle_profile(request, profile_models, form_users, page):
+def handle_profile(
+        request: HttpRequest,
+        profile_models,
+        form_users,
+        page
+) -> HttpResponse:
     """
     Function profile data
     :param request:
@@ -152,7 +161,7 @@ def handle_profile(request, profile_models, form_users, page):
 
 
 @login_required
-def user_questionnaire(request):
+def user_questionnaire(request: HttpRequest) -> HttpResponse:
     # TODO: questionnaire users
 
     return handle_profile(
@@ -165,7 +174,7 @@ def user_questionnaire(request):
 
 @login_required
 @superuser_required
-def edit_admin_profile(request):
+def edit_admin_profile(request: HttpRequest) -> HttpResponse:
     # TODO: questionnaire admin
 
     return handle_profile(
@@ -176,5 +185,5 @@ def edit_admin_profile(request):
     )
 
 
-def personal_data(request):
+def personal_data(request: HttpRequest) -> HttpResponse:
     return render(request, "users/personal_data.html")
