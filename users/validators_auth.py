@@ -3,7 +3,7 @@ from django.core.exceptions import ValidationError
 import re
 
 
-def validate_username(username):
+def validate_username(username: str) -> str:
     if not re.match(r"^[a-z]{3,15}$", username):
         raise ValidationError(
             "Имя пользователя должно быть в нижнем регистре, "
@@ -13,7 +13,7 @@ def validate_username(username):
     return username
 
 
-def validate_first_name(first_name):
+def validate_first_name(first_name: str) -> str:
     first_name = first_name.lower()
 
     if not re.match(r"^[а-яА-ЯёЁ]{4,20}$", first_name):
@@ -24,7 +24,7 @@ def validate_first_name(first_name):
     return first_name
 
 
-def validate_last_name(last_name):
+def validate_last_name(last_name: str) -> str:
     last_name = last_name.lower()
 
     if not re.match(r"^[а-яА-ЯёЁ]{4,20}$", last_name):
@@ -35,13 +35,13 @@ def validate_last_name(last_name):
     return last_name
 
 
-def validate_email(email):
+def validate_email(email: str) -> str:
     if not re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email):
         raise ValidationError("Введите действительный адрес электронной почты.")
     return email
 
 
-def validate_password(password):
+def validate_password(password: str) -> str:
     if len(password) < 8:
         raise ValidationError("Пароль должен быть не менее 8 символов.")
     if not re.search(r"[A-Za-z]", password):

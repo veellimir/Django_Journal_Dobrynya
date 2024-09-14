@@ -3,6 +3,8 @@ from rest_framework import serializers
 from app_schedules.models import Event
 from users.serializers import ProfileAdminSerializer
 
+from typing import Dict
+
 
 class EventSerializer(serializers.ModelSerializer):
     training_direction_name = serializers.SerializerMethodField()
@@ -20,10 +22,10 @@ class EventSerializer(serializers.ModelSerializer):
             "elem_color",
         ]
 
-    def get_training_direction_name(self, obj):
+    def get_training_direction_name(self, obj: Event) -> str:
         return obj.name.name if obj.name else None
 
-    def to_representation(self, instance):
+    def to_representation(self, instance: Event) -> Dict[str, any]:
         representation = super().to_representation(instance)
 
         representation["start_time"] = instance.start_time.strftime("%H:%M")

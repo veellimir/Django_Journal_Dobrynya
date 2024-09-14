@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from django.http import HttpRequest, HttpResponse
+
+from typing import Dict
 
 from .models import TaskUser
 from .forms import TaskUserForm
@@ -10,10 +13,10 @@ from users.models import ProfileAdmin
 
 
 @login_required
-def tasks(request):
-    page = "user_tasks" if not request.user.is_superuser else "admin_tasks"
+def tasks(request: HttpRequest) -> HttpResponse:
+    page: str = "user_tasks" if not request.user.is_superuser else "admin_tasks"
 
-    user_tasks = TaskUser.objects.filter(user=request.user) \
+    user_tasks: TaskUser = TaskUser.objects.filter(user=request.user) \
         if not request.user.is_superuser else TaskUser.objects.all()
 
     if request.method == "POST":
@@ -31,7 +34,7 @@ def tasks(request):
     else:
         form = TaskUserForm()
 
-    context = {
+    context: Dict[str, object] = {
         "title": "Задачи",
         "user_tasks": user_tasks,
         "page": page,
@@ -41,10 +44,10 @@ def tasks(request):
 
 
 @login_required
-def task_details(request, task_id):
-    task = get_object_or_404(TaskUser, id=task_id)
+def task_details(request: HttpRequest, task_id: int) -> HttpResponse:
+    task: TaskUser = get_object_or_404(TaskUser, id=task_id)
 
-    context = {
+    context: Dict[str, object] = {
         "title": f"Задача {task.title}",
         "my_task": task
     }
@@ -52,8 +55,8 @@ def task_details(request, task_id):
 
 
 @login_required
-def change_task_status(request, task_id, new_status):
-    task = get_object_or_404(TaskUser, id=task_id)
+def change_task_status(request: HttpRequest, task_id: int, new_status: int) -> HttpResponse:
+    task: TaskUser = get_object_or_404(TaskUser, id=task_id)
 
     current_status = task.status_task
 
@@ -74,11 +77,11 @@ def change_task_status(request, task_id, new_status):
 
 
 @login_required
-def confirm_execution_task(request, task_id):
-    task = get_object_or_404(TaskUser, id=task_id)
+def confirm_execution_task(request: HttpRequest, task_id: int) -> HttpResponse:
+    task: TaskUser = get_object_or_404(TaskUser, id=task_id)
 
     if request.method == "POST":
-        estimation = request.POST.get('estimation_task')
+        estimation: str = request.POST.get("estimation_task")
 
         if task.status_task != TaskUser.END_TASK:
             task.estimation_task = estimation
@@ -97,8 +100,8 @@ def confirm_execution_task(request, task_id):
 
 
 @login_required
-def delete_task(request, task_id):
-    task = get_object_or_404(TaskUser, id=task_id)
+def delete_task(request: HttpRequest, task_id: int) -> HttpResponse:
+    task: TaskUser = get_object_or_404(TaskUser, id=task_id)
 
     task.delete()
     messages.success(request, f"Задача {task.title} удалена" )
