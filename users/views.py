@@ -13,8 +13,6 @@ from .models import Profile, ProfileAdmin
 
 
 def superuser_required(view_func: Callable) -> Callable:
-    # TODO: banning ordinary users
-
     def _wrapped_view_func(request, *args: tuple, **kwargs: dict) -> HttpResponse:
         if not request.user.is_superuser:
             return redirect('home')
@@ -34,7 +32,6 @@ def user_login(request: HttpRequest) -> HttpResponse:
     if request.method == "POST":
         username: str = request.POST["username"]
         password: str = request.POST["password"]
-
         user = authenticate(request, username=username, password=password)
 
         if user is not None and user.is_active:
@@ -162,8 +159,6 @@ def handle_profile(
 
 @login_required
 def user_questionnaire(request: HttpRequest) -> HttpResponse:
-    # TODO: questionnaire users
-
     return handle_profile(
         request,
         profile_models=Profile,
@@ -175,8 +170,6 @@ def user_questionnaire(request: HttpRequest) -> HttpResponse:
 @login_required
 @superuser_required
 def edit_admin_profile(request: HttpRequest) -> HttpResponse:
-    # TODO: questionnaire admin
-
     return handle_profile(
         request,
         profile_models=ProfileAdmin,

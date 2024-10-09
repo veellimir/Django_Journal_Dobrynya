@@ -5,7 +5,13 @@ from journal_dobrynya.env_config import (
     PROJECT_DEBUG,
     PROJECT_EMAIL_HOST_PASSWORD,
     PROJECT_EMAIL_HOST_USER,
-    PROJECT_DOMAIN_NAME
+    PROJECT_DOMAIN_NAME,
+    DB_USER,
+    DB_HOST,
+    DB_NAME,
+    DB_PORT,
+    DB_PASS,
+    DB_OPTIONS,
 )
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -86,9 +92,14 @@ WSGI_APPLICATION = 'journal_dobrynya.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASS,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
+        'OPTIONS': {'charset': DB_OPTIONS},
+    },
 }
 
 AUTH_PASSWORD_VALIDATORS = [
