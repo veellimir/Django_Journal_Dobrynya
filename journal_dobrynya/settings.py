@@ -15,6 +15,11 @@ DEBUG = PROJECT_DEBUG
 
 ALLOWED_HOSTS = [PROJECT_DOMAIN_NAME]
 
+# FOR LOCUST
+# ALLOWED_HOSTS = ["localhost"]
+# CSRF_COOKIE_SECURE = False
+# CSRF_COOKIE_HTTPONLY = True
+# CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -110,10 +115,8 @@ USE_TZ = False
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'static'
-
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 

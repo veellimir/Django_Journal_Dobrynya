@@ -1,9 +1,9 @@
+from typing import Dict
+
 from rest_framework import serializers
 
 from app_schedules.models import Event
 from users.serializers import ProfileAdminSerializer
-
-from typing import Dict
 
 
 class EventSerializer(serializers.ModelSerializer):
@@ -27,10 +27,8 @@ class EventSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance: Event) -> Dict[str, any]:
         representation = super().to_representation(instance)
-
         representation["start_time"] = instance.start_time.strftime("%H:%M")
         representation["end_time"] = instance.end_time.strftime("%H:%M")
-
         representation["days_of_week"] = instance.days_of_week.split(",") if instance.days_of_week else []
 
         return representation

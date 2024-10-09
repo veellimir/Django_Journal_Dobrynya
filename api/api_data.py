@@ -1,27 +1,23 @@
+from datetime import datetime, timedelta
+from typing import Optional
+
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
-from datetime import datetime, timedelta
+
 from app_schedules.serializers import EventSerializer
 from attendance.serializers import AttendanceSerializer
-
-from typing import Optional
 
 from app_schedules.models import Event
 from attendance.models import UsersAttendance
 
 
 class EventListView(generics.ListAPIView):
-    # TODO: API get event schedules
-
     queryset = Event.objects.all()
     serializer_class = EventSerializer
-
     permission_classes = [IsAuthenticated]
 
 
 class AttendanceListView(generics.ListAPIView):
-    # TODO: API get attendance
-
     serializer_class = AttendanceSerializer
     permission_classes = [IsAuthenticated]
 
@@ -34,5 +30,4 @@ class AttendanceListView(generics.ListAPIView):
 
         start_date = datetime(int(year), int(month), 1)
         end_date = (start_date.replace(day=28) + timedelta(days=4)).replace(day=1)
-
         return UsersAttendance.objects.filter(date__range=[start_date, end_date])

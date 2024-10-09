@@ -10,14 +10,14 @@
       <div class="row justify-content-center customRowMedia">
         <div class="col-lg-8">
           <div class="calendar customCalendarMedia">
-            <div class="calendar-header bg-danger">
+            <div class="calendar-header bg-danger" >
               <button class="btn btn-outline-secondary bg-dark previousMonth" >&lt;</button>
               <h2 id="month-year"></h2>
               <button class="btn btn-outline-secondary bg-dark nextMonth">&gt;</button>
             </div>
             <table class="table table-bordered calendar-table" id="calendar-body">
               <thead class="thead-light">
-                <tr id="weekdays" class="weekdays_element"></tr>
+                <tr id="weekdays" class="weekdays_element" style="position: sticky; top: 0; z-index: 1;"></tr>
               </thead>
               <tbody id="calendar-dates" class="number_day"></tbody>
             </table>
@@ -66,9 +66,5 @@
   </div>
 </main>
 
-<style>
- 
-</style>
-
-  <script type="module" src="{% static 'mainapp/js/calendar.js' %}"></script>
+<script type="module" src="{% static 'mainapp/js/calendar.js' %}"></script>
 {% endblock %}
