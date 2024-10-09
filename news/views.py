@@ -1,9 +1,9 @@
+from typing import List, Dict
+
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect
 from django.shortcuts import render
 from django.http import HttpRequest, HttpResponse
-
-from typing import List, Dict
 
 from .models import News, LikeNews
 
