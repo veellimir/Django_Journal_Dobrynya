@@ -68,6 +68,22 @@ a {
 
 /* ================== SCHEDULES =======================
 =======================================================*/
+.spinner { display: flex; }
+.spinner-border {
+  width: 4rem;
+  height: 4rem;
+  border-width: 0.25em;
+  border-top-color: rgb(220, 53, 69);
+  border-right-color: #212529;
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(490deg); }
+}
+
 .calendar-container {
   width: 100%;
   max-width: 1200px;

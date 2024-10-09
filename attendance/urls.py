@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import TrainingDirectionsListView
-from api.api_data import AttendanceListView
+from api.schedules import AttendanceListView
 
 
 urlpatterns = [

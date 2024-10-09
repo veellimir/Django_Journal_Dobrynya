@@ -1,8 +1,9 @@
 import { fetchEvents, fetchAttendance } from "./api_get.js";
 
 let today = new Date(),
-  currentMonth = today.getMonth() + 1,
-  currentYear = today.getFullYear();
+    currentMonth = today.getMonth() + 1,
+    currentYear = today.getFullYear(),
+    attendanceData = [];
 
 const months = [
   "Январь",
@@ -17,19 +18,17 @@ const months = [
   "Октябрь",
   "Ноябрь",
   "Декабрь",
-];
-const weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"];
+],
+weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
+spinner = document.querySelector('.spinner');
 
-let attendanceData = [];
 
-function displayEvents(date) {
-  let eventDate = date.toDateString();
-  document.getElementById("event-date").textContent = eventDate;
-
+function displayEvents() {
   Promise.all([fetchEvents(), fetchAttendance(currentMonth, currentYear)])
     .then(([events, attendance]) => {
       attendanceData = attendance;
       generateCalendar(currentMonth - 1, currentYear, events);
+      spinner.style.display = 'none';
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
@@ -123,16 +122,14 @@ function handleDateClick(cell) {
 }
 
 function openModal(event, date) {
-  const coachDetails = event.teacher
-      .map((coach) => `${coach.surname} ${coach.name} ${coach.patronymic}`)
-      .join(", "),
-    modal = document.getElementById("modal"),
-    modalTeacher = document.getElementById("modal-teacher"),
-    modalTitle = document.getElementById("modal-title"),
-    modalName = document.getElementById("modal-name"),
-    modalStartTime = document.getElementById("modal-start_time"),
-    modalEndTime = document.getElementById("modal-end_time"),
-    modalProfileUser = document.getElementById("modal-profile_user");
+  const coachDetails = event.teacher.map((coach) => `${coach.surname} ${coach.name} ${coach.patronymic}`).join(", "),
+        modal = document.getElementById("modal"),
+        modalTeacher = document.getElementById("modal-teacher"),
+        modalTitle = document.getElementById("modal-title"),
+        modalName = document.getElementById("modal-name"),
+        modalStartTime = document.getElementById("modal-start_time"),
+        modalEndTime = document.getElementById("modal-end_time"),
+        modalProfileUser = document.getElementById("modal-profile_user");
 
   if (event.teacher.length === 0) {
     modalTeacher.textContent = "Преподаватель: преподаватель ещё не назначен";

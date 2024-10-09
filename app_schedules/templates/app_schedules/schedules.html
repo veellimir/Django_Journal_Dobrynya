@@ -29,7 +29,7 @@
             </div>
             {% endif %}
             <div id="events-container" class="event-list">
-              <h3>Занятия на<span id="event-date"></span>:</h3>
+              <!-- <h3>Занятия на<span id="event-date"></span>:</h3> -->
               <ul id="events-list" class="list-group"></ul>
             </div>
           </div>
@@ -64,7 +64,11 @@
       {% endif %}
     </div>
   </div>
+  <div class="justify-content-center spinner spinner-container">
+    <div class="spinner-border" role="status">
+        <span class="sr-only"></span>
+    </div>
+  </div>
 </main>
-
 <script type="module" src="{% static 'mainapp/js/calendar.js' %}"></script>
 {% endblock %}
