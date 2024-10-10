@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'tasks.apps.TasksConfig',
     'app_schedules.apps.AppSchedulesConfig',
     'attendance.apps.AttendanceConfig',
+    'stats.apps.StatsConfig',
 ]
 
 REST_FRAMEWORK = {

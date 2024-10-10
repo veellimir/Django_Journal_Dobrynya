@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+    <h2 class="my-4 text-center">{{ title }}</h2>
+    
+    <div class="d-flex justify-content-center align-items-center mb-4">
+        <label for="year-select" class="mr-2">Выберите год:</label>
+        <select id="year-select" class="form-control" style="max-width: 200px;" onchange="updateYear()">
+            {% for year in years %}
+                <option value="{{ year.year }}">{{ year.year }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    
+    <div id="graph-container">
+        <canvas id="attendanceGraph" style="border:1px solid #d3d3d3; border-radius: 8px;"></canvas>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="application/json" id="attendance_data">{{ attendance_by_year_and_month_json|safe }}</script>
+    <script src="{% static 'mainapp/js/chart.js' %}"></script>
+    <style>
+      /* Основные стили для контейнера */
+#graph-container {
+    width: 90%;         /* Ширина контейнера на 90% от ширины экрана */
+    max-width: 1300px;  /* Максимальная ширина 1200px */
+    height: 600px;      /* Высота контейнера 500px */
+    margin: 0 auto;     /* Центрирование контейнера по горизонтали */
+    overflow: hidden;   /* Скрыть любой скролл для контейнера */
+}
+
+/* Стили для графика */
+#attendanceGraph {
+    width: 100%;        /* График растягивается на всю ширину контейнера */
+    height: 100%;       /* График растягивается на всю высоту контейнера */
+    display: block;     /* Убираем встроенное отображение графика как inline-block */
+}
+
+/* Медиа-запрос для экрана 810px и меньше */
+@media (max-width: 810px) {
+    #attendanceGraph {
+        width: 2000px ;    /* Фиксированная ширина для графика */
+        height: 1000px;    /* Фиксированная высота для графика */
+        overflow-x: auto; /* Включаем горизонтальный скроллинг */
+        overflow-y: hidden; /* Отключаем вертикальный скролл */
+        display: block;
+    }
+
+    /* Включаем горизонтальный скролл только для графика */
+
+}
+
+    </style>
+{% endblock %}
