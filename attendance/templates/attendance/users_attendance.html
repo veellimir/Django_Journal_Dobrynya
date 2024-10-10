@@ -18,8 +18,7 @@
 
         <div class="col-md-9">
             {% if selected_direction %}
-                <h3 class="my-4 mt-5 text-center">Профили направления: {{ selected_direction.name }}</h3>
-                
+                <h3 class="my-4 mt-5 text-center">{{ selected_direction.name }}</h3>
                 <form method="post">
                     {% csrf_token %}
                     
@@ -50,12 +49,14 @@
                             {% endfor %}
                         </tbody>
                     </table>
-
+                    <div class="d-flex flex-wrap align-items-center mb-3">
+                        <label for="date" class="me-2 mb-2 mb-sm-0">Дата (необязательно):</label>
+                        <input type="date" id="date" name="date" class="form-control form-control-sm w-auto mb-2 mb-sm-0" value="{{ selected_date }}">
+                    </div>
                     <div class="text-end">
                         <input type="submit" class="btn btn-danger" value="Сохранить">
                     </div>
                 </form>
-
             {% else %}
                 <h3 class="my-4 mt-5 text-center">Пожалуйста, выберите направление.</h3>
             {% endif %}

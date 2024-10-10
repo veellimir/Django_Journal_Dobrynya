@@ -1,3 +1,5 @@
+from typing import Dict, List, Optional
+
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -5,8 +7,6 @@ from django.utils import timezone
 from django.views.generic import ListView
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
-
-from typing import Dict, List, Optional
 
 from .models import TrainingDirections, UsersAttendance, Profile
 
@@ -18,32 +18,38 @@ class TrainingDirectionsListView(ListView):
     context_object_name = "directions"
 
     def get_context_data(
-            self,
-            *,
+            self, *,
             object_list: Optional[List[TrainingDirections]] = None,
             **kwargs: Dict[str, any]
     ) -> Dict[str, any]:
-
-        context = super().get_context_data(**kwargs)
+        context: Dict[str, any] = super().get_context_data(**kwargs)
         context["title"] = "Журнал Посещаемости"
 
-        selected_direction_id = self.request.GET.get("direction")
+        selected_direction_id: Optional[str] = self.request.GET.get("direction")
+        selected_date: Optional[str] = self.request.GET.get("date")
+
+        if not selected_date:
+            today = timezone.now().date()
+        else:
+            try:
+                today = timezone.datetime.strptime(selected_date, "%Y-%m-%d").date()
+            except ValueError:
+                today = timezone.now().date()
+        context["selected_date"] = today
+
         if selected_direction_id:
             direction = get_object_or_404(TrainingDirections, pk=selected_direction_id)
-
             context["selected_direction"] = direction
             context["profiles"] = Profile.objects.filter(directions=direction)
 
-            today = timezone.now().date()
-
-            attendance_today = UsersAttendance.objects.filter(
+            attendance_today: bool = UsersAttendance.objects.filter(
                 direction=direction,
                 date=today
             ).exists()
 
             context["attendance_locked"] = attendance_today
 
-            present_profiles = UsersAttendance.objects.filter(
+            present_profiles: List[int] = UsersAttendance.objects.filter(
                 direction=direction,
                 date=today,
                 is_present=True
@@ -52,19 +58,25 @@ class TrainingDirectionsListView(ListView):
         else:
             context["profiles"] = Profile.objects.none()
             context["present_profiles"] = []
-
         return context
 
     def post(self, request: HttpRequest, *args: any, **kwargs: any) -> HttpResponse:
-        selected_direction_id = request.GET.get("direction")
+        selected_direction_id: Optional[str] = request.GET.get("direction")
+        selected_date: Optional[str] = request.POST.get("date")
+
+        if not selected_date:
+            today = timezone.now().date()
+        else:
+            try:
+                today = timezone.datetime.strptime(selected_date, "%Y-%m-%d").date()
+            except ValueError:
+                today = timezone.now().date()
 
         if not selected_direction_id:
             return redirect("training_directions_list")
 
-        direction = get_object_or_404(TrainingDirections, pk=selected_direction_id)
-        today = timezone.now().date()
-
-        profiles = Profile.objects.filter(directions=direction)
+        direction: TrainingDirections = get_object_or_404(TrainingDirections, pk=selected_direction_id)
+        profiles: List[Profile] = Profile.objects.filter(directions=direction)
 
         for profile in profiles:
             is_present = bool(request.POST.get(f"attendance_{profile.id}"))
@@ -74,6 +86,10 @@ class TrainingDirectionsListView(ListView):
                 direction=direction,
                 date=today
             )
+            if is_present and (created or not attendance.is_present):
+                profile.points += 2
+                profile.save()
+
             attendance.is_present = is_present
             attendance.save()
 
