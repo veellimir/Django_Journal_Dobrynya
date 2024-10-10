@@ -5,8 +5,8 @@
 управлением клуба.
 ---
 
-Тестовые сервера: 
-    https://journaldobrynya63.pythonanywhere.com/
+Тестовые сервера: <br>
+    https://journaldobrynya63.pythonanywhere.com/ <br>
     https://4296af4c180b.hosting.myjino.ru/
 
 ### 1. Установка зависимостей с помощью Poetry и запуск
