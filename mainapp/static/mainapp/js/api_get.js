@@ -16,6 +16,18 @@ export function fetchEvents() {
     });
 }
 
+export function getCancelEvent() {
+  return fetch('/api/cancel-event/')
+      .then(response => response.json())
+      .then(data => {
+        return Array.isArray(data) ? data : [];
+      })
+      .catch(error => {
+        console.error('error list cancel event:', error);
+        return [];
+      });
+}
+
 
 export function fetchAttendance(month, year) {
   return fetch(`/api/attendance/?month=${month}&year=${year}`)

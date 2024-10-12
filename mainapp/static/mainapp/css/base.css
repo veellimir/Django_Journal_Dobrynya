@@ -198,7 +198,7 @@ a {
 }
 
 /* Cancel workout */
-#containerCancelWorkout {
+/* #containerCancelWorkout {
   display: none;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -208,7 +208,7 @@ a {
   display: block;
   opacity: 1;
   animation: fadeInOut 0.5s ease;
-}
+} */
 
 @keyframes fadeInOut {
   0% {

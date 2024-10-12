@@ -2,7 +2,7 @@ from typing import Dict
 
 from rest_framework import serializers
 
-from app_schedules.models import Event
+from app_schedules.models import Event, CancelEvents
 from users.serializers import ProfileAdminSerializer
 
 
@@ -32,3 +32,14 @@ class EventSerializer(serializers.ModelSerializer):
         representation["days_of_week"] = instance.days_of_week.split(",") if instance.days_of_week else []
 
         return representation
+
+
+class CancelEventsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CancelEvents
+        fields = [
+            "cancelled_title",
+            "cancelled_date",
+            "cancelled_red_color",
+            "description"
+        ]
