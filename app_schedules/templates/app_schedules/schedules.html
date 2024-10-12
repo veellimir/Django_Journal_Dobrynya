@@ -22,12 +22,15 @@
               <tbody id="calendar-dates" class="number_day"></tbody>
             </table>
             {% if user.is_superuser %}
-            <div class="container-fluid text-right mb-3">
-              <a href="{% url 'admin:app_schedules_event_changelist' %}" target="_blank">
-                <button class="btn btn-secondary">Добавить занятия в календарь</button>
-              </a>
-            </div>
+              <div class="container-fluid text-right mb-3">
+                <a href="{% url 'admin:app_schedules_event_changelist' %}" target="_blank">
+                  <button class="btn btn-secondary">Добавить занятие в календарь</button>
+                </a>
+                <button class="btn btn-outline btn-danger" onclick="alert('Функционал в разработке')">Отменить занятие</button>
+              </div>
+              <div class="container-fluid text-center mb-3 customCancelLesson"></div>
             {% endif %}
+            <div id="cancelled-events-container"></div>
             <div id="events-container" class="event-list">
               <!-- <h3>Занятия на<span id="event-date"></span>:</h3> -->
               <ul id="events-list" class="list-group"></ul>
@@ -37,6 +40,8 @@
       </div>
     </div>
   </div>
+
+  
   <div id="modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -49,21 +54,43 @@
 
         <p><b id="modal-profile_user"></b></p>
       </div>
-      {% if user.is_superuser %}
-      <div class="container-fluid text-center mb-3" style="display: none;">
-        <button class="btn btn-outline btn-danger" id="cancelWorkout">Отменить тренировку</button>
-      </div>
-      <div id="containerCancelWorkout">
-        <div class="modal-body">
-          Здесь ваше описание или контент модального окна
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Сохранить</button>
-        </div>
-      </div>
-      {% endif %}
     </div>
   </div>
+
+   {% if user.is_superuser %}
+   <div class="modal fade" id="cancelModal1" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel1" aria-hidden="true">
+    <div class="modal-dialog" >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="cancelModalLabel1">Отмена тренировки</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="activity">Выберите занятие</label>
+              <select class="form-control" id="activity" name="activity">
+                <option value="yoga">Йога</option>
+                <option value="pilates">Пилатес</option>
+                <option value="boxing">Бокс</option>
+                <option value="gym">Тренажерный зал</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="date">Выберите дату</label>
+              <input type="date" class="form-control" id="date" name="date" required>
+            </div>
+            <button type="submit" class="btn btn-danger">Отменить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
   <div class="justify-content-center spinner spinner-container">
     <div class="spinner-border" role="status">
         <span class="sr-only"></span>

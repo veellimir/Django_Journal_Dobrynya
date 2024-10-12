@@ -3,11 +3,13 @@ from typing import Optional
 
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
 
-from app_schedules.serializers import EventSerializer
+from app_schedules.serializers import EventSerializer, CancelEventsSerializer
 from attendance.serializers import AttendanceSerializer
 
-from app_schedules.models import Event
+from app_schedules.models import Event, CancelEvents
 from attendance.models import UsersAttendance
 
 
@@ -31,3 +33,16 @@ class AttendanceListView(generics.ListAPIView):
         start_date = datetime(int(year), int(month), 1)
         end_date = (start_date.replace(day=28) + timedelta(days=4)).replace(day=1)
         return UsersAttendance.objects.filter(date__range=[start_date, end_date])
+
+
+class CancelEventsListView(generics.ListAPIView):
+    queryset = CancelEvents.objects.all()
+    serializer_class = CancelEventsSerializer
+    permission_classes = [IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
