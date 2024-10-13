@@ -106,44 +106,51 @@ document.addEventListener("DOMContentLoaded", function () {
           cellDate = new Date(currentYear, currentMonth - 1, date);
   
     if (events && events.length > 0) {
-      events.forEach((event) => {
-        if (event.days_of_week.includes(currentDayOfWeek.toLowerCase())) {
-          let eventNameDiv = document.createElement("div"),
-              displayText = `${event.training_direction_name} <br> ${event.start_time} - ${event.end_time}`;
+      const filteredEvents = events.filter(event =>
+        event.days_of_week.includes(currentDayOfWeek.toLowerCase())
+      );
   
-          eventNameDiv.innerHTML = displayText;
-          eventNameDiv.classList.add("event-name");
-          eventNameDiv.style.backgroundColor = event.elem_color;
+      filteredEvents.sort((a, b) => {
+        const timeA = new Date(`1970-01-01T${a.start_time}`),
+              timeB = new Date(`1970-01-01T${b.start_time}`);
+        return timeA - timeB;
+      });
   
-          if (cellDate < today) {
-            eventNameDiv.style.backgroundColor = "#CCFFCC"; // Для прошедших занятий делаем другой цвет
-          }
+      filteredEvents.forEach(event => {
+        let eventNameDiv = document.createElement("div"),
+            displayText = `${event.training_direction_name} <br> ${event.start_time} - ${event.end_time}`;
   
-          // Проверяем отмененные события
-          getCancelEvent().then((cancelEvents) => {
-            cancelEvents.forEach((cancelEvent) => {
-              const cancelDate = new Date(cancelEvent.cancelled_date);
-              if (
-                cancelDate.getFullYear() === cellDate.getFullYear() &&
-                cancelDate.getMonth() === cellDate.getMonth() &&
-                cancelDate.getDate() === cellDate.getDate() &&
-                event.training_direction_name === cancelEvent.cancelled_title // Проверяем название занятия
-              ) {
-                eventNameDiv.style.backgroundColor = cancelEvent.cancelled_red_color; // Меняем цвет на красный для отмененных занятий
-              }
-            });
-          });
+        eventNameDiv.innerHTML = displayText;
+        eventNameDiv.classList.add("event-name");
+        eventNameDiv.style.backgroundColor = event.elem_color;
   
-          cell.appendChild(eventNameDiv);
-  
-          eventNameDiv.addEventListener("click", () => {
-            openModal(event, date);
-          });
+        if (cellDate < today) {
+          eventNameDiv.style.backgroundColor = "#CCFFCC";
         }
+  
+        getCancelEvent().then(cancelEvents => {
+          cancelEvents.forEach(cancelEvent => {
+            const cancelDate = new Date(cancelEvent.cancelled_date);
+            if (
+              cancelDate.getFullYear() === cellDate.getFullYear() &&
+              cancelDate.getMonth() === cellDate.getMonth() &&
+              cancelDate.getDate() === cellDate.getDate() &&
+              event.training_direction_name === cancelEvent.cancelled_title
+            ) {
+              eventNameDiv.style.backgroundColor = cancelEvent.cancelled_red_color; // Красный для отмененных событий
+            }
+          });
+        });
+  
+        cell.appendChild(eventNameDiv);
+  
+        eventNameDiv.addEventListener("click", () => {
+          openModal(event, date);
+        });
       });
     }
   }
-  
+
 
   function handleDateClick(cell) {
     const dayDiv = cell.querySelector("div"),
