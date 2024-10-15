@@ -4,7 +4,6 @@ from django import forms
 
 from .models import Profile, ProfileAdmin
 from mainapp.base_forms import BaseFormUsers
-
 from users.validators_auth import *
 
 
@@ -63,6 +62,9 @@ class UserProfileForm(BaseFormUsers):
             "participation_competition",
             "wishes"
         ]
+    def clean_telegram(self):
+        telegram = self.cleaned_data.get("telegram")
+        return validate_telegram(telegram)
 
 
 class AdminProfileForm(BaseFormUsers):
@@ -78,6 +80,10 @@ class AdminProfileForm(BaseFormUsers):
             "telegram",
             "vk",
         ]
+
+    def clean_telegram(self):
+        telegram = self.cleaned_data.get("telegram")
+        return validate_telegram(telegram)
 
 
 class CustomSetPasswordForm(SetPasswordForm):

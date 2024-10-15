@@ -7,15 +7,17 @@
     <h2 class="my-4 text-center">Тренеры нашего клуба</h2>
     <div class="row">
         {% for coach in coaches %}  
-        <div class="col-lg-4 col-md-6 mb-4 d-flex align-items-stretch">
-            <div class="card h-100 shadow-sm">
-                <img src="{{ coach.profile_image.url }}" class="card-img-top rounded-top" alt="Тренер {{ coach.name }}">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <img src="{{ coach.profile_image.url }}" class="card-img-top rounded-top" alt="Тренер {{ coach.name }}" style="max-height: 400px; object-fit: cover;">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title text-center">{{ coach.surname }} {{ coach.name }} {{ coach.patronymic }}</h5>
                     <p class="card-text flex-grow-1">
-                        <strong>Направления:</strong>
+                        <strong>Направление(я):</strong> <br>
                           {% for direction in coach.directions.all %}
-                              <span class="badge bg-danger">{{ direction.name }}</span>
+                          <span class="badge bg-danger mt-2" style="white-space: normal;">
+                            {{ direction.name }}
+                        </span>
                           {% empty %}
                               Нет направлений
                           {% endfor %}
