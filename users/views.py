@@ -1,15 +1,16 @@
+from django.contrib.messages import success
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.models import User
 
 from typing import Callable, Dict, List
 
-from django.contrib.auth.models import User
-
 from .forms import CustomUserRegisterForm, UserProfileForm, AdminProfileForm
 from .models import Profile, ProfileAdmin
+from telebot.views import send_message_to_telegram
 
 
 def superuser_required(view_func: Callable) -> Callable:
@@ -36,6 +37,9 @@ def user_login(request: HttpRequest) -> HttpResponse:
 
         if user is not None and user.is_active:
             login(request, user)
+
+            success_login: str = f"Пользователь {user.get_full_name()} вошёл на сайт. ✅ "
+            send_message_to_telegram(request, success_login)
 
             if not user.is_superuser:
                 try:
@@ -68,6 +72,12 @@ def user_register(request: HttpRequest) -> HttpResponse:
             user.save()
 
             messages.success(request, f"Аккаунт зарегистрирован, ожидаете решение администратора")
+            success_register: str = (f""
+                                     f"Пользователь 😎  {user.get_full_name()} зарегистрировался. ✅ "
+                                     f"Пожалуйста не забудьте выдать ему нужные права ⚠"
+                                     )
+
+            send_message_to_telegram(request, success_register)
             return redirect("login")
         else:
             for error in form.errors.values():
