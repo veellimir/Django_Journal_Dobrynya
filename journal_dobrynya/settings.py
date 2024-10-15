@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'app_schedules.apps.AppSchedulesConfig',
     'attendance.apps.AttendanceConfig',
     'stats.apps.StatsConfig',
+    'telebot.apps.TelebotConfig',
 ]
 
 REST_FRAMEWORK = {
