@@ -80,9 +80,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
           const cellDate = new Date(year, month, date);
 
-          if (cellDate < today) {
+          if (cellDate.toDateString() === today.toDateString()) {
+            cell.style.backgroundColor = "#7DA58D";
+        } else if (cellDate < today) {
             cell.style.backgroundColor = "#d3d3d3";
-          }
+        }
 
           cell.addEventListener("click", () => {
             handleDateClick(cell);
@@ -124,7 +126,11 @@ document.addEventListener("DOMContentLoaded", function () {
         eventNameDiv.classList.add("event-name");
         eventNameDiv.style.backgroundColor = event.elem_color;
   
-        if (cellDate < today) {
+        const now = new Date(),
+              eventStartTime = new Date(`${cellDate.toDateString()} ${event.start_time}`),
+              eventEndTime = new Date(`${cellDate.toDateString()} ${event.end_time}`);
+        
+        if (eventEndTime < now) {
           eventNameDiv.style.backgroundColor = "#CCFFCC";
         }
   
@@ -137,7 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
               cancelDate.getDate() === cellDate.getDate() &&
               event.training_direction_name === cancelEvent.cancelled_title
             ) {
-              eventNameDiv.style.backgroundColor = cancelEvent.cancelled_red_color; // Красный для отмененных событий
+              eventNameDiv.style.backgroundColor = cancelEvent.cancelled_red_color;
             }
           });
         });
@@ -150,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   }
-
+  
 
   function handleDateClick(cell) {
     const dayDiv = cell.querySelector("div"),

@@ -14,7 +14,7 @@ def validate_username(username: str) -> str:
 
 
 def validate_first_name(first_name: str) -> str:
-    first_name = first_name.lower()
+    first_name: str = first_name.lower()
 
     if not re.match(r"^[а-яА-ЯёЁ]{4,20}$", first_name):
         raise ValidationError(
@@ -25,7 +25,7 @@ def validate_first_name(first_name: str) -> str:
 
 
 def validate_last_name(last_name: str) -> str:
-    last_name = last_name.lower()
+    last_name: str = last_name.lower()
 
     if not re.match(r"^[а-яА-ЯёЁ]{4,20}$", last_name):
         raise ValidationError(
@@ -51,3 +51,13 @@ def validate_password(password: str) -> str:
     if not re.search(r"[@$!%*#?&]", password):
         raise ValidationError("Пароль должен содержать хотя бы один из @$!%*#?& специальных символов.")
     return password
+
+
+def validate_telegram(link: str) -> str:
+    link: str = link.strip()
+
+    if link.startswith("https://t.me/"):
+        return link
+    if link.startswith("@"):
+        return f"https://t.me/{link[1:]}"
+    return f"https://t.me/{link}"
