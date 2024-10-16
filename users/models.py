@@ -4,7 +4,6 @@ from mainapp.base_mixins import StrMixin
 from .mixins import SocialMixin
 
 
-
 class TrainingDirections(StrMixin, models.Model):
     name = models.CharField(max_length=100, verbose_name="Направление тренировки")
 
