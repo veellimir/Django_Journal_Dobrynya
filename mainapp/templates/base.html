@@ -42,6 +42,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if user.is_superuser %}
+                <a href="https://t.me/+b2ZHD6G-XFZiY2Qy" target="_blank" class="dropdown-item" title="Административный бот">
+                  <i class="fab fa-telegram fa-2x"></i>
+                </a>
+              {% endif %}
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Главная</a>
                 </li>
@@ -90,7 +95,6 @@
                   <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Статистика</a>
                 </li> -->
               </ul>
-              </form>
               {% endif %}
               <form class="d-flex p-2" method="post" action="{% url 'logout' %}">
                   {% csrf_token %}
