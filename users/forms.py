@@ -18,6 +18,12 @@ class CustomUserRegisterForm(UserCreationForm, BaseFormUsers):
             "password1",
             "password2",
         ]
+        widgets = {
+            "username": forms.TextInput(attrs={"placeholder": "username"}),
+            "first_name": forms.TextInput(attrs={"placeholder": "Имя"}),
+            "last_name": forms.TextInput(attrs={"placeholder": "Фамилия"}),
+            "email": forms.TextInput(attrs={"placeholder": "you.name@***.ru"}),
+        }
 
     def clean_username(self):
         username = self.cleaned_data.get("username")

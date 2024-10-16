@@ -6,9 +6,9 @@ import re
 def validate_username(username: str) -> str:
     if not re.match(r"^[a-z]{3,15}$", username):
         raise ValidationError(
-            "Имя пользователя должно быть в нижнем регистре, "
-            "длиной от 3 до 15 символов и может содержать только"
-            "буквы (Английского алфавита)."
+            "Имя пользователя должно быть содержать маленькие буквы, "
+            "длиной от 3 до 15 символов, а так же только буквы (Английского алфавита)"
+            ""
         )
     return username
 
@@ -49,7 +49,7 @@ def validate_password(password: str) -> str:
     if not re.search(r"\d", password):
         raise ValidationError("Пароль должен содержать хотя бы одну цифру.")
     if not re.search(r"[@$!%*#?&]", password):
-        raise ValidationError("Пароль должен содержать хотя бы один из @$!%*#?& специальных символов.")
+        raise ValidationError("Пароль должен содержать хотя бы один из -> @$!%*#?& специальных символов.")
     return password
 
 
