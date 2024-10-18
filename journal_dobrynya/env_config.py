@@ -25,6 +25,7 @@ DB_PASS = os.getenv("DB_PASS")
 DB_HOST = os.getenv("DB_HOST")
 DB_PORT = os.getenv("DB_PORT")
 DB_OPTIONS = os.getenv("DB_OPTIONS")
+DB_ATOMIC_REQUESTS = os.getenv("DB_ATOMIC_REQUESTS")
 
 TELE_BOT_TOKEN = os.getenv("TELE_BOT_TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")

@@ -89,6 +89,7 @@ DATABASES = {
         'HOST': DB_HOST,
         'PORT': DB_PORT,
         'OPTIONS': {'charset': DB_OPTIONS},
+        'ATOMIC_REQUESTS': DB_ATOMIC_REQUESTS,
     },
 }
 
