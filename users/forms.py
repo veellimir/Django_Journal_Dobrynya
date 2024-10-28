@@ -81,11 +81,17 @@ class AdminProfileForm(BaseFormUsers):
             "name",
             "surname",
             "patronymic",
-            # "directions",
             "phone",
             "telegram",
             "vk",
         ]
+    def clean_name(self):
+        name = self.cleaned_data.get("name")
+        return validate_first_name(name)
+
+    def clean_surname(self):
+        surname = self.cleaned_data.get("surname")
+        return validate_last_name(surname)
 
     def clean_telegram(self):
         telegram = self.cleaned_data.get("telegram")

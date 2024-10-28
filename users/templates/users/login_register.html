@@ -1,25 +1,19 @@
 {% extends 'base.html' %}
 
 {% load static %}
-
 {% block extracss %}<link rel="stylesheet" href="{% static 'mainapp/css/auth.css' %}">{% endblock %}
 
 {% block content %}
-
 <div class="d-flex flex-column justify-content-center align-items-center custom_size_section">
     {% include 'includes/logo.html' %}
-
     <div class="text-center mt-4">
         <h3>{% if page == 'login' %} Войти {% else %} Регистрация {% endif %}</h3>
     </div>
-    
     <section>
         <!-- FORM LOGIN -->
         {% if page == 'login' %}
-
             <form action="{% url 'login' %}" class="wrapper--form-auth" method="post">
                 {% csrf_token %}
-
                 <div class="mb-3">
                     <label class="form-label">Логин</label>
                     <input type="text" class="form-control" aria-describedby="emailHelp" name="username">
@@ -27,17 +21,13 @@
                 <div class="mb-3 position-relative">
                     <label class="form-label">Пароль</label>
                     <input type="password" class="form-control" id="exampleInputPassword1" name="password">
-
                     <button type="button" id="togglePassword" class="btn btn-outline-secondary position-absolute end-0 translate-middle-y customVisiblePassLogin">
                         <i class="bi bi-eye"></i>
                     </button>
-            
                 </div>
                 <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Войти">
                 <p class="text-center mt-3"><a href="{% url 'reset_password' %}">Забыли пароль ?</a></p>
-
             </form>
-        
         <!-- FORM REGISTER  -->
         {% else %}
             <form class="wrapper--form-auth" method="post">
@@ -46,24 +36,20 @@
                     <label class="form-label">{{ field.label }}</label>
                     {{ field }}
                     {% endfor %}
-
                     <button type="button" id="togglePassword1" class="btn btn-outline-secondary position-absolute end-0 translate-middle-y customVisiblePassReg1">
                         <i class="bi bi-eye"></i>
                     </button>
                     <button type="button" id="togglePassword2" class="btn btn-outline-secondary position-absolute end-0 translate-middle-y customVisiblePassReg2">
                         <i class="bi bi-eye"></i>
                     </button>
-
                     <div class="form-check mt-2">
                         <input type="checkbox" class="form-check-input" id="agreeTerms" required style="border-radius: 4px black;">
                         <label class="form-check-label" for="agreeTerms">
                             Я согласен с <a href="{% url 'personal' %}" target="_blank" class="text-success customPhoneLink">условиями обработки персональных данных <span class="text-danger">*</span></a>
                         </label>
                     </div>
-
                 <input type="submit" class="btn btn-danger custom_btn_auth mt-3" value="Продолжить">
             </form>
-
         {% endif %}
         <div class="mt-3 text-center">
             <p> {% if page == 'login' %} Нет аккаунта ? {% else %} Уже есть аккаунт ? {% endif %}
@@ -73,11 +59,9 @@
                 {% else %}
                     {% url 'login' %}
                 {% endif %}">
-
             {% if page == 'login' %} Зарегистрироваться {% else %} Войти {% endif %}</a></p>
         </div>
     </section>
 </div>
-
 <script src="{% static 'mainapp/js/visable_password.js' %}"></script>
 {% endblock %}

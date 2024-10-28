@@ -14,7 +14,7 @@ def validate_username(username: str) -> str:
 
 
 def validate_first_name(first_name: str) -> str:
-    first_name: str = first_name.lower()
+    first_name: str = first_name.capitalize()
 
     if not re.match(r"^[а-яА-ЯёЁ]{4,20}$", first_name):
         raise ValidationError(
@@ -25,7 +25,7 @@ def validate_first_name(first_name: str) -> str:
 
 
 def validate_last_name(last_name: str) -> str:
-    last_name: str = last_name.lower()
+    last_name: str = last_name.capitalize()
 
     if not re.match(r"^[а-яА-ЯёЁ]{4,20}$", last_name):
         raise ValidationError(
