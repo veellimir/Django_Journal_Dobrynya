@@ -3,30 +3,32 @@
 {% load static %}
 
 {% block extracss %}<link rel="stylesheet" href="{% static 'mainapp/css/auth.css' %}">{% endblock %}
-
 {% block title %}{{ title }}{% endblock %}
 
 {% block content %}
 <div class="d-flex flex-column justify-content-center align-items-center custom_size_section">
     {% include 'includes/logo.html' %}
-
-    <div class="card shadow-lg border-0 rounded-lg mt-5 d-flex justify-content-center align-items-center">
-        <div class="card-header">
-            <h3 class="text-center font-weight-light my-4">Введите новый пароль</h3>
-        </div>
-        
-        <div class="card-footer text-center" style="width: 350px;">
-             <form method="post" class="form">
-                <div class="form__field">
-                    {% csrf_token %}
-                    <p>{{ form.new_password1.label }}</p>
-                    <p>{{ form.new_password1 }}</p>
-                    
-                    <p>{{ form.new_password2.label }}</p>
-                    <p>{{ form.new_password2 }}</p>
-                </div>
-                <input type="submit" value="Изменить пароль" class="btn btn-danger custom_btn_auth mt-3">
-            </form>
-        </div>
+    <div class="text-center mt-4">
+        <h3>Введите новый пароль</h3>
     </div>
+    <section>
+        <div class="card shadow-lg border-0 rounded-lg mt-5 d-flex justify-content-center align-items-center">
+            <div class="card-body">
+                <form method="post" class="wrapper--form-auth">
+                    {% csrf_token %}
+                    <div class="mb-3 position-relative">
+                        <label class="form-label">{{ form.new_password1.label }}</label>
+                        {{ form.new_password1 }}
+                    </div>
+                    <div class="mb-3 position-relative">
+                        <label class="form-label">{{ form.new_password2.label }}</label>
+                        {{ form.new_password2 }}
+                    </div>
+                    <input type="submit" value="Изменить пароль" class="btn btn-danger custom_btn_auth mt-3" >
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="{% static 'mainapp/js/visable_password.js' %}"></script>
 {% endblock %}
