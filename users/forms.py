@@ -68,6 +68,11 @@ class UserProfileForm(BaseFormUsers):
             "participation_competition",
             "wishes"
         ]
+    date_of_birth = forms.CharField(
+        label="Подтвердите пароль",
+        widget=forms.DateInput(attrs={"type": "date", "class": "form-control"}),
+    )
+
     def clean_telegram(self):
         telegram = self.cleaned_data.get("telegram")
         return validate_telegram(telegram)

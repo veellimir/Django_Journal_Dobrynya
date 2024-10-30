@@ -28,12 +28,12 @@
                 <div class="mb-3">
                     <label class="form-label">{{ field.label }}</label>
 
-                    {% if page == "edit_admin_profile" and user.is_superuser and field.name == "profile_image" and profile.profile_image.url %}
+                    {% if page == "edit_admin_profile" and field.name == "profile_image" and profile.profile_image.url %}
                         <div class="form-group mb-3 ">
                             <img src="{{ profile.profile_image.url }}" class="card-img-top customSizeProfile" alt="Изображение профиля">
                             <input type="file" class="form-control mt-2" name="profile_image">
                         </div>
-                    {% elif page == "user_questionnaire" and field.name == "profile_image" and profile.profile_image.url %}
+                    {% elif page == "questionnaire" and field.name == "profile_image" and profile.profile_image.url %}
                         <div class="form-group mb-3 ">
                             <img src="{{ profile.profile_image.url }}" class="card-img-top customSizeProfile" alt="Изображение профиля">
                             <input type="file" class="form-control mt-2" name="profile_image">
