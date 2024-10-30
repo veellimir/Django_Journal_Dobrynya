@@ -300,12 +300,3 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Modal cancel classes
-document.addEventListener("DOMContentLoaded", function () {
-  const cancelButton = document.getElementById("openCancelModal");
-  const cancelModal = new bootstrap.Modal(document.getElementById('cancelModal1'));
-
-  cancelButton.addEventListener("click", function () {
-    cancelModal.show();
-  });
-});

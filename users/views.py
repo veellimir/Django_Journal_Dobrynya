@@ -146,6 +146,7 @@ def handle_profile(
 
     if request.method == "POST":
         form = form_users(request.POST, request.FILES, instance=prof)
+        print(form)
         if form.is_valid():
             prof = form.save(commit=False)
             prof.user = request.user
