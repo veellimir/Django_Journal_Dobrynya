@@ -16,7 +16,7 @@ from telebot.views import send_message_to_telegram
 def superuser_required(view_func: Callable) -> Callable:
     def _wrapped_view_func(request, *args: tuple, **kwargs: dict) -> HttpResponse:
         if not request.user.is_superuser:
-            return redirect('home')
+            return redirect("home")
         return view_func(request, *args, **kwargs)
     return user_passes_test(lambda u: u.is_authenticated)(_wrapped_view_func)
 
@@ -131,14 +131,6 @@ def handle_profile(
         form_users,
         page
 ) -> HttpResponse:
-    """
-    Function profile data
-    :param request:
-    :param profile_models:
-    :param form_users:
-    :param page:
-    :return:
-    """
     try:
         prof = profile_models.objects.get(user=request.user)
     except profile_models.DoesNotExist:
@@ -146,7 +138,6 @@ def handle_profile(
 
     if request.method == "POST":
         form = form_users(request.POST, request.FILES, instance=prof)
-        print(form)
         if form.is_valid():
             prof = form.save(commit=False)
             prof.user = request.user
@@ -174,7 +165,7 @@ def user_questionnaire(request: HttpRequest) -> HttpResponse:
         request,
         profile_models=Profile,
         form_users=UserProfileForm,
-        page="user_questionnaire"
+        page="questionnaire"
     )
 
 
