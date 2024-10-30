@@ -69,7 +69,7 @@ class UserProfileForm(BaseFormUsers):
             "wishes"
         ]
     date_of_birth = forms.CharField(
-        label="Подтвердите пароль",
+        label="Дата рождения",
         widget=forms.DateInput(attrs={"type": "date", "class": "form-control"}),
     )
 
