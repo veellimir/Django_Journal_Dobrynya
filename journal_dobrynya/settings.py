@@ -26,14 +26,14 @@ INSTALLED_APPS = [
     'colorfield',
     'rest_framework',
 
-    'mainapp.apps.MainappConfig',
-    'users.apps.UsersConfig',
-    'news.apps.NewsConfig',
-    'tasks.apps.TasksConfig',
-    'app_schedules.apps.AppSchedulesConfig',
-    'attendance.apps.AttendanceConfig',
-    'stats.apps.StatsConfig',
-    'telebot.apps.TelebotConfig',
+    'app.mainapp.apps.MainappConfig',
+    'app.users.apps.UsersConfig',
+    'app.news.apps.NewsConfig',
+    'app.tasks.apps.TasksConfig',
+    'app.app_schedules.apps.AppSchedulesConfig',
+    'app.attendance.apps.AttendanceConfig',
+    'app.stats.apps.StatsConfig',
+    'app.telebot.apps.TelebotConfig',
 ]
 
 REST_FRAMEWORK = {
@@ -70,8 +70,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                'tasks.context_processors.quantity_new_task_user',
-                'tasks.context_processors.quantity_check_task_user',
+                'app.tasks.context_processors.quantity_new_task_user',
+                'app.tasks.context_processors.quantity_check_task_user',
             ],
         },
     },

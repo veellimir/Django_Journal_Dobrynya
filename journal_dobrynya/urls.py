@@ -7,12 +7,12 @@ from django.conf.urls.static import static
 urlpatterns = [
     path("admin/", admin.site.urls),
 
-    path("", include("users.urls")),
-    path("", include("app_schedules.urls")),
-    path("", include("tasks.urls")),
-    path("", include("news.urls")),
-    path("", include("attendance.urls")),
-    path("", include("stats.urls")),
+    path("", include("app.users.urls")),
+    path("", include("app.app_schedules.urls")),
+    path("", include("app.tasks.urls")),
+    path("", include("app.news.urls")),
+    path("", include("app.attendance.urls")),
+    path("", include("app.stats.urls")),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
