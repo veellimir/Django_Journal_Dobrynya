@@ -4,11 +4,11 @@ from typing import Optional
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
-from app_schedules.serializers import EventSerializer, CancelEventsSerializer
-from attendance.serializers import AttendanceSerializer
+from app.app_schedules.serializers import EventSerializer, CancelEventsSerializer
+from app.attendance.serializers import AttendanceSerializer
 
-from app_schedules.models import Event, CancelEvents
-from attendance.models import UsersAttendance
+from app.app_schedules.models import Event, CancelEvents
+from app.attendance.models import UsersAttendance
 
 
 class EventListView(generics.ListAPIView):
