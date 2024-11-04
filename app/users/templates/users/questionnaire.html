@@ -12,8 +12,12 @@
 
 {% block content %}
 <div class="text-center mt-5">
-    {% if not request.user.profile.date_of_birth and not user.is_superuser  %}
-        <h1>Анкета спортсмена</h1>
+    {% if not request.user.profile.profile_image and not user.is_superuser  %}
+        {% if page == 'parent_questionnaire' %}
+            <h1>Анкета родителя</h1>
+        {% else %}
+            <h1>Анкета спортсмена</h1>
+        {% endif %}
         <p>Пожалуйста, заполните анкету. Это буквально 2-3 минуты &#128526;</p>
     {% else %}
         <h1>Редактирование профиля</h1>
@@ -36,6 +40,11 @@
                     {% elif page == "questionnaire" and field.name == "profile_image" and profile.profile_image.url %}
                         <div class="form-group mb-3 ">
                             <img src="{{ profile.profile_image.url }}" class="card-img-top customSizeProfile" alt="Изображение профиля">
+                            <input type="file" class="form-control mt-2" name="profile_image">
+                        </div>
+                    {% elif page == "parent_questionnaire" and field.name == "profile_image" and profile.profile_image.url %}
+                        <div class="form-group mb-3 ">
+                            <img src="{{ user.profileparent.profile_image.url }}" class="card-img-top customSizeProfile" alt="Изображение профиля">
                             <input type="file" class="form-control mt-2" name="profile_image">
                         </div>
                     {% elif field.name == "participation_competition" %}

@@ -5,6 +5,53 @@
 {% block content %}
 <div class="container mt-5">
     <div class="row">
+        {% if prof.profileparent %}
+        <div class="col-md-4">
+            <div class="card">
+                <img src="{{ prof.profileparent.profile_image.url }}" class="card-img-top" alt="Изображение пользователя">
+                <div class="card-body text-align-left">
+                    <h4 class="card-title">{{ prof.username }}</h4>
+                    <h5 class="card-title">{{ prof.first_name }} {{ prof.last_name }}</h5>
+                    <!-- <p class="card-text">Баллы: {{ prof.profile.points }}</p> -->
+                    <hr class="my-4">
+                    <p class="mb-1"><strong>Дети:</strong> <br>
+                        {% for child in user.profileparent.children.all %}
+                        <a href="{% url 'profile' pk=child.user.pk %}" class="badge bg-danger text-decoration-none badge-hover">
+                            {{ child.user.get_full_name }}
+                        </a>
+                        {% empty %}
+                            <span class="text-muted">Дети ещё не добавлены</span>
+                    {% endfor %}</p>
+                    <hr class="my-4">
+                    <p class="card-text">Тел: <a href="tel:{{ prof.profileparent.phone }}" class="customPhoneLink text-secondary">{{ prof.profileparent.phone }}</a></p>
+                    
+                    {% if prof.profileparent.telegram %}
+                    <a href="{{ prof.profileparent.telegram }}" target="_blank">
+                        <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
+                    </a>
+                    {% endif %}
+                    {% if prof.profileparent.vk %}
+                    <a href="{{ user.profileparent.vk }}" target="_blank">
+                        <img src="{% static 'mainapp/images/vk.png' %}" alt="ВКонтакте" class="img-fluid icon_social">
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Информация о родителе</h3>
+                </div>
+                <div class="card-body">
+                    <h4>Место работы</h4>
+                    <p>{{ prof.profileparent.parents_place_work }}</p>
+                    <h4>Домашний адрес</h4>
+                    <p>{{ prof.profileparent.address }}</p>
+                </div>
+            </div>
+        </div>
+        {% else %}
         <div class="col-md-4">
             <div class="card">
                 <img src="{{ prof.profile.profile_image.url }}" class="card-img-top" alt="Изображение пользователя">
@@ -14,7 +61,7 @@
                     <p class="card-text">Дата рождения: {{ prof.profile.date_of_birth }}</p>
                     <p class="card-text">Баллы: {{ prof.profile.points }}</p>
                     <hr class="my-4">
-                    <p class="mb-1"><strong>Виды направлений:</strong> <br> 
+                    <p class="mb-1"><strong>Виды направлений:</strong> <br>
                         {% for direction in prof.profile.directions.all %}
                         - <span class="badge bg-danger">{{ direction.name }}</span>
                     {% empty %}
@@ -23,19 +70,21 @@
                     <hr class="my-4">
                     <p class="card-text">Адрес: {{ prof.profile.address }}</p>
                     <p class="card-text">Тел: <a href="tel:{{ prof.profile.phone }}" class="customPhoneLink text-secondary">{{ prof.profile.phone }}</a></p>
-                   
-                    <hr class="my-4">
+                    
                     {% if prof.profile.telegram %}
                     <a href="{{ prof.profile.telegram }}" target="_blank">
                         <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
                     </a>
                     {% endif %}
-
                     {% if prof.profile.vk %}
                     <a href="{{ user.profile.vk }}" target="_blank">
                         <img src="{% static 'mainapp/images/vk.png' %}" alt="ВКонтакте" class="img-fluid icon_social">
                     </a>
                     {% endif %}
+                    <hr class="my-4">
+                    <div class="mt-2">
+                        <a href="{% url 'profile_awards' %}"><button class="btn btn-outline btn-danger">Посмотреть награды</button></a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -71,5 +120,6 @@
             </div>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
