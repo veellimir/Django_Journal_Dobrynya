@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2 class="my-4 text-center">{{ title }}</h2>
+
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card">
+                <img src="{% static 'mainapp/images/edit_traning.png' %}" class="card-img-top" alt="Certificate 1">
+                <div class="card-body">
+                    <h5 class="card-title">За участие в  соревновании по областному турниру</h5>
+                    <p class="card-text">1 место</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,3 +1,5 @@
+from typing import Callable, Dict, List
+
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -5,10 +7,13 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 
-from typing import Callable, Dict, List
-
-from .forms import CustomUserRegisterForm, UserProfileForm, AdminProfileForm
-from .models import Profile, ProfileAdmin
+from .forms import (
+    CustomUserRegisterForm,
+    UserProfileForm,
+    AdminProfileForm,
+    UserParentForm
+)
+from .models import Profile, ProfileAdmin, ProfileParent
 from app.telebot.views import send_message_to_telegram
 
 
@@ -17,6 +22,7 @@ def superuser_required(view_func: Callable) -> Callable:
         if not request.user.is_superuser:
             return redirect("home")
         return view_func(request, *args, **kwargs)
+
     return user_passes_test(lambda u: u.is_authenticated)(_wrapped_view_func)
 
 
@@ -45,7 +51,12 @@ def user_login(request: HttpRequest) -> HttpResponse:
                     prof = Profile.objects.get(user=user)
                     return redirect("home")
                 except Profile.DoesNotExist:
-                    return redirect("questionnaire")
+                    try:
+                        parent_prof = ProfileParent.objects.get(user=user)
+                        return redirect("home")
+                    except ProfileParent.DoesNotExist:
+                        return redirect("user_select_role")
+
             else:
                 return redirect("home")
 
@@ -118,9 +129,14 @@ def profile(request: HttpRequest, pk: int) -> HttpResponse:
 
     context: Dict[str, User] = {
         "title": "Информация о пользователе",
-        "prof": prof
+        "prof": prof,
     }
     return render(request, "users/profile.html", context)
+
+
+@login_required
+def user_select_role(request: HttpRequest) -> HttpResponse:
+    return render(request, "users/user_select_role.html")
 
 
 @login_required
@@ -128,7 +144,8 @@ def handle_profile(
         request: HttpRequest,
         profile_models,
         form_users,
-        page
+        page,
+        user_type
 ) -> HttpResponse:
     try:
         prof = profile_models.objects.get(user=request.user)
@@ -154,6 +171,7 @@ def handle_profile(
         "form": form,
         "profile": prof,
         "page": page,
+        "user_type": user_type,
     }
     return render(request, "users/questionnaire.html", context)
 
@@ -164,7 +182,19 @@ def user_questionnaire(request: HttpRequest) -> HttpResponse:
         request,
         profile_models=Profile,
         form_users=UserProfileForm,
-        page="questionnaire"
+        page="questionnaire",
+        user_type="user"
+    )
+
+
+@login_required
+def parent_questionnaire(request: HttpRequest) -> HttpResponse:
+    return handle_profile(
+        request,
+        profile_models=ProfileParent,
+        form_users=UserParentForm,
+        page="parent_questionnaire",
+        user_type="parent"
     )
 
 
@@ -175,8 +205,17 @@ def edit_admin_profile(request: HttpRequest) -> HttpResponse:
         request,
         profile_models=ProfileAdmin,
         form_users=AdminProfileForm,
-        page="edit_admin_profile"
+        page="edit_admin_profile",
+        user_type="admin"
     )
+
+
+@login_required
+def profile_awards(request: HttpRequest) -> HttpRequest:
+    context = {
+        "title": "Мои Награды"
+    }
+    return render(request, "users/awards.html", context)
 
 
 def personal_data(request: HttpRequest) -> HttpResponse:

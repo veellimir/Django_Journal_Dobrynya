@@ -13,40 +13,84 @@
                     <div class="card h-100 shadow-sm">
                         <div class="card-body d-flex">
                             <div class="flex-shrink-0 text-center">
-                                {% if user.profile.profile_image %}
-                                    <img src="{{ user.profile.profile_image.url }}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user mb-3">
-                                {% else %}
-                                    <img src="{% static 'mainapp/images/base_user.png' %}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user mb-3">
+                                {% if user.profile %}
+                                    {% if user.profile.profile_image %}
+                                        <img src="{{ user.profile.profile_image.url }}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user mb-3">
+                                    {% else %}
+                                        <img src="{% static 'mainapp/images/base_user.png' %}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user mb-3">
+                                    {% endif %}
+                                    <p class="mt-3">Подробнее...</p>
+                                {% elif user.profileparent %}
+                                    {% if user.profileparent.profile_image %}
+                                        <img src="{{ user.profileparent.profile_image.url }}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user mb-3">
+                                    {% else %}
+                                        <img src="{% static 'mainapp/images/base_user.png' %}" alt="Изображение пользователя" class="img-fluid rounded-circle custom_image_user mb-3">
+                                    {% endif %}
+                                    <p class="mt-3">Подробнее...</p>
                                 {% endif %}
-                                <p class="mt-3">Подробнее...</p>
                             </div>
                             <div class="flex-grow-1 ms-3">
                                 <h5 class="card-title">{{ user.username }}</h5>
-                                <p class="mb-1"><strong>Баллы:</strong> {{ user.profile.points }}</p>
+                                <p class="mb-1"><strong>Баллы:</strong> 
+                                    {% if user.profile %}
+                                        {{ user.profile.points }}
+                                    {% elif user.profileparent %}
+                                        {{ user.profileparent.points }}
+                                    {% endif %}
+                                </p>
                                 <p class="mb-1"><strong>Имя:</strong> {{ user.first_name }}</p>
                                 <p class="mb-1"><strong>Фамилия:</strong> {{ user.last_name }}</p>
                                 <hr class="my-3">
+                                {% if user.profileparent %}
+                                <p class="mb-1"><strong>Дети:</strong></p>
+                                    {% for child in user.profileparent.children.all %}
+                                        <a href="{% url 'profile' pk=child.user.pk %}" class="badge bg-danger text-decoration-none badge-hover">
+                                            {{ child.user.get_full_name }}
+                                        </a>
+                                        {% empty %}
+                                            <span class="text-muted">Дети ещё не добавлены</span>
+                                    {% endfor %}
+                                {% else %}
                                 <p class="mb-1"><strong>Виды направлений:</strong></p>
                                 <p class="mb-3">
-                                    {% for direction in user.profile.directions.all %}
-                                        <span class="badge bg-danger">{{ direction.name }}</span>
-                                    {% empty %}
-                                        Нет направлений
-                                    {% endfor %}
+                                    {% if user.profile %}
+                                        {% for direction in user.profile.directions.all %}
+                                            <span class="badge bg-danger">{{ direction.name }}</span>
+                                        {% empty %}
+                                            Нет направлений
+                                        {% endfor %}
+                                    {% elif user.profileparent %}
+                                        {% for direction in user.profileparent.directions.all %}
+                                            <span class="badge bg-danger">{{ direction.name }}</span>
+                                        {% empty %}
+                                            Нет направлений
+                                        {% endfor %}
+                                    {% endif %}
                                 </p>
+                                {% endif %}
                                 <hr class="my-3">
                                 <p class="mb-1"><strong>Контакты:</strong></p>
-                                {% if user.profile.phone %}
+                                {% if user.profile and user.profile.phone %}
                                     <p class="mb-1"><a href="tel:{{ user.profile.phone }}" class="text-secondary">{{ user.profile.phone }}</a></p>
+                                {% elif user.profileparent and user.profileparent.phone %}
+                                    <p class="mb-1"><a href="tel:{{ user.profileparent.phone }}" class="text-secondary">{{ user.profileparent.phone }}</a></p>
                                 {% endif %}
                                 <div class="d-flex">
-                                    {% if user.profile.telegram %}
+                                    {% if user.profile and user.profile.telegram %}
                                         <a href="{{ user.profile.telegram }}" target="_blank" class="me-2">
                                             <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
                                         </a>
+                                    {% elif user.profileparent and user.profileparent.telegram %}
+                                        <a href="{{ user.profileparent.telegram }}" target="_blank" class="me-2">
+                                            <img src="{% static 'mainapp/images/telegram.png' %}" alt="Telegram" class="img-fluid icon_social">
+                                        </a>
                                     {% endif %}
-                                    {% if user.profile.vk %}
-                                        <a href="{{ user.profile.vk }}" target="_blank">
+                                    {% if user.profile and user.profile.vk %}
+                                        <a href="{{ user.profile.vk }}" target="_blank" class="me-2">
+                                            <img src="{% static 'mainapp/images/vk.png' %}" alt="ВКонтакте" class="img-fluid icon_social">
+                                        </a>
+                                    {% elif user.profileparent and user.profileparent.vk %}
+                                        <a href="{{ user.profileparent.vk }}" target="_blank" class="me-2">
                                             <img src="{% static 'mainapp/images/vk.png' %}" alt="ВКонтакте" class="img-fluid icon_social">
                                         </a>
                                     {% endif %}
@@ -59,4 +103,5 @@
             {% endif %}
         {% endfor %}
     </div>
+</div>
 {% endblock %}

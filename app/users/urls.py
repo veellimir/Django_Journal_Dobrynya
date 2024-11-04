@@ -29,8 +29,11 @@ urlpatterns = [
     ),
 
     path("questionnaire/", views.user_questionnaire, name="questionnaire"),
+    path("parent-questionnaire/", views.parent_questionnaire, name="parent_questionnaire"),
+    path("select-role/", views.user_select_role, name="user_select_role"),
     path("all-users/", views.all_users, name="all_users"),
     path("all-coach/", views.all_coach, name="all_coach"),
     path("user/<int:pk>/", views.profile, name="profile"),
     path("edit-admin-profile/", views.edit_admin_profile, name="edit_admin_profile"),
+    path("profile-awards", views.profile_awards, name="profile_awards"),
 ]

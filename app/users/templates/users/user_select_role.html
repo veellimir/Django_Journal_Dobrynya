@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Кто вы? </h2>
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Родитель</h5>
+                    <p class="card-text">Выберите, если вы представляете родителя.</p>
+                    <a href="{% url 'parent_questionnaire' %}" class="btn btn-danger">Продолжить как Родитель</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Ученик</h5>
+                    <p class="card-text">Выберите, если вы представляете ученика.</p>
+                    <a href="{% url 'questionnaire' %}" class="btn btn-danger">Продолжить как Ученик</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

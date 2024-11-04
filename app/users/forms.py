@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from django import forms
 
-from .models import Profile, ProfileAdmin
+from .models import Profile, ProfileAdmin, ProfileParent
 from app.mainapp.base_forms import BaseFormUsers
 from app.users.validators_auth import *
 
@@ -66,12 +66,31 @@ class UserProfileForm(BaseFormUsers):
             "about_club",
             "goals_season",
             "participation_competition",
-            "wishes"
+            "wishes",
         ]
+
     date_of_birth = forms.CharField(
         label="Дата рождения",
         widget=forms.DateInput(attrs={"type": "date", "class": "form-control"}),
     )
+
+    def clean_telegram(self):
+        telegram = self.cleaned_data.get("telegram")
+        return validate_telegram(telegram)
+
+
+class UserParentForm(BaseFormUsers):
+    class Meta:
+        model = ProfileParent
+        fields = [
+            "profile_image",
+            "phone",
+            "telegram",
+            "vk",
+            "address",
+            "parents_place_work",
+            # "children",
+        ]
 
     def clean_telegram(self):
         telegram = self.cleaned_data.get("telegram")
@@ -90,6 +109,7 @@ class AdminProfileForm(BaseFormUsers):
             "telegram",
             "vk",
         ]
+
     def clean_name(self):
         name = self.cleaned_data.get("name")
         return validate_first_name(name)

@@ -29,14 +29,14 @@ class Profile(SocialMixin, models.Model):
         blank=False,
         null=False,
         help_text="*",
-        verbose_name="Адрес"
+        verbose_name="Домашний адрес"
     )
 
     fio_parents = models.TextField(
         blank=False,
         null=False,
         help_text="*",
-        verbose_name="ФИО родителей"
+        verbose_name="ФИО и номер телефона родителей"
     )
     parents_place_work = models.TextField(blank=True, null=True, verbose_name="Место работы родителей")
 
@@ -68,7 +68,7 @@ class Profile(SocialMixin, models.Model):
         blank=False,
         null=False,
         help_text="*",
-        verbose_name="Виды спорта больше всего нравятся ребёнку"
+        verbose_name="Любимые виды спорта"
     )
     about_club = models.TextField(
         blank=False,
@@ -97,7 +97,7 @@ class Profile(SocialMixin, models.Model):
     wishes = models.TextField(
         blank=True,
         null=True,
-        verbose_name="Пожелания"
+        verbose_name="Пожелания к тренировочному и организационному процессу в клубе"
     )
     points = models.PositiveIntegerField(
         default=3,
@@ -110,6 +110,23 @@ class Profile(SocialMixin, models.Model):
     class Meta:
         verbose_name = "дружинника"
         verbose_name_plural = "Вся дружина"
+
+
+class ProfileParent(SocialMixin, models.Model):
+    address = models.TextField(
+        blank=False,
+        null=False,
+        help_text="*",
+        verbose_name="Домашний адрес"
+    )
+    parents_place_work = models.TextField(blank=True, null=True, verbose_name="Ваше место работы")
+    children = models.ManyToManyField(
+    "Profile",
+        related_name="parents",
+        verbose_name="Дети",
+        blank=True
+    )
+
 
 
 class ProfileAdmin(SocialMixin, models.Model):
