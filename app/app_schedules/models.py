@@ -6,6 +6,10 @@ from app.users.models import ProfileAdmin, TrainingDirections
 
 
 class Event(StrMixin, models.Model):
+    EVENT_TYPE_CHOICES = (
+        ("schedules_training", "Расписания", ),
+        ("competition", "Мероприятие", ),
+    )
     DAYS_OF_WEEK_CHOICES = (
         ("пн", 'Понедельник'),
         ("вт", 'Вторник'),
@@ -28,6 +32,14 @@ class Event(StrMixin, models.Model):
     end_time = models.TimeField(verbose_name="Конец в")
     days_of_week = models.CharField(max_length=50, blank=True, verbose_name="Дни недели на весь год")
     elem_color = ColorField(max_length=50, default="#0d6dfd7f", verbose_name="Цвет в расписании")
+    category = models.CharField(
+        max_length=20,
+        choices=EVENT_TYPE_CHOICES,
+        default="schedules_training",
+        verbose_name="Тип события",
+        blank=False,
+        null=False
+    )
 
     class Meta:
         verbose_name = "тренировки"

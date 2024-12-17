@@ -23,40 +23,9 @@ weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
 spinner = document.querySelector('.spinner');
 
 document.addEventListener("DOMContentLoaded", function () {
-  const filterMineButton = document.getElementById('filter-mine');
-  const filterAllButton = document.getElementById('filter-all');
-  const filterEventsButton = document.getElementById('filter-events');
 
-  let filter_type = 'mine';  // Начальное значение - false
-
-  // Обработчик для "Только мои занятия"
-  if (filterMineButton) {
-    filterMineButton.addEventListener('click', function () {
-      filter_type = 'mine';  // Показать только свои занятия
-      console.log('Показать только мои занятия');
-      displayEvents(all);  // Вызов с параметром false
-    });
-  }
-
-  // Обработчик для "Все занятия"
-  if (filterAllButton) {
-    filterAllButton.addEventListener('click', function () {
-      filter_type = 'all';  // Показать все занятия
-      console.log('Показать все занятия');
-      displayEvents(all);  // Вызов с параметром true
-    });
-  }
-
-  // Обработчик для "События"
-  if (filterEventsButton) {
-    filterEventsButton.addEventListener('click', function () {
-      filter_type = "competition";  // Показать только события (или изменить на true в зависимости от вашей логики)
-      console.log('Показать только события');
-      displayEvents(all);  // Вызов с параметром false
-    });
-  }
-  function displayEvents(all) {
-    Promise.all([fetchEvents(all), fetchAttendance(currentMonth, currentYear), getCancelEvent()])
+  function displayEvents() {
+    Promise.all([fetchEvents(), fetchAttendance(currentMonth, currentYear), getCancelEvent()])
       .then(([events, attendance, cancelEvents]) => {
         attendanceData = attendance;
         generateCalendar(currentMonth - 1, currentYear, events, cancelEvents);

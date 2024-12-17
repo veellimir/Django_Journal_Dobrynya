@@ -9,28 +9,21 @@
       <div class="row justify-content-center customRowMedia">
         <div class="col-lg-8">
           <div class="calendar customCalendarMedia">
-            <div class="calendar-header bg-danger" >
-              <button class="btn btn-outline-secondary bg-dark previousMonth" >&lt;</button>
+            <div class="calendar-header bg-danger">
+              <button id="previousDay" class="btn btn-outline-secondary bg-dark">&lt;</button>
               <h2 id="month-year"></h2>
-              <button class="btn btn-outline-secondary bg-dark nextMonth">&gt;</button>
+              <button id="nextDay" class="btn btn-outline-secondary bg-dark">&gt;</button>
             </div>
-            <div class="d-block m-1">
-              <div class="btn-group" role="group" aria-label="Filter options">
-            {% if not user.is_superuser %}
-                <button type="button" class="btn btn-outline-primary filter-btn" id="filter-mine">Только мои занятия</button>  
-            {% endif %}
-                <button type="button" class="btn btn-outline-primary filter-btn" id="filter-all">Все занятия</button>
-                <button type="button" class="btn btn-outline-primary filter-btn" id="filter-event">События</button>
-              </div>
-            </div>
+
             <table class="table table-bordered calendar-table" id="calendar-body">
               <thead class="thead-light">
                 <tr id="weekdays" class="weekdays_element" style="position: sticky; top: 0; z-index: 1;"></tr>
               </thead>
               <tbody id="calendar-dates" class="number_day"></tbody>
             </table>
+
             <div class="container-fluid text-right mb-3">
-                {% if user.is_superuser %}
+              {% if user.is_superuser %}
                 <a href="{% url 'admin:app_schedules_event_changelist' %}" target="_blank">
                   <button class="btn btn-secondary">Добавить занятие в календарь</button>
                 </a>
@@ -40,7 +33,6 @@
               <div class="container-fluid text-center mb-3 customCancelLesson"></div>
             <div id="cancelled-events-container"></div>
             <div id="events-container" class="event-list">
-              <!-- <h3>Занятия на<span id="event-date"></span>:</h3> -->
               <ul id="events-list" class="list-group"></ul>
             </div>
           </div>
@@ -48,6 +40,7 @@
       </div>
     </div>
   </div>
+
   <div id="modal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -61,7 +54,8 @@
       </div>
     </div>
   </div>
-   {% if user.is_superuser %}
+
+  {% if user.is_superuser %}
     <div class="modal fade" id="cancelModal1" tabindex="-1" role="dialog" aria-labelledby="cancelModalLabel1" aria-hidden="true">
       <div class="modal-dialog modal-lg" role="document">
           <div class="modal-content">
@@ -94,31 +88,28 @@
       </div>
     </div>
   {% endif %}
+
   <div class="justify-content-center spinner spinner-container">
     <div class="spinner-border" role="status">
         <span class="sr-only"></span>
     </div>
   </div>
 </main>
+
 <script type="module" src="{% static 'mainapp/js/calendar.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 {% if user.is_superuser %}
 <script>
   // Modal cancel classes
-document.addEventListener("DOMContentLoaded", function () {
-  const cancelButton = document.getElementById("openCancelModal"),
-        cancelModal = new bootstrap.Modal(document.getElementById('cancelModal1'));
+  document.addEventListener("DOMContentLoaded", function () {
+    const cancelButton = document.getElementById("openCancelModal"),
+          cancelModal = new bootstrap.Modal(document.getElementById('cancelModal1'));
 
-  cancelButton.addEventListener("click", function () {
-    cancelModal.show();
+    cancelButton.addEventListener("click", function () {
+      cancelModal.show();
+    });
   });
-});
-
- document.addEventListener('DOMContentLoaded', function () {
-   
-});
-
-
 </script>
 {% endif %}
 {% endblock %}

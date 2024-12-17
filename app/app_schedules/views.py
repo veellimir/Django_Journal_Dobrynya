@@ -12,11 +12,11 @@ from app.news.utils import add_news
 
 @login_required
 def schedules(request: HttpRequest) -> HttpResponse:
-    trainings = TrainingDirections.objects.all()
+    # trainings = TrainingDirections.objects.all()
 
     context: Dict[str, str] = {
         "title": "Календарь",
-        "trainings": trainings,
+        # "trainings": trainings,
     }
     return render(request, "app_schedules/schedules.html", context)
 

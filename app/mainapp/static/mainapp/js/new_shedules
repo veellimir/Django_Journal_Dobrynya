@@ -3,71 +3,75 @@ import { fetchEvents, fetchAttendance, getCancelEvent } from "./api_get.js";
 let today = new Date(),
     currentMonth = today.getMonth() + 1,
     currentYear = today.getFullYear(),
+    currentDay = today.getDate(),
     attendanceData = [];
 
 const months = [
-  "Январь",
-  "Февраль",
-  "Март",
-  "Апрель",
-  "Май",
-  "Июнь",
-  "Июль",
-  "Август",
-  "Сентябрь",
-  "Октябрь",
-  "Ноябрь",
-  "Декабрь",
+  "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь",
 ],
 weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
 spinner = document.querySelector('.spinner');
 
 document.addEventListener("DOMContentLoaded", function () {
-  const filterMineButton = document.getElementById('filter-mine');
-  const filterAllButton = document.getElementById('filter-all');
-  const filterEventsButton = document.getElementById('filter-events');
 
-  let filter_type = 'mine';  // Начальное значение - false
+  const isMobile = window.innerWidth < 1024; // Проверка разрешения экрана
 
-  // Обработчик для "Только мои занятия"
-  if (filterMineButton) {
-    filterMineButton.addEventListener('click', function () {
-      filter_type = 'mine';  // Показать только свои занятия
-      console.log('Показать только мои занятия');
-      displayEvents(all);  // Вызов с параметром false
-    });
-  }
-
-  // Обработчик для "Все занятия"
-  if (filterAllButton) {
-    filterAllButton.addEventListener('click', function () {
-      filter_type = 'all';  // Показать все занятия
-      console.log('Показать все занятия');
-      displayEvents(all);  // Вызов с параметром true
-    });
-  }
-
-  // Обработчик для "События"
-  if (filterEventsButton) {
-    filterEventsButton.addEventListener('click', function () {
-      filter_type = "competition";  // Показать только события (или изменить на true в зависимости от вашей логики)
-      console.log('Показать только события');
-      displayEvents(all);  // Вызов с параметром false
-    });
-  }
-  function displayEvents(all) {
-    Promise.all([fetchEvents(all), fetchAttendance(currentMonth, currentYear), getCancelEvent()])
+  function displayEvents() {
+    Promise.all([fetchEvents(), fetchAttendance(currentMonth, currentYear), getCancelEvent()])
       .then(([events, attendance, cancelEvents]) => {
         attendanceData = attendance;
-        generateCalendar(currentMonth - 1, currentYear, events, cancelEvents);
+        if (isMobile) {
+          generateDayView(events, cancelEvents); // Генерация для мобильных
+        } else {
+          generateCalendar(currentMonth - 1, currentYear, events, cancelEvents); // Генерация для десктопа
+        }
         if (spinner) {
           spinner.style.display = 'none';
         }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        generateCalendar(currentMonth - 1, currentYear, []);
+        if (isMobile) {
+          generateDayView([]); // Показать пустой календарь на мобильных
+        } else {
+          generateCalendar(currentMonth - 1, currentYear, []);
+        }
       });
+  }
+
+  function generateDayView(events, cancelEvents) {
+    const dayViewContainer = document.getElementById("calendar-dates");
+    if (dayViewContainer) {
+      dayViewContainer.innerHTML = "";
+    }
+
+    document.getElementById("month-year").textContent = `${weekdays[today.getDay()]} ${today.getDate()} ${months[today.getMonth()]}`;
+
+    const cell = document.createElement("td");
+    const eventDiv = document.createElement("div");
+    eventDiv.textContent = `${today.getDate()}`;
+    cell.appendChild(eventDiv);
+
+    const currentDayOfWeek = weekdays[today.getDay()];
+    cell.setAttribute("data-weekday", currentDayOfWeek);
+
+    updateEvents(cell, today.getDate(), currentDayOfWeek, events, cancelEvents);
+
+    dayViewContainer.appendChild(cell);
+
+    // Стрелки переключения дней
+    const previousDay = document.getElementById("previousDay");
+    const nextDay = document.getElementById("nextDay");
+
+    previousDay.addEventListener("click", () => {
+      today.setDate(today.getDate() - 1);
+      displayEvents();
+    });
+
+    nextDay.addEventListener("click", () => {
+      today.setDate(today.getDate() + 1);
+      displayEvents();
+    });
   }
 
   function generateCalendar(month, year, events, cancelEvents) {
@@ -131,9 +135,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateEvents(cell, date, currentDayOfWeek, events, cancelEvents) {
-    const today = new Date(),
-          cellDate = new Date(currentYear, currentMonth - 1, date);
-  
+    const cellDate = new Date(currentYear, currentMonth - 1, date);
+
     if (events && events.length > 0) {
         const filteredEvents = events.filter(event =>
             event.days_of_week.includes(currentDayOfWeek.toLowerCase())
@@ -183,8 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
-}
-
+  }
 
   function handleDateClick(cell) {
     const dayDiv = cell.querySelector("div"),
@@ -223,19 +225,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     modalName.textContent = event.training_direction_name;
-    
 
     if (isCanceled) {
         modalStartTime.innerHTML = `<b class='text-danger'>Тренировка отменена<b> <br>Причина: ${isCanceled.description}`;
-        modalTitle.textContent = "";
-        modalEndTime.textContent = "";
+        modalTitle.textContent = `Занятие отменено`;
     } else {
-        modalTitle.textContent = `Описания: ${event.title}`;
+        modalTitle.innerHTML = `Занятие: ${event.title}`;
         modalStartTime.textContent = `Время начало: ${event.start_time}`;
         modalEndTime.textContent = `Конец в: ${event.end_time}`;
     }
 
-    const today = new Date();
     const eventDate = new Date(currentYear, currentMonth - 1, date);
     blockCancelLesson.style.display = eventDate < today ? "none" : "";
 
@@ -271,63 +270,22 @@ document.addEventListener("DOMContentLoaded", function () {
     modal.style.display = "block";
 }
 
-  function closeModal() {
+function closeModal() {
     const modal = document.getElementById("modal");
-
     modal.style.display = "none";
-  }
+}
 
-  const span = document.getElementsByClassName("close")[0];
-  if (span) {
+const span = document.getElementsByClassName("close")[0];
+if (span) {
     span.addEventListener("click", closeModal);
-  }
+}
 
-  window.addEventListener("click", (event) => {
+window.addEventListener("click", (event) => {
     const modal = document.getElementById("modal");
     if (modal && event.target === modal) {
-      closeModal();
+        closeModal();
     }
-  });
-
-  const previousMonth = document.querySelector(".previousMonth"),
-        nextMonth = document.querySelector(".nextMonth"),
-        currentMY = document.getElementById("month-year");
-
-  if (previousMonth && nextMonth) {
-    if (currentMY.textContent === "Октябрь 2024") {
-      previousMonth.style.display = "none";
-      previousMonth.disabled = true;
-    }
-
-    previousMonth.addEventListener("click", () => {
-      if (currentMY.textContent !== "Октябрь 2024") {
-        currentMonth--;
-        if (currentMonth < 1) {
-          currentMonth = 12;
-          currentYear--;
-        }
-        displayEvents();
-      }
-    });
-
-    nextMonth.addEventListener("click", () => {
-      currentMonth++;
-      if (currentMonth > 12) {
-        currentMonth = 1;
-        currentYear++;
-      }
-      displayEvents();
-    });
-  }
-
-  displayEvents();
-
-  const btnCancelWorkout = document.getElementById("cancelWorkout");
-
-  if (btnCancelWorkout) {
-    btnCancelWorkout.addEventListener("click", () => {
-        btnCancelWorkout.style.display = "none";
-    });
-  }
 });
 
+displayEvents();
+});

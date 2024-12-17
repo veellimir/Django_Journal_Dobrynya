@@ -14,15 +14,6 @@
               <h2 id="month-year"></h2>
               <button class="btn btn-outline-secondary bg-dark nextMonth">&gt;</button>
             </div>
-            <div class="d-block m-1">
-              <div class="btn-group" role="group" aria-label="Filter options">
-            {% if not user.is_superuser %}
-                <button type="button" class="btn btn-outline-primary filter-btn" id="filter-mine">Только мои занятия</button>  
-            {% endif %}
-                <button type="button" class="btn btn-outline-primary filter-btn" id="filter-all">Все занятия</button>
-                <button type="button" class="btn btn-outline-primary filter-btn" id="filter-event">События</button>
-              </div>
-            </div>
             <table class="table table-bordered calendar-table" id="calendar-body">
               <thead class="thead-light">
                 <tr id="weekdays" class="weekdays_element" style="position: sticky; top: 0; z-index: 1;"></tr>
@@ -113,12 +104,6 @@ document.addEventListener("DOMContentLoaded", function () {
     cancelModal.show();
   });
 });
-
- document.addEventListener('DOMContentLoaded', function () {
-   
-});
-
-
 </script>
 {% endif %}
 {% endblock %}
