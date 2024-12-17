@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (filterMineButton) {
     filterMineButton.addEventListener('click', function () {
       filter_type = 'mine';
+      console.log('Показать только мои занятия');
       displayEvents(filter_type);
     });
   }
@@ -39,6 +40,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (filterAllButton) {
     filterAllButton.addEventListener('click', function () {
       filter_type = 'all';
+      console.log('Показать все занятия');
       displayEvents(filter_type);
     });
   }
@@ -46,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (filterEventsButton) {
     filterEventsButton.addEventListener('click', function () {
       filter_type = "competition";
+      console.log('Показать только события');
       displayEvents(filter_type);
     });
   }
@@ -120,7 +123,7 @@ function generateCalendar(month, year, events, cancelEvents, filterType) {
             handleDateClick(cell);
           });
   
-          updateEvents(cell, date, currentDayOfWeek, events, cancelEvents, filterType);
+          updateEvents(cell, date, currentDayOfWeek, events, cancelEvents, filterType); // Передаем filterType
           date++;
           currentWeekday = (currentWeekday + 1) % 7;
         }
@@ -227,8 +230,10 @@ function openModal(event, date, isCanceled) {
 
       modalTeacher.textContent = `Преподаватели: ${coaches}, ${lastCoach}`;
     }
+
     modalName.textContent = event.training_direction_name;
     
+
     if (isCanceled) {
         modalStartTime.innerHTML = `<b class='text-danger'>Тренировка отменена<b> <br>Причина: ${isCanceled.description}`;
         modalTitle.textContent = "";
@@ -326,8 +331,8 @@ const previousMonth = document.querySelector(".previousMonth"),
       displayEvents();
     });
 }
-displayEvents();
 
+displayEvents();
 
 const btnCancelWorkout = document.getElementById("cancelWorkout");
   if (btnCancelWorkout) {
@@ -336,4 +341,3 @@ const btnCancelWorkout = document.getElementById("cancelWorkout");
     });
   }
 });
-

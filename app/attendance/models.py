@@ -12,4 +12,8 @@ class UsersAttendance(models.Model):
     is_present = models.BooleanField(default=False)
 
     class Meta:
-        unique_together = ("profile", "direction", "date", )
+        unique_together = (
+            "profile",
+            "direction",
+            "date",
+        )

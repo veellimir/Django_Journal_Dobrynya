@@ -1,19 +1,25 @@
+export function fetchEvents(filterType = 'mine') {
+  const url = new URL("/api/events/", window.location.origin),
+        params = new URLSearchParams();
 
-export function fetchEvents() {
-    return fetch("/api/events/")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then((data) => {
-        let events = data;
-        return events;
-      })
-      .catch((error) => {
-        return;
-    });
+  params.append("filter", filterType);
+  url.search = params.toString();
+
+  return fetch(url)
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then((data) => {
+      let events = data;
+      return events;
+    })
+    .catch((error) => {
+      console.error('Error fetching events:', error);
+      return [];
+  });
 }
 
 export function getCancelEvent() {
@@ -23,11 +29,9 @@ export function getCancelEvent() {
         return Array.isArray(data) ? data : [];
       })
       .catch(error => {
-        console.error('error list cancel event:', error);
         return [];
       });
 }
-
 
 export function fetchAttendance(month, year) {
   return fetch(`/api/attendance/?month=${month}&year=${year}`)
@@ -42,7 +46,6 @@ export function fetchAttendance(month, year) {
       
     })
     .catch((error) => {
-      console.error('Fetch error:', error);
       return [];
     });
 }
