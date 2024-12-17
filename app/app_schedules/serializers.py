@@ -14,17 +14,24 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = [
             "training_direction_name",
+            "competition_name",
             "title",
             "teacher",
             "start_time",
             "end_time",
             "days_of_week",
             "elem_color",
-            "category"
+            "category",
+            "event_date"
         ]
 
     def get_training_direction_name(self, obj: Event) -> str:
-        return obj.name.name if obj.name else None
+        # Если training_direction_name пустое, используем competition_name
+        if obj.name:
+            return obj.name.name
+        elif obj.competition_name:
+            return obj.competition_name
+        return None
 
     def to_representation(self, instance: Event) -> Dict[str, any]:
         representation = super().to_representation(instance)
@@ -32,7 +39,10 @@ class EventSerializer(serializers.ModelSerializer):
         representation["end_time"] = instance.end_time.strftime("%H:%M")
         representation["days_of_week"] = instance.days_of_week.split(",") if instance.days_of_week else []
 
+        if instance.event_date:
+            representation["event_date"] = instance.event_date.strftime("%Y-%m-%d")
         return representation
+
 
 
 class CancelEventsSerializer(serializers.ModelSerializer):

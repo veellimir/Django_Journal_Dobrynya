@@ -3,129 +3,128 @@ import { fetchEvents, fetchAttendance, getCancelEvent } from "./api_get.js";
 let today = new Date(),
     currentMonth = today.getMonth() + 1,
     currentYear = today.getFullYear(),
-    currentDay = today.getDate(),
     attendanceData = [];
 
 const months = [
-  "Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь",
+  "Январь",
+  "Февраль",
+  "Март",
+  "Апрель",
+  "Май",
+  "Июнь",
+  "Июль",
+  "Август",
+  "Сентябрь",
+  "Октябрь",
+  "Ноябрь",
+  "Декабрь",
 ],
 weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
 spinner = document.querySelector('.spinner');
 
 document.addEventListener("DOMContentLoaded", function () {
+  const filterMineButton = document.getElementById('filter-mine'),
+        filterAllButton = document.getElementById('filter-all'),
+        filterEventsButton = document.getElementById('filter-events');
 
-  const isMobile = window.innerWidth < 1024; // Проверка разрешения экрана
+  let filter_type = 'mine';
 
-  function displayEvents() {
-    Promise.all([fetchEvents(), fetchAttendance(currentMonth, currentYear), getCancelEvent()])
+  if (filterMineButton) {
+    filterMineButton.addEventListener('click', function () {
+      filter_type = 'mine';
+      console.log('Показать только мои занятия');
+      displayEvents(filter_type);
+    });
+  }
+
+  if (filterAllButton) {
+    filterAllButton.addEventListener('click', function () {
+      filter_type = 'all';
+      console.log('Показать все занятия');
+      displayEvents(filter_type);
+    });
+  }
+
+  if (filterEventsButton) {
+    filterEventsButton.addEventListener('click', function () {
+      filter_type = "competition";
+      console.log('Показать только события');
+      displayEvents(filter_type);
+    });
+  }
+
+
+function displayEvents(filterType) {
+    if (filterType === "competition") {
+      displayedCompetitionDates = [];
+    }
+  
+    Promise.all([fetchEvents(filterType), fetchAttendance(currentMonth, currentYear), getCancelEvent()])
       .then(([events, attendance, cancelEvents]) => {
         attendanceData = attendance;
-        if (isMobile) {
-          generateDayView(events, cancelEvents); // Генерация для мобильных
-        } else {
-          generateCalendar(currentMonth - 1, currentYear, events, cancelEvents); // Генерация для десктопа
-        }
+        generateCalendar(currentMonth - 1, currentYear, events, cancelEvents, filterType);
         if (spinner) {
           spinner.style.display = 'none';
         }
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
-        if (isMobile) {
-          generateDayView([]); // Показать пустой календарь на мобильных
-        } else {
-          generateCalendar(currentMonth - 1, currentYear, []);
-        }
+        generateCalendar(currentMonth - 1, currentYear, [], [], filterType);
       });
   }
-
-  function generateDayView(events, cancelEvents) {
-    const dayViewContainer = document.getElementById("calendar-dates");
-    if (dayViewContainer) {
-      dayViewContainer.innerHTML = "";
-    }
-
-    document.getElementById("month-year").textContent = `${weekdays[today.getDay()]} ${today.getDate()} ${months[today.getMonth()]}`;
-
-    const cell = document.createElement("td");
-    const eventDiv = document.createElement("div");
-    eventDiv.textContent = `${today.getDate()}`;
-    cell.appendChild(eventDiv);
-
-    const currentDayOfWeek = weekdays[today.getDay()];
-    cell.setAttribute("data-weekday", currentDayOfWeek);
-
-    updateEvents(cell, today.getDate(), currentDayOfWeek, events, cancelEvents);
-
-    dayViewContainer.appendChild(cell);
-
-    // Стрелки переключения дней
-    const previousDay = document.getElementById("previousDay");
-    const nextDay = document.getElementById("nextDay");
-
-    previousDay.addEventListener("click", () => {
-      today.setDate(today.getDate() - 1);
-      displayEvents();
-    });
-
-    nextDay.addEventListener("click", () => {
-      today.setDate(today.getDate() + 1);
-      displayEvents();
-    });
-  }
-
-  function generateCalendar(month, year, events, cancelEvents) {
+  
+  
+function generateCalendar(month, year, events, cancelEvents, filterType) {
     let firstDay = new Date(year, month, 1),
-      lastDay = new Date(year, month + 1, 0),
-      numDays = lastDay.getDate(),
-      startingDay = (firstDay.getDay() + 6) % 7;
-
+        lastDay = new Date(year, month + 1, 0),
+        numDays = lastDay.getDate(),
+        startingDay = (firstDay.getDay() + 6) % 7;
+  
     document.getElementById("month-year").textContent = `${months[month]} ${year}`;
-
+  
     let calendarDates = document.getElementById("calendar-dates");
     if (calendarDates) {
       calendarDates.innerHTML = "";
     }
-
+  
     let weekdaysRow = document.getElementById("weekdays");
     if (weekdaysRow) {
       weekdaysRow.innerHTML = weekdays.map((day) => `<th>${day}</th>`).join("");
     }
-
+  
     let date = 1,
-      currentWeekday = startingDay;
-
+        currentWeekday = startingDay;
+  
     for (let i = 0; i < 6; i++) {
       let row = document.createElement("tr");
-
+  
       for (let j = 0; j < 7; j++) {
         let cell = document.createElement("td");
-
+  
         if ((i === 0 && j < startingDay) || date > numDays) {
           cell.textContent = "";
         } else {
           let eventDiv = document.createElement("div");
           eventDiv.textContent = date;
           cell.appendChild(eventDiv);
-
+  
           let currentDayOfWeek = weekdays[currentWeekday];
           cell.setAttribute("data-weekday", currentDayOfWeek);
-
+  
           const cellDate = new Date(year, month, date);
-
+  
           if (cellDate.toDateString() === today.toDateString()) {
             cell.style.backgroundColor = "#7DA58D";
           } else if (cellDate < today) {
             cell.style.backgroundColor = "#d3d3d3";
           }
-
+  
           cell.addEventListener("click", () => {
             handleDateClick(cell);
           });
-
-          updateEvents(cell, date, currentDayOfWeek, events, cancelEvents);
+  
+          updateEvents(cell, date, currentDayOfWeek, events, cancelEvents, filterType); // Передаем filterType
           date++;
-
           currentWeekday = (currentWeekday + 1) % 7;
         }
         row.appendChild(cell);
@@ -133,62 +132,69 @@ document.addEventListener("DOMContentLoaded", function () {
       calendarDates.appendChild(row);
     }
   }
+  
 
-  function updateEvents(cell, date, currentDayOfWeek, events, cancelEvents) {
-    const cellDate = new Date(currentYear, currentMonth - 1, date);
+let displayedCompetitionDates = [];
 
-    if (events && events.length > 0) {
-        const filteredEvents = events.filter(event =>
-            event.days_of_week.includes(currentDayOfWeek.toLowerCase())
+function updateEvents(cell, date, currentDayOfWeek, events, cancelEvents, filterType) {
+  const cellDate = new Date(currentYear, currentMonth - 1, date);
+
+  if (events && events.length > 0) {
+    const filteredEvents = events.filter(event => {
+      if (filterType === "competition") {
+        const eventDate = new Date(event.event_date);
+        return eventDate.toDateString() === cellDate.toDateString();
+      }
+      return event.days_of_week.includes(currentDayOfWeek.toLowerCase());
+    });
+
+    filteredEvents.sort((a, b) => {
+      const timeA = new Date(`1970-01-01T${a.start_time}`);
+      const timeB = new Date(`1970-01-01T${b.start_time}`);
+      return timeA - timeB;
+    });
+
+    filteredEvents.forEach(event => {
+      let eventNameDiv = document.createElement("div"),
+          displayText = `${event.training_direction_name} <br> ${event.start_time} - ${event.end_time}`;
+
+      eventNameDiv.innerHTML = displayText;
+      eventNameDiv.classList.add("event-name");
+      eventNameDiv.style.backgroundColor = event.elem_color;
+
+      const now = new Date(),
+            eventStartTime = new Date(`${cellDate.toDateString()} ${event.start_time}`),
+            eventEndTime = new Date(`${cellDate.toDateString()} ${event.end_time}`);
+
+      if (eventEndTime < now) {
+        eventNameDiv.style.backgroundColor = "#CCFFCC";
+      }
+
+      const isCanceled = cancelEvents.find(cancelEvent => {
+        const cancelDate = new Date(cancelEvent.cancelled_date);
+        return (
+          cancelDate.getFullYear() === cellDate.getFullYear() &&
+          cancelDate.getMonth() === cellDate.getMonth() &&
+          cancelDate.getDate() === cellDate.getDate() &&
+          event.training_direction_name === cancelEvent.cancelled_title
         );
+      });
 
-        filteredEvents.sort((a, b) => {
-            const timeA = new Date(`1970-01-01T${a.start_time}`),
-                  timeB = new Date(`1970-01-01T${b.start_time}`);
-            return timeA - timeB;
-        });
+      if (isCanceled) {
+        eventNameDiv.style.backgroundColor = "#e25050";
+        eventNameDiv.innerHTML = `${event.training_direction_name} <br> <b>Тренировка отменена</b> ☢️`;
+      }
 
-        filteredEvents.forEach(event => {
-            let eventNameDiv = document.createElement("div"),
-                displayText = `${event.training_direction_name} <br> ${event.start_time} - ${event.end_time}`;
-
-            eventNameDiv.innerHTML = displayText;
-            eventNameDiv.classList.add("event-name");
-            eventNameDiv.style.backgroundColor = event.elem_color;
-
-            const now = new Date(),
-                  eventStartTime = new Date(`${cellDate.toDateString()} ${event.start_time}`),
-                  eventEndTime = new Date(`${cellDate.toDateString()} ${event.end_time}`);
-
-            if (eventEndTime < now) {
-                eventNameDiv.style.backgroundColor = "#CCFFCC";
-            }
-
-            const isCanceled = cancelEvents.find(cancelEvent => {
-                const cancelDate = new Date(cancelEvent.cancelled_date);
-                return (
-                    cancelDate.getFullYear() === cellDate.getFullYear() &&
-                    cancelDate.getMonth() === cellDate.getMonth() &&
-                    cancelDate.getDate() === cellDate.getDate() &&
-                    event.training_direction_name === cancelEvent.cancelled_title
-                );
-            });
-
-            if (isCanceled) {
-                eventNameDiv.style.backgroundColor = "#e25050";
-                eventNameDiv.innerHTML = `${event.training_direction_name} <br> <b>Тренировка отменена</b> ☢️`;
-            }
-
-            cell.appendChild(eventNameDiv);
-
-            eventNameDiv.addEventListener("click", () => {
-                openModal(event, date, isCanceled);
-            });
-        });
-    }
+      cell.appendChild(eventNameDiv);
+      eventNameDiv.addEventListener("click", () => {
+        openModal(event, date, isCanceled);
+      });
+    });
   }
+}
 
-  function handleDateClick(cell) {
+
+function handleDateClick(cell) {
     const dayDiv = cell.querySelector("div"),
           dayNumber = dayDiv ? parseInt(dayDiv.textContent, 10) : null;
 
@@ -199,9 +205,10 @@ document.addEventListener("DOMContentLoaded", function () {
       date: new Date(currentYear, currentMonth - 1, dayNumber),
       dayNumber: dayNumber,
     };
-  }
+}
 
-  function openModal(event, date, isCanceled) {
+
+function openModal(event, date, isCanceled) {
     const coachDetails = event.teacher.map((coach) => `${coach.surname} ${coach.name} ${coach.patronymic}`).join(", "),
           modal = document.getElementById("modal"),
           modalTeacher = document.getElementById("modal-teacher"),
@@ -225,17 +232,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     modalName.textContent = event.training_direction_name;
+    
 
     if (isCanceled) {
         modalStartTime.innerHTML = `<b class='text-danger'>Тренировка отменена<b> <br>Причина: ${isCanceled.description}`;
-        modalTitle.textContent = `Занятие отменено`;
+        modalTitle.textContent = "";
+        modalEndTime.textContent = "";
     } else {
-        modalTitle.innerHTML = `Занятие: ${event.title}`;
+        modalTitle.textContent = `Описания: ${event.title}`;
         modalStartTime.textContent = `Время начало: ${event.start_time}`;
         modalEndTime.textContent = `Конец в: ${event.end_time}`;
     }
 
-    const eventDate = new Date(currentYear, currentMonth - 1, date);
+    const today = new Date(),
+          eventDate = new Date(currentYear, currentMonth - 1, date);
+
     blockCancelLesson.style.display = eventDate < today ? "none" : "";
 
     const formatDate = (date) => {
@@ -270,22 +281,63 @@ document.addEventListener("DOMContentLoaded", function () {
     modal.style.display = "block";
 }
 
+
 function closeModal() {
     const modal = document.getElementById("modal");
     modal.style.display = "none";
 }
 
-const span = document.getElementsByClassName("close")[0];
-if (span) {
-    span.addEventListener("click", closeModal);
-}
 
-window.addEventListener("click", (event) => {
+const span = document.getElementsByClassName("close")[0];
+  if (span) {
+    span.addEventListener("click", closeModal);
+  }
+
+  window.addEventListener("click", (event) => {
     const modal = document.getElementById("modal");
     if (modal && event.target === modal) {
-        closeModal();
+      closeModal();
     }
-});
+  });
+
+
+const previousMonth = document.querySelector(".previousMonth"),
+        nextMonth = document.querySelector(".nextMonth"),
+        currentMY = document.getElementById("month-year");
+
+  if (previousMonth && nextMonth) {
+    if (currentMY.textContent === "Октябрь 2024") {
+      previousMonth.style.display = "none";
+      previousMonth.disabled = true;
+    }
+
+    previousMonth.addEventListener("click", () => {
+      if (currentMY.textContent !== "Октябрь 2024") {
+        currentMonth--;
+        if (currentMonth < 1) {
+          currentMonth = 12;
+          currentYear--;
+        }
+        displayEvents();
+      }
+    });
+
+    nextMonth.addEventListener("click", () => {
+      currentMonth++;
+      if (currentMonth > 12) {
+        currentMonth = 1;
+        currentYear++;
+      }
+      displayEvents();
+    });
+}
 
 displayEvents();
+
+const btnCancelWorkout = document.getElementById("cancelWorkout");
+  if (btnCancelWorkout) {
+    btnCancelWorkout.addEventListener("click", () => {
+        btnCancelWorkout.style.display = "none";
+    });
+  }
 });

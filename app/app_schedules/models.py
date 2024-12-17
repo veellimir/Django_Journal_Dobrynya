@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+
 from colorfield.fields import ColorField
 
 from app.mainapp.base_mixins import StrMixin
@@ -7,8 +9,8 @@ from app.users.models import ProfileAdmin, TrainingDirections
 
 class Event(StrMixin, models.Model):
     EVENT_TYPE_CHOICES = (
-        ("schedules_training", "Расписания", ),
-        ("competition", "Мероприятие", ),
+        ("schedules_training", "Расписания",),
+        ("competition", "Мероприятие",),
     )
     DAYS_OF_WEEK_CHOICES = (
         ("пн", 'Понедельник'),
@@ -26,6 +28,12 @@ class Event(StrMixin, models.Model):
         null=True,
         verbose_name="Направление"
     )
+    competition_name = models.CharField(
+        max_length=200,
+        blank=True,
+        null=True,
+        verbose_name="Название мероприятия"
+    )
     coaches = models.ManyToManyField(ProfileAdmin, blank=True, related_name="events", verbose_name="Тренер (ы)")
     title = models.CharField(max_length=200, verbose_name="Описание тренировки")
     start_time = models.TimeField(verbose_name="Начло в")
@@ -40,10 +48,36 @@ class Event(StrMixin, models.Model):
         blank=False,
         null=False
     )
+    event_date = models.DateField(
+        blank=True,
+        null=True,
+        verbose_name="Дата мероприятия (Указывать если выбран тип - Мероприятие)"
+    )
 
     class Meta:
         verbose_name = "тренировки"
         verbose_name_plural = "Тренировки"
+
+    def save(self, *args: tuple, **kwargs: dict) -> None:
+        if self.category == "competition" and not self.event_date:
+            raise ValueError("Для мероприятия необходимо указать дату.")
+        elif self.category == "schedules_training" and not self.days_of_week:
+            raise ValueError("Для тренировки необходимо указать дни недели.")
+        super().save(*args, **kwargs)
+
+    def clean(self):
+        if self.category == 'competition':
+            if not self.competition_name:
+                raise ValidationError("Поле 'Название мероприятия' обязательно для события типа 'Мероприятие'.")
+            self.name = None
+        else:
+            if self.competition_name:
+                raise ValidationError(
+                    "Поле 'Название мероприятия' не должно быть заполнено для события типа 'Расписание'.")
+            self.competition_name = None
+
+        if self.category == 'schedules_training' and not self.name:
+            raise ValidationError("Поле 'Направление' обязательно для события типа 'Расписание'.")
 
 
 class CancelEvents(models.Model):
