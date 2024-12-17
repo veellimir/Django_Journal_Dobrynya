@@ -12,42 +12,23 @@ from app.attendance.models import UsersAttendance
 
 
 class EventListView(generics.ListAPIView):
-    # queryset = Event.objects.all()
     serializer_class = EventSerializer
     permission_classes = [IsAuthenticated]
 
-    # TODO: по умолчанию тренировки только пользователя
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     profile = user.profile
-    #     user_directions = profile.directions.all()
-    #
-    #     filter_type = self.request.query_params.get('filter', 'mine')  # Если параметр не указан, фильтруем по умолчанию (mine)
-    #     if filter_type == 'mine':  # Фильтровать только события текущего пользователя
-    #         return Event.objects.filter(name__in=user_directions).distinct()
-    #     elif filter_type == 'all':  # Отображать все события
-    #         return Event.objects.all()
-    #     else:
-    #         # Если передан неправильный параметр фильтрации, возвращаем пустой набор
-    #         return Event.objects.none()
     def get_queryset(self):
         user = self.request.user
         profile = user.profile
+        filter_type = self.request.query_params.get("filter", "mine")
 
-        # Проверяем, есть ли параметр "all" в запросе
-        filter_type = self.request.query_params.get('filter', 'mine')  # mine по умолчанию
-        all_param = self.request.query_params.get('all', 'false') == 'true'
-
-        if filter_type == 'all' or all_param:
-            # Возвращаем все события
-            return Event.objects.all()
-        elif filter_type == 'competition':
-            # Возвращаем только мероприятия
-            return Event.objects.filter(category="мероприятие").distinct()
-        else:
-            # Возвращаем события пользователя
+        if filter_type == "all":
+            return Event.objects.filter(category="schedules_training").all()
+        elif filter_type == "competition":
+            return Event.objects.filter(category="competition").all()
+        elif filter_type == "mine":
             user_directions = profile.directions.all()
-            return Event.objects.filter(name__in=user_directions).distinct()
+            return Event.objects.filter(name__in=user_directions, category="schedules_training").distinct()
+        else:
+            return Event.objects.none()
 
 
 class AttendanceListView(generics.ListAPIView):

@@ -1,32 +1,8 @@
+export function fetchEvents(filterType = 'mine') {
+  const url = new URL("/api/events/", window.location.origin),
+        params = new URLSearchParams();
 
-// export function fetchEvents(all) {
-//     return fetch("/api/events/")
-//       .then((response) => {
-//         if (!response.ok) {
-//           throw new Error('Network response was not ok');
-//         }
-//         return response.json();
-//       })
-//       .then((data) => {
-//         let events = data;
-//         return events;
-//       })
-//       .catch((error) => {
-//         return;
-//     });
-// }
-export function fetchEvents(all) {
-  const url = new URL("/api/events/", window.location.origin); // базовый URL API
-  const params = new URLSearchParams();
-
-  // Если параметр 'all' равен true, добавляем его в параметры запроса
-  if (all) {
-      params.append("all", "true");
-  } else {
-      params.append("all", "false");
-  }
-
-  // Добавляем параметры к URL
+  params.append("filter", filterType);
   url.search = params.toString();
 
   return fetch(url)
@@ -46,8 +22,6 @@ export function fetchEvents(all) {
   });
 }
 
-
-
 export function getCancelEvent() {
   return fetch('/api/cancel-event/')
       .then(response => response.json())
@@ -58,7 +32,6 @@ export function getCancelEvent() {
         return [];
       });
 }
-
 
 export function fetchAttendance(month, year) {
   return fetch(`/api/attendance/?month=${month}&year=${year}`)

@@ -23,18 +23,17 @@ weekdays = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"],
 spinner = document.querySelector('.spinner');
 
 document.addEventListener("DOMContentLoaded", function () {
-  const filterMineButton = document.getElementById('filter-mine');
-  const filterAllButton = document.getElementById('filter-all');
-  const filterEventsButton = document.getElementById('filter-events');
+  const filterMineButton = document.getElementById('filter-mine'),
+        filterAllButton = document.getElementById('filter-all'),
+        filterEventsButton = document.getElementById('filter-events');
 
-  let filter_type = 'mine';  // Начальное значение - false
+  let filter_type = 'mine';
 
-  // Обработчик для "Только мои занятия"
   if (filterMineButton) {
     filterMineButton.addEventListener('click', function () {
       filter_type = 'mine';  // Показать только свои занятия
       console.log('Показать только мои занятия');
-      displayEvents(all);  // Вызов с параметром false
+      displayEvents(filter_type);  // Вызов с параметром false
     });
   }
 
@@ -43,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     filterAllButton.addEventListener('click', function () {
       filter_type = 'all';  // Показать все занятия
       console.log('Показать все занятия');
-      displayEvents(all);  // Вызов с параметром true
+      displayEvents(filter_type);  // Вызов с параметром true
     });
   }
 
@@ -52,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
     filterEventsButton.addEventListener('click', function () {
       filter_type = "competition";  // Показать только события (или изменить на true в зависимости от вашей логики)
       console.log('Показать только события');
-      displayEvents(all);  // Вызов с параметром false
+      displayEvents(filter_type);
     });
   }
   function displayEvents(all) {

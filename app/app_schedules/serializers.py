@@ -20,6 +20,7 @@ class EventSerializer(serializers.ModelSerializer):
             "end_time",
             "days_of_week",
             "elem_color",
+            "category"
         ]
 
     def get_training_direction_name(self, obj: Event) -> str:
