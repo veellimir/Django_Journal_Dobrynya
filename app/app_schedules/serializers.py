@@ -26,7 +26,6 @@ class EventSerializer(serializers.ModelSerializer):
         ]
 
     def get_training_direction_name(self, obj: Event) -> str:
-        # Если training_direction_name пустое, используем competition_name
         if obj.name:
             return obj.name.name
         elif obj.competition_name:
@@ -42,7 +41,6 @@ class EventSerializer(serializers.ModelSerializer):
         if instance.event_date:
             representation["event_date"] = instance.event_date.strftime("%Y-%m-%d")
         return representation
-
 
 
 class CancelEventsSerializer(serializers.ModelSerializer):
