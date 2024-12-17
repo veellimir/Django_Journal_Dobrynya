@@ -126,6 +126,12 @@ class ProfileParent(SocialMixin, models.Model):
         verbose_name="Дети",
         blank=True
     )
+    def __str__(self):
+        return f"{self.user.get_full_name()} "
+
+    class Meta:
+        verbose_name = "Профиль родителя"
+        verbose_name_plural = "Профиль родителей"
 
 
 

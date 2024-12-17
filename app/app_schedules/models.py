@@ -55,8 +55,8 @@ class Event(StrMixin, models.Model):
     )
 
     class Meta:
-        verbose_name = "тренировки"
-        verbose_name_plural = "Тренировки"
+        verbose_name = "тренировку или событие"
+        verbose_name_plural = "Тренировки и события"
 
     def save(self, *args: tuple, **kwargs: dict) -> None:
         if self.category == "competition" and not self.event_date:
