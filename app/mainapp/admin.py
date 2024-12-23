@@ -23,6 +23,12 @@ class EventAdmin(admin.ModelAdmin):
     form = EventForm
     filter_horizontal = ("coaches", )
 
+    ordering = ['name']
+    search_fields = ('name__name', 'competition_name', )
+
+    list_display = ('name', 'competition_name', 'start_time', 'end_time', 'category', 'event_date')
+    list_filter = ('category', )
+    list_editable = ('category', )
 
 
 admin.site.unregister(User)
