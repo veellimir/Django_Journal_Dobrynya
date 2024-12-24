@@ -26,7 +26,7 @@ class EventAdmin(admin.ModelAdmin):
     ordering = ['name']
     search_fields = ('name__name', 'competition_name', )
 
-    list_display = ('name', 'competition_name', 'start_time', 'end_time', 'category', 'event_date')
+    list_display = ('name', 'competition_name', 'start_time', 'end_time', 'category', 'event_date', )
     list_filter = ('category', )
     list_editable = ('category', )
 
