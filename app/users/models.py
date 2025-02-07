@@ -171,5 +171,5 @@ class ProfileAdmin(SocialMixin, models.Model):
         return f"{self.surname} {self.name} {self.patronymic}"
 
     class Meta:
-        verbose_name = "тренера"
-        verbose_name_plural = "Тренерский состав"
+        verbose_name = "участник центра"
+        verbose_name_plural = "Команда центра"
