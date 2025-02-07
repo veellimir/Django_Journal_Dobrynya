@@ -1,3 +1,4 @@
+from itertools import chain
 from typing import Callable, Dict, List
 
 from django.http import HttpRequest, HttpResponse
@@ -114,10 +115,21 @@ def all_users(request: HttpRequest) -> HttpResponse:
 
 @login_required
 def all_coach(request: HttpRequest) -> HttpResponse:
-    coaches: List[ProfileAdmin] = ProfileAdmin.objects.all()
+    coaches_with_directions: List[ProfileAdmin] = ProfileAdmin.objects.filter(
+        directions__isnull=False
+    ).distinct()
+    coaches_with_personal: List[ProfileAdmin] = ProfileAdmin.objects.filter(
+        directions__isnull=True,
+        admin_personal__isnull=False
+    ).distinct()
+
+    coaches: List[ProfileAdmin] = list(chain(
+        coaches_with_directions,
+        coaches_with_personal
+    ))
 
     context: Dict[str, List[ProfileAdmin]] = {
-        "title": "Люди нашего клуба",
+        "title": "Команда нашего центра",
         "coaches": coaches,
     }
     return render(request, "users/all_coach.html", context)
