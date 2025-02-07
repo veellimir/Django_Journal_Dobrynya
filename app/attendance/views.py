@@ -8,6 +8,7 @@ from django.views.generic import ListView
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 
+from app.users.models import ProfileAdmin
 from .models import TrainingDirections, UsersAttendance, Profile
 
 
@@ -24,6 +25,18 @@ class TrainingDirectionsListView(ListView):
     ) -> Dict[str, any]:
         context: Dict[str, any] = super().get_context_data(**kwargs)
         context["title"] = "Журнал Посещаемости"
+
+        user = self.request.user
+        try:
+            profile_admin = ProfileAdmin.objects.get(user=user)
+        except ProfileAdmin.DoesNotExist:
+            profile_admin = None
+
+        if profile_admin:
+            directions = profile_admin.directions.all()
+        else:
+            directions = TrainingDirections.objects.none()
+        context["directions"] = directions
 
         selected_direction_id: Optional[str] = self.request.GET.get("direction")
         selected_date: Optional[str] = self.request.GET.get("date")

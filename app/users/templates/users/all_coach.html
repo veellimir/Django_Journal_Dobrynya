@@ -14,7 +14,7 @@
                     <h5 class="card-title text-center">{{ coach.surname }} {{ coach.name }} {{ coach.patronymic }}</h5>
                     <p class="card-text flex-grow-1">
                         {% if coach.directions.all %}
-                        <strong>Направление(я):</strong> <br>
+                        <strong>Направление(я) преподавателя:</strong> <br>
                           {% for direction in coach.directions.all %}
                           <span class="badge bg-danger mt-2" style="white-space: normal;">
                             {{ direction.name }}
