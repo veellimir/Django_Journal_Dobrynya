@@ -16,19 +16,17 @@ class UsersAdmin(admin.ModelAdmin):
         "email",
     )
 
-    list_display_links = ("username", "first_name", "last_name", "email", )
+    list_display_links = ("username", "first_name", "last_name", "email",)
 
 
 class EventAdmin(admin.ModelAdmin):
     form = EventForm
-    filter_horizontal = ("coaches", )
+    filter_horizontal = ("coaches",)
+    search_fields = ('name__name', 'competition_name',)
 
-    # ordering = ['competition_name']
-    search_fields = ('name__name', 'competition_name', )
-
-    list_display = ('name', 'competition_name', 'start_time', 'end_time', 'category', 'event_date', )
-    list_filter = ('category', )
-    list_editable = ('category', )
+    list_display = ('name', 'competition_name', 'start_time', 'end_time', 'category', 'event_date',)
+    list_filter = ('category',)
+    list_editable = ('category',)
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
