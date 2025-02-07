@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container">
-    <h2 class="my-4 text-center">Тренеры нашего клуба</h2>
+    <h2 class="my-4 text-center">{{ title }}</h2>
     <div class="row">
         {% for coach in coaches %}  
         <div class="col-lg-4 col-md-6 mb-4">
@@ -13,15 +13,23 @@
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title text-center">{{ coach.surname }} {{ coach.name }} {{ coach.patronymic }}</h5>
                     <p class="card-text flex-grow-1">
-                        <strong>Направление(я):</strong> <br>
+                        {% if coach.directions.all %}
+                        <strong>Направление(я) преподавателя:</strong> <br>
                           {% for direction in coach.directions.all %}
                           <span class="badge bg-danger mt-2" style="white-space: normal;">
                             {{ direction.name }}
-                        </span>
-                          {% empty %}
-                              Нет направлений
-                          {% endfor %}
+                          </span>
+                        {% endfor %}
+                        {% elif not coach.directions.all %}
+                        <strong>Административный персонал</strong> <br>
+                            {% for personal in coach.admin_personal.all %}
+                                <span class="badge bg-primary mt-2" style="white-space: normal;">
+                            {{ personal.name }}
+                            </span>
+                      {% endfor %}
                     </p>
+                   
+                    {% endif %}
                     <hr class="my-3">
                     <p class="card-text mb-4">
                         <strong>Телефон для связи:</strong> 

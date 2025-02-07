@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from app.app_schedules.models import Event
 from app.app_schedules.forms import EventForm
 from app.tasks.models import TaskUser
-from app.users.models import ProfileAdmin, Profile, ProfileParent, TrainingDirections
+from app.users.models import ProfileAdmin, Profile, ProfileParent, TrainingDirections, AdministrationPerson
 from app.news.models import News
 
 
@@ -42,6 +42,7 @@ admin.site.register(Profile)
 admin.site.register(ProfileParent)
 admin.site.register(ProfileAdmin)
 admin.site.register(TrainingDirections)
+admin.site.register(AdministrationPerson)
 
 admin.site.register(Event, EventAdmin)
 

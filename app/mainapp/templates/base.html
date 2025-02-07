@@ -33,7 +33,9 @@
       <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <div class="container-fluid">
             {% if request.user.profile.profile_image or request.user.profileparent.profile_image or user.is_superuser %}
-            <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'mainapp/images/logo.png' %}" alt="Логотип" class="logo_main"></a>
+            <a class="navbar-brand" href="{% url 'home' %}">
+              <img src="{% static 'mainapp/images/logo.png' %}" alt="Логотип" class="logo_main">
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
@@ -70,7 +72,7 @@
                         <li><a class="dropdown-item " href="{% url 'profile_awards' %}">Мои награды</a></li>
                     {% endif %}
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item " href="{% url 'all_coach' %}">Тренерский состав</a></li>
+                    <li><a class="dropdown-item " href="{% url 'all_coach' %}">Люди клуба</a></li>
                     <li class="dropdown-item">
                       <a href="{% url 'all_users' %}" tabindex="-1" aria-disabled="true">Дружина</a>
                     </li>
