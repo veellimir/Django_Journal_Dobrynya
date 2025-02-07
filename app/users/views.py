@@ -117,7 +117,7 @@ def all_coach(request: HttpRequest) -> HttpResponse:
     coaches: List[ProfileAdmin] = ProfileAdmin.objects.all()
 
     context: Dict[str, List[ProfileAdmin]] = {
-        "title": "Тренерский состав",
+        "title": "Люди нашего клуба",
         "coaches": coaches,
     }
     return render(request, "users/all_coach.html", context)

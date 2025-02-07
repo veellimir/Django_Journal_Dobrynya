@@ -12,6 +12,7 @@ class SocialMixin(models.Model):
     phone = models.CharField(max_length=110, blank=True, null=True, verbose_name="Номер телефона")
     telegram = models.CharField(max_length=100, blank=True, null=True, verbose_name="Телеграм")
     vk = models.CharField(max_length=100, blank=True, null=True, verbose_name="Вконтакте")
+    email = models.EmailField(max_length=50, blank=True, null=True, verbose_name="Email")
 
     class Meta:
         abstract = True

@@ -12,11 +12,19 @@ class TrainingDirections(StrMixin, models.Model):
         verbose_name_plural = "Направления тренировок"
 
 
+class AdministrationPerson(StrMixin, models.Model):
+    name = models.CharField(max_length=100, verbose_name="Направление персонала")
+
+    class Meta:
+        verbose_name = "направление персонала"
+        verbose_name_plural = "Направления персонала"
+
+
 class Profile(SocialMixin, models.Model):
     directions = models.ManyToManyField(
         TrainingDirections,
         blank=False,
-        verbose_name="Направления"
+        verbose_name="Направления тренировок"
     )
     date_of_birth = models.DateField(
         blank=False,
@@ -121,18 +129,18 @@ class ProfileParent(SocialMixin, models.Model):
     )
     parents_place_work = models.TextField(blank=True, null=True, verbose_name="Ваше место работы")
     children = models.ManyToManyField(
-    "Profile",
+        "Profile",
         related_name="parents",
         verbose_name="Дети",
         blank=True
     )
+
     def __str__(self):
         return f"{self.user.get_full_name()} "
 
     class Meta:
         verbose_name = "Профиль родителя"
         verbose_name_plural = "Профиль родителей"
-
 
 
 class ProfileAdmin(SocialMixin, models.Model):
@@ -150,8 +158,13 @@ class ProfileAdmin(SocialMixin, models.Model):
     )
     directions = models.ManyToManyField(
         TrainingDirections,
-        blank=False,
+        blank=True,
         verbose_name="Направления"
+    )
+    admin_personal = models.ManyToManyField(
+        AdministrationPerson,
+        blank=True,
+        verbose_name="Направления персонала"
     )
 
     def __str__(self):
